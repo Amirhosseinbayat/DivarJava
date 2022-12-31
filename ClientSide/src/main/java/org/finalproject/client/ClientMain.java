@@ -1,6 +1,6 @@
-package org.finalproject.server;
+package org.finalproject.client;
 
-public class Main {
+public class ClientMain {
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
