@@ -1,7 +1,7 @@
 package org.finalproject.server;
 
 public class ServerMain {
-    public static int PORT = 12435;
+    static ServerConfiguration serverConfiguration = ServerConfiguration.getInstance();
 
     public static void main(String[] args) {
         for (int x = 0; x<=args.length-1; x++) {
@@ -23,7 +23,7 @@ public class ServerMain {
     public static boolean processCLIArgs(int index, String key, String value) {
         switch (key) {
             case "-port":
-                PORT = Integer.parseInt(value);
+                serverConfiguration.setPortNumber(Integer.parseInt(value));
                 return true;
             case "--help":
             case "-h":
@@ -32,6 +32,14 @@ public class ServerMain {
                     return false;
                 }
                 break;
+            case "-charset": {
+                if (value == null) {
+                    System.out.println("please specify the charset. ");
+                    return false;
+                }
+                Charset charset = Charset.forName(value);
+                serverConfiguration.setCharset(charset);
+            }
         }
         System.out.println("unknown argument "+key);
         return false;
