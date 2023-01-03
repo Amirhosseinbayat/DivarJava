@@ -12,7 +12,8 @@ public class ClientMain {
 
     public static void main(String[] args) {
         System.out.println("welcome to the cli client!");
-
+        if (args.length != 0 && args[0].equals("--expert")) expertMode();
+        else new MainMenuProcessor(new Scanner(System.in)).guide().process();
     }
 
     static void expertMode() {
