@@ -23,7 +23,7 @@ public class MainMenuProcessor extends InputProcessor {
                 new SignUpProcessor(scanner).guide().process();
                 break;
             case "2":
-                this.restartWithError("this item is not yet implemented.");
+                new LoginProcessor(scanner).guide().process();
                 break;
             case "3":
                 System.out.println("good bye!");

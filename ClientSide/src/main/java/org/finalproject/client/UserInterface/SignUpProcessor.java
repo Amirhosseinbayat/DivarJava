@@ -28,8 +28,8 @@ public class SignUpProcessor extends InputProcessor {
         try {
             new HttpRequestManager().sendRequest(new Request("POST", "username/check")
                     .setBody(userName));
-            System.out.println(userName+" looks ok. \n now lets create a strong password. "+
-                    "enter a password with at least 8 characters.");
+            System.out.println(userName+" looks ok. \n"+ANSI_BLUE+"Now lets create a strong password. "+
+                    "enter a password with at least 8 characters."+ANSI_RESET);
             processPassword();
         } catch (RequestException e) {
             restartWithError(userName+" has a problem!\n "+e.getMessage());
@@ -44,10 +44,10 @@ public class SignUpProcessor extends InputProcessor {
         request.setBody(user);
         try {
             ClientConfiguration.getInstance().getRequestManager().sendRequest(request);
-            System.out.println("sign up successful!");
-            new MainMenuProcessor(scanner).guide().process();
+            System.out.println("sign up successful! now you can log in to your account.");
+            new LoginProcessor(scanner).guide().process();
         } catch (RequestException e) {
-            if (e.getCode() == Response.ERR_INVALID_PASSWORD) {
+            if (e.getCode() == Response.ERR_WEAK_PASSWORD) {
                 System.out.println("you have entered an invalid password: "+e.getMessage());
                 System.out.println("please try a better password...");
                 processPassword();

@@ -1,5 +1,6 @@
 package org.finalproject.client;
 
+import org.finalproject.DataObject.User;
 import org.finalproject.client.Http.HttpRequestManager;
 
 import java.nio.charset.Charset;
@@ -9,6 +10,16 @@ public class ClientConfiguration {
     String serverAddress = "http://localhost";
     int serverPort = 12435;
     Charset charset = StandardCharsets.UTF_8;
+
+    User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     HttpRequestManager requestManager = new HttpRequestManager();
 
