@@ -1,9 +1,16 @@
 package org.finalproject.DataObject;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * represents a user and his/her profile information.
- * */
-public class User extends DataObject{
+ */
+@XmlType(name = "1")
+@XmlRootElement
+public class User extends DataObject {
+
+    static final long serialVersionUID = 1L;
     String name;
     String password;
 
@@ -28,4 +35,13 @@ public class User extends DataObject{
         this.password = password;
     }
 
+
+    @Override
+    public String toString() {
+        return "User{"+
+                "name='"+name+'\''+
+                ", password='"+password+'\''+
+                ", objectId="+objectId+
+                '}';
+    }
 }

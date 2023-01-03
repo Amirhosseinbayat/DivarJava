@@ -1,6 +1,6 @@
 package org.finalproject.client.Http;
 
 public interface IHttpRequestManager {
-    Response sendRequest(Request request);
+    Response sendRequest(Request request) throws RequestException;
 
 }

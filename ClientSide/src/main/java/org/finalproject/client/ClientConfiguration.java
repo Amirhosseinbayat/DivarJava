@@ -1,5 +1,7 @@
 package org.finalproject.client;
 
+import org.finalproject.client.Http.HttpRequestManager;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -8,12 +10,19 @@ public class ClientConfiguration {
     int serverPort = 12435;
     Charset charset = StandardCharsets.UTF_8;
 
+    HttpRequestManager requestManager = new HttpRequestManager();
+
+    public HttpRequestManager getRequestManager() {
+        return requestManager;
+    }
+
     private static final ClientConfiguration CLIENT_CONFIGURATION = new ClientConfiguration();
-    private ClientConfiguration(){
+
+    private ClientConfiguration() {
 
     }
 
-    public String getServerConnectionString(){
+    public String getServerConnectionString() {
         return getServerAddress()+":"+getServerPort()+"/";
     }
 
