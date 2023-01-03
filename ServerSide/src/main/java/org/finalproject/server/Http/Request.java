@@ -5,9 +5,14 @@ import org.finalproject.DataObject.DataObject;
 import org.finalproject.DataObject.User;
 import org.finalproject.server.ServerConfiguration;
 
-import java.util.ArrayList;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class Request {
 
     String httpMethod;
@@ -35,17 +40,19 @@ public class Request {
         return path;
     }
 
-    public void interpretRequestBytesAs(String contentType, byte[] bytes) {
+    public void interpretRequestBytesAs(String contentType, byte[] bytes) throws IOException, ClassNotFoundException {
         if ("text/plain".equals(contentType)) {
             requestBody = new String(bytes, ServerConfiguration.getInstance().getCharset());
         }
         if ("object/java".equals(contentType)) {
             requestBody = DataObject.createFromByteArray(bytes);
-            //todo convert bytes to object.
         }
         if (("list/java".equals(contentType))) {
-            requestBody = new ArrayList<DataObject>();
-            //todo convert bytes to list of objects.
+            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+            ObjectInput in = new ObjectInputStream(bis);
+            @SuppressWarnings("UnnecessaryLocalVariable") //it is necessary to do the cast here.
+            List<? extends DataObject> list = (List<? extends DataObject>) in.readObject();
+            requestBody = list;
         }
     }
 

@@ -22,8 +22,7 @@ public class Response {
         }
         if (response instanceof DataObject) {
             contentType = "object/java";
-            //todo convert object to bytes.
-            responseBytes = new byte[]{};
+            responseBytes = ((DataObject) response).toByteArray();
         }
         if (response instanceof List) {
             List<?> list = (List<?>) response;

@@ -10,7 +10,7 @@ import org.finalproject.server.Http.Response;
  */
 public interface RequestHandler {
 
-    Response handle(Request request);
+    Response handle(Request request) throws Exception;
 
     String getHandlerCode();
 

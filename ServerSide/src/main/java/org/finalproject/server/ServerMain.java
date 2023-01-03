@@ -1,5 +1,18 @@
 package org.finalproject.server;
 
+import com.sun.net.httpserver.HttpServer;
+import org.finalproject.server.Http.HTTPRequestManager;
+import org.finalproject.server.Http.IHttpRequestManager;
+import org.finalproject.server.Http.RequestHandlers.GetAllRecordsHandler;
+import org.finalproject.server.Http.RequestHandlers.PingHandler;
+import org.finalproject.server.Http.RequestHandlers.SignUpHandler;
+import org.finalproject.server.Http.RequestHandlers.UserNameHandler;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
+import java.util.concurrent.Executors;
+
 public class ServerMain {
     static ServerConfiguration serverConfiguration = ServerConfiguration.getInstance();
 
@@ -17,7 +30,23 @@ public class ServerMain {
             }
         }
 
-        System.out.println("Server Process is starting on port "+PORT);
+        System.out.println("Server Process is starting on port "+serverConfiguration.getPortNumber());
+
+        try {
+            IHttpRequestManager manager = new HTTPRequestManager();
+            manager.assignHandler(new PingHandler());
+            manager.assignHandler(new GetAllRecordsHandler());
+            manager.assignHandler(new SignUpHandler());
+            manager.assignHandler(new UserNameHandler());
+            HttpServer server =
+                    HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
+            server.createContext("/", manager);
+            server.setExecutor(Executors.newFixedThreadPool(10));
+            server.start();
+            System.out.println("server is listening on "+server.getAddress().toString());
+        } catch (IOException e) {
+            System.out.println("failed to start the server: "+e.getMessage());
+        }
     }
 
     public static boolean processCLIArgs(int index, String key, String value) {
