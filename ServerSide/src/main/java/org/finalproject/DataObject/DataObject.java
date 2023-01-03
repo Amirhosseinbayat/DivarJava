@@ -9,6 +9,10 @@ import java.io.*;
  */
 public class DataObject implements Serializable {
 
+    //should be increased when serialized versions of older objects can not be deserialized to the new class...
+    public static final int RECORD_LIMIT = 1024;
+    static final long serialVersionUID = 1L;
+
     /**
      * Creates a subclass of SerializableDataObject from the byte array provided.
      * V is the classType of the returned object, it is determined by the context in which this method is used.
@@ -30,16 +34,30 @@ public class DataObject implements Serializable {
         }
     }
 
-    public byte[] toByteArray() {
+    long objectId = -1; //must not be 0 at first because 0 itself is a valid objectId.
+
+    public static byte[] toByteArray(Serializable serializable) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
-            out.writeObject(this);
+            out.writeObject(serializable);
             out.flush();
             out.close();
             return bos.toByteArray();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public byte[] toByteArray() {
+        return toByteArray(this);
+    }
+
+    public long getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(long objectId) {
+        this.objectId = objectId;
     }
 }

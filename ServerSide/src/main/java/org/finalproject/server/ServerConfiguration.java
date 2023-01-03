@@ -1,7 +1,10 @@
 package org.finalproject.server;
 
 import org.finalproject.server.Database.IDataBase;
+import org.finalproject.server.Database.SimpleRAMDatabase;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -12,11 +15,15 @@ public class ServerConfiguration {
     IDataBase dataBase;
 
     private ServerConfiguration() {
-
+        createTestDatabase();
     }
 
     public static ServerConfiguration getInstance() {
         return SERVER_CONFIGURATION;
+    }
+
+    public void createTestDatabase() {
+        dataBase = new SimpleRAMDatabase();
     }
 
     public IDataBase getDataBase() {
