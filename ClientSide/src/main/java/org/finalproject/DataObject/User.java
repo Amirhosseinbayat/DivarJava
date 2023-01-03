@@ -11,8 +11,8 @@ import javax.xml.bind.annotation.XmlType;
 public class User extends DataObject {
 
     static final long serialVersionUID = 1L;
-    String name;
-    String password;
+    final String name;
+    final String password;
 
     public User(String name, String password) {
         this.name = name;
@@ -23,16 +23,9 @@ public class User extends DataObject {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
 

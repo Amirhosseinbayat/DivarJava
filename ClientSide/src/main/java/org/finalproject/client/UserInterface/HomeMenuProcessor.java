@@ -20,6 +20,6 @@ public class HomeMenuProcessor extends InputProcessor {
 
     @Override
     void processInput() {
-        String input = scanner.nextLine();
+
     }
 }

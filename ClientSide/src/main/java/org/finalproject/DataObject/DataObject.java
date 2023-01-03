@@ -11,14 +11,18 @@ import java.io.*;
  * DataObjects will contain data that either has to be transmitted over network or saved in database.
  * These objects will be serializable.
  */
+@SuppressWarnings("unchecked")
 @XmlRootElement
 @XmlSeeAlso({User.class, Platform.class})
 public class DataObject implements Serializable {
 
     //should be increased when serialized versions of older objects can not be deserialized to the new class...
-    public static final int RECORD_LIMIT = 4096;
     static final long serialVersionUID = 1L;
-    long objectId;
+    final long objectId = -1;
+
+    public long getObjectId() {
+        return objectId;
+    }
 
     /**
      * Creates a subclass of SerializableDataObject from the byte array provided.
@@ -55,11 +59,4 @@ public class DataObject implements Serializable {
         return toByteArray(this);
     }
 
-    public long getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(long objectId) {
-        this.objectId = objectId;
-    }
 }

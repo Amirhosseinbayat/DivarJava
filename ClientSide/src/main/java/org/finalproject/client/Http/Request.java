@@ -1,6 +1,5 @@
 package org.finalproject.client.Http;
 
-import com.sun.net.httpserver.HttpExchange;
 import org.finalproject.DataObject.DataObject;
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
@@ -12,18 +11,18 @@ import java.util.Map;
 
 public class Request {
 
-    String httpMethod;
-    String path;
-    Map<String,Object> headers = new HashMap<>();
-    User user;
+    final String httpMethod;
+    final String path;
+    final Map<String, Object> headers = new HashMap<>();
+
 
     Object body;
 
     public byte[] getBody() {
-        if (body instanceof String){
+        if (body instanceof String) {
             return ((String) body).getBytes(ClientConfiguration.getInstance().getCharset());
         }
-        if (body instanceof DataObject){
+        if (body instanceof DataObject) {
             return ((DataObject) body).toByteArray();
         }
         if (body instanceof List){
@@ -53,12 +52,11 @@ public class Request {
     public Request(String httpMethod, String path) {
         this.httpMethod = httpMethod;
         this.path = path;
-    }
-
-    public Request(HttpExchange httpExchange){
-        this.httpMethod = httpExchange.getRequestMethod();
-        this.path = httpExchange.getRequestURI().getPath();
-
+        User user = ClientConfiguration.getInstance().getUser();
+        if (user != null) {
+            getHeaders().put("X-AUTH-ID", user.getObjectId());
+            getHeaders().put("X-AUTH-PASS", user.getPassword());
+        }
     }
 
     public String getHttpMethod() {

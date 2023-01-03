@@ -47,12 +47,11 @@ public class LoginProcessor extends InputProcessor {
             System.out.println("\nLogin successful!\n");
             ClientConfiguration.getInstance().setUser((User) response.getResponseBody());
             new HomeMenuProcessor(scanner).guide().process();
-            return;
         } catch (RequestException e) {
             if (e.getCode() == Response.ERR_INVALID_CREDENTIALS) {
-                System.out.println("Invalid username/password. try again!\n"+ANSI_BLUE+"send 1 to go back to the main menu."+ANSI_RESET);
+                System.out.println("Invalid username/password. try again!\n"
+                        +ANSI_BLUE+"send 1 to go back to the main menu."+ANSI_RESET);
                 this.process();
-                return;
             }
         }
     }

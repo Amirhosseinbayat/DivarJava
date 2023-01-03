@@ -3,6 +3,7 @@ package org.finalproject.client.UserInterface;
 
 import java.util.Scanner;
 
+@SuppressWarnings("unused")
 public abstract class InputProcessor {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -14,7 +15,7 @@ public abstract class InputProcessor {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-    Scanner scanner;
+    final Scanner scanner;
     int numberOfInvalidInputs = 0;
 
     public InputProcessor(Scanner scanner) {

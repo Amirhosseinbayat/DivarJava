@@ -15,10 +15,9 @@ public class Response {
     public static final int ERR_INVALID_CREDENTIALS = HttpURLConnection.HTTP_UNAUTHORIZED;
     public static final int ERR_WEAK_PASSWORD = 601;
     public static final int ERR_USERNAME_TAKEN = HttpURLConnection.HTTP_CONFLICT;
-    public static final int ERR_SERVER_EXCEPTION = HttpURLConnection.HTTP_INTERNAL_ERROR;
     int resultCode;
 
-    byte[] bytes;
+    final byte[] bytes;
     Object responseBody;
 
     public Response(byte[] bytes) {

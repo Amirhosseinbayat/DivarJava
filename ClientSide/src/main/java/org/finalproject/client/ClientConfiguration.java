@@ -2,6 +2,7 @@ package org.finalproject.client;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.Http.HttpRequestManager;
+import org.finalproject.client.Http.IHttpRequestManager;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -17,13 +18,14 @@ public class ClientConfiguration {
         return user;
     }
 
+    final IHttpRequestManager requestManager = new HttpRequestManager();
+
     public void setUser(User user) {
+        if (user.getObjectId()<0) throw new RuntimeException("user object with invalid Id");
         this.user = user;
     }
 
-    HttpRequestManager requestManager = new HttpRequestManager();
-
-    public HttpRequestManager getRequestManager() {
+    public IHttpRequestManager getRequestManager() {
         return requestManager;
     }
 
