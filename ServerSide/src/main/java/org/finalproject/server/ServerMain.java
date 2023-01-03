@@ -3,10 +3,7 @@ package org.finalproject.server;
 import com.sun.net.httpserver.HttpServer;
 import org.finalproject.server.Http.HTTPRequestManager;
 import org.finalproject.server.Http.IHttpRequestManager;
-import org.finalproject.server.Http.RequestHandlers.GetAllRecordsHandler;
-import org.finalproject.server.Http.RequestHandlers.PingHandler;
-import org.finalproject.server.Http.RequestHandlers.SignUpHandler;
-import org.finalproject.server.Http.RequestHandlers.UserNameHandler;
+import org.finalproject.server.Http.RequestHandlers.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -19,13 +16,14 @@ public class ServerMain {
     public static void main(String[] args) {
         for (int x = 0; x<=args.length-1; x++) {
             String key = args[x];
-            String value = null;
+            String value;
             if (key.startsWith("-") && x+2<args.length) {
                 value = args[x+1];
-                processCLIArgs(x, key, value);
+                boolean continueProcess = processCLIArgs(x, key, value);
+                if (!continueProcess) return;
                 x++;
             } else {
-                boolean continueProcess = processCLIArgs(x, key, value);
+                boolean continueProcess = processCLIArgs(x, key, null);
                 if (!continueProcess) return;
             }
         }
@@ -38,6 +36,7 @@ public class ServerMain {
             manager.assignHandler(new GetAllRecordsHandler());
             manager.assignHandler(new SignUpHandler());
             manager.assignHandler(new UserNameHandler());
+            manager.assignHandler(new LoginHandler());
             HttpServer server =
                     HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
             server.createContext("/", manager);
