@@ -1,6 +1,7 @@
 /ServerSide/.idea/
 
 /ServerSide/target/
+/ServerSide/database/
 /ClientSide/.idea/
 
 /ClientSide/target/

@@ -9,15 +9,15 @@ import java.io.*;
  */
 public class DataObject implements Serializable {
 
-    //should be increased when serialized versions of older objects can not be deserialized to the new class...
     public static final int RECORD_LIMIT = 1024;
+    //should be increased when serialized versions of older objects can not be deserialized to the new class...
     static final long serialVersionUID = 1L;
 
     /**
      * Creates a subclass of SerializableDataObject from the byte array provided.
      * V is the classType of the returned object, it is determined by the context in which this method is used.
      * for example:
-     * TestClass test = SerializableDataObject.createFromBytes(bytes);
+     * TestClass test = SerializableDataObject.createFromByteArray(bytes);
      * is going to cast the return value to a "TestClass" object. because we want to assign
      * the result of this method as a TestObject.
      * <p>

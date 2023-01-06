@@ -1,5 +1,6 @@
 package org.finalproject.server;
 
+import org.finalproject.server.Database.DataBase;
 import org.finalproject.server.Database.IDataBase;
 import org.finalproject.server.Database.SimpleRAMDatabase;
 
@@ -16,6 +17,21 @@ public class ServerConfiguration {
 
     private ServerConfiguration() {
         createTestDatabase();
+    }
+
+    private void createProductionDataBase() {
+        try {
+            String projectPath = System.getProperty("user.dir");
+            File databaseFolder = new File(projectPath, "database");
+            if (!databaseFolder.exists()) {
+                System.out.println("creating database files in "+databaseFolder.getAbsolutePath());
+                databaseFolder.mkdirs();
+            }
+            File file = new File(databaseFolder, "PrimaryDataBase"+".divar");
+            dataBase = new DataBase(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static ServerConfiguration getInstance() {
