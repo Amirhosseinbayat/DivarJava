@@ -44,8 +44,8 @@ public class LoginProcessor extends InputProcessor {
         try {
             Response response = ClientConfiguration.getInstance().getRequestManager()
                     .sendRequest(request);
-            System.out.println("\nLogin successful!\n");
-            ClientConfiguration.getInstance().setUser((User) response.getResponseBody());
+            System.out.println("\nLogin successful! : "+response.getResponseBody().toString());
+            ClientConfiguration.getInstance().setUser(response.getResponseBody());
             new HomeMenuProcessor(scanner).guide().process();
         } catch (RequestException e) {
             if (e.getCode() == Response.ERR_INVALID_CREDENTIALS) {

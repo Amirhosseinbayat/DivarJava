@@ -46,7 +46,7 @@ public class Response {
         }
     }
 
-    public Object getResponseBody() {
-        return responseBody;
+    public <V> V getResponseBody() {
+        return (V) responseBody;
     }
 }

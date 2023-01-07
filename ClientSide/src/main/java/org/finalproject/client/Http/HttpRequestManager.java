@@ -1,5 +1,6 @@
 package org.finalproject.client.Http;
 
+import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
 import sun.net.www.protocol.http.HttpURLConnection;
 
@@ -14,10 +15,16 @@ public class HttpRequestManager implements IHttpRequestManager {
     @Override
     public Response sendRequest(Request request) throws RequestException {
         String urlString = ClientConfiguration.getInstance().getServerConnectionString()+request.getPath();
+        User user = ClientConfiguration.getInstance().getUser();
+        if (user != null) {
+            request.addHeader("X-auth-id", String.valueOf(user.getObjectId()));
+            request.addHeader("X-auth-pass", user.getPassword());
+        }
         if (request.isGET()) return GET(urlString, request.getHeaders());
         if (request.isPOST()) {
             request.addHeader("Content-Type", request.getContentType());
-            return POST(urlString, request.getBody(), request.getHeaders());
+            System.out.println("body:"+request.getBody().toString());
+            return POST(urlString, request.getBodyBytes(), request.getHeaders());
         }
         throw new RuntimeException("unsupported http method");
     }
@@ -54,6 +61,7 @@ public class HttpRequestManager implements IHttpRequestManager {
                 for (String key : headers.keySet()) {
                     String value = headers.get(key).toString();
                     connection.setRequestProperty(key, value);
+                    System.out.println("\n"+key+" : "+connection.getRequestProperty(key));
                 }
             }
             OutputStream outputStream = connection.getOutputStream();

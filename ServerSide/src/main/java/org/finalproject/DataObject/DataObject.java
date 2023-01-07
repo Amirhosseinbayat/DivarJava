@@ -1,6 +1,7 @@
 package org.finalproject.DataObject;
 
 import java.io.*;
+import java.util.Objects;
 
 /**
  * Base class
@@ -58,6 +59,21 @@ public class DataObject implements Serializable {
     }
 
     public void setObjectId(long objectId) {
+        if(objectId<0)throw new RuntimeException("invalid object id");
         this.objectId = objectId;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DataObject)) return false;
+        DataObject that = (DataObject) o;
+        return getObjectId() == that.getObjectId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getObjectId());
     }
 }

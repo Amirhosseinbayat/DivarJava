@@ -1,7 +1,10 @@
 package org.finalproject.server.Http;
 
 import com.sun.net.httpserver.HttpExchange;
+import org.finalproject.DataObject.User;
+import org.finalproject.server.Database.QueryConstraints;
 import org.finalproject.server.Http.RequestHandlers.RequestHandler;
+import org.finalproject.server.ServerConfiguration;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Parses a http request and passes it to the related handler.
@@ -34,16 +38,25 @@ public class HTTPRequestManager implements IHttpRequestManager {
             byte[] bytes = new byte[stream.available()];
             int bodyLength = stream.read(bytes);
             stream.close();
+            Request request = new Request(t);
             Object attr = t.getRequestHeaders().getFirst("Content-Type");
-            if (attr == null) {
-                System.out.println("content type null.");
-                sendBackResponse(new Response(403,
-                        "content type header is required for POST request."), t);
+            if(t.getRequestMethod().equals("POST")){
+                if (attr == null) {
+                    System.out.println("content type was null for POST request!");
+                    sendBackResponse(new Response(403,
+                            "content type header is required for POST request."), t);
+                    return;
+                }else {
+                    String contentType = attr.toString();
+                    request.interpretRequestBytesAs(contentType, bytes);
+                }
+            }
+            int authResult = setRequestUser(request);
+            if (authResult==HttpURLConnection.HTTP_UNAUTHORIZED){
+                sendBackResponse(new Response(HttpURLConnection.HTTP_UNAUTHORIZED,
+                        "auth failed. invalid credentials."),t);
                 return;
             }
-            String contentType = attr.toString();
-            Request request = new Request(t);
-            request.interpretRequestBytesAs(contentType, bytes);
             String requestLog = "received a "+
                     t.getRequestMethod()+
                     " request from "+
@@ -59,7 +72,7 @@ public class HTTPRequestManager implements IHttpRequestManager {
             RequestHandler handler = requestHandlerHashMap.get(request.getRequestCode());
             System.out.println(requestLog+" \n"+request.getRequestCode());
             if (handler == null) {
-                Response response = new Response(200, "not found.");
+                Response response = new Response(404, "not found.");
                 sendBackResponse(response, t);
                 return;
             }
@@ -81,6 +94,36 @@ public class HTTPRequestManager implements IHttpRequestManager {
         os.write(responseBytes);
         os.flush();
         os.close();
+    }
+
+
+    private int setRequestUser(Request request) throws IOException {
+        System.out.println(request.getHeaders().keySet());
+        String objectIdHeader = request.getHeaders().get("X-auth-id");
+        String passwordHeader = request.getHeaders().get("X-auth-pass");
+        System.out.println("auth info: " + objectIdHeader + " : " + passwordHeader);
+        if (objectIdHeader==null && passwordHeader==null)return 0; //if both are null, it is ok.
+        if (objectIdHeader==null || passwordHeader==null)return HttpURLConnection.HTTP_UNAUTHORIZED;
+        //if either id or password is null, it is not ok.
+
+        long id = Long.parseLong(objectIdHeader);
+        User user = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<User>() {
+            @Override
+            public boolean test(User object) {
+                return object.getObjectId()==id;
+            }
+
+            @Override
+            public int compare(User o1, User o2) {
+                return 0;
+            }
+        });
+        if (!Objects.equals(user.getPassword(), passwordHeader)){
+            return HttpURLConnection.HTTP_UNAUTHORIZED;
+        }
+        request.setUser(user);
+        System.out.println("request authorized as " + user.getUsername());
+        return 200;
     }
 
 }

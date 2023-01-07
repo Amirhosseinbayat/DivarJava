@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 /**
  * Will create a new user.
  */
+@SuppressWarnings("DuplicatedCode")
 public class SignUpHandler implements RequestHandler {
 
     UsernameValidator usernameValidator = new UsernameValidator();
@@ -21,7 +22,7 @@ public class SignUpHandler implements RequestHandler {
     @Override
     public Response handle(Request request) throws IOException {
         User user = request.getRequestBody();
-        String nameResult = usernameValidator.validateUserName(user.getName());
+        String nameResult = usernameValidator.validateUserName(user.getUsername());
         if (nameResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, nameResult);
         String passwordResult = passwordValidator.validatePassword(user.getPassword());
         if (passwordResult != null) return new Response(601, passwordResult);

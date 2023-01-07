@@ -15,7 +15,8 @@ public class LoginHandler implements RequestHandler {
         User databaseUser = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<User>() {
             @Override
             public boolean test(User object) {
-                return object.getName().equals(user.getName());
+                if (object.getUsername()==null)return false;
+                return object.getUsername().equals(user.getUsername());
             }
 
             @Override

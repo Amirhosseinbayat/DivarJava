@@ -2,7 +2,6 @@ package org.finalproject.client.UserInterface;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
-import org.finalproject.client.Http.HttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
@@ -26,8 +25,9 @@ public class SignUpProcessor extends InputProcessor {
         userName = scanner.nextLine();
         System.out.println("checking if "+userName+" is not already taken...");
         try {
-            new HttpRequestManager().sendRequest(new Request("POST", "username/check")
-                    .setBody(userName));
+            ClientConfiguration.getInstance().getRequestManager()
+                    .sendRequest(new Request("POST", "username/check")
+                            .setBody(userName));
             System.out.println(userName+" looks ok. \n"+ANSI_BLUE+"Now lets create a strong password. "+
                     "enter a password with at least 8 characters."+ANSI_RESET);
             processPassword();

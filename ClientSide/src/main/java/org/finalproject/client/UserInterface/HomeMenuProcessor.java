@@ -14,8 +14,8 @@ public class HomeMenuProcessor extends InputProcessor {
     @Override
     void printGuideMessage() {
         User user = ClientConfiguration.getInstance().getUser();
-        System.out.println("Hi "+user.getName()+"! Welcome to your home screen!");
-        System.out.println(ANSI_YELLOW+"TODO: implement this menu!");
+        System.out.println("Hi "+user.getUsername()+"! Welcome to your home screen!");
+        System.out.println("1. my profile");
     }
 
     @Override

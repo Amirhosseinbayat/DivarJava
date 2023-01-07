@@ -12,7 +12,7 @@ public class UsernameValidator implements BusinessLogic {
         User user = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<User>() {
             @Override
             public boolean test(User object) {
-                return (object.getName().equals(username));
+                return (username.equals(object.getUsername()));
             }
 
             @Override

@@ -1,5 +1,6 @@
 package org.finalproject.server.Http;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.finalproject.DataObject.DataObject;
 import org.finalproject.DataObject.User;
@@ -9,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +20,7 @@ public class Request {
     String httpMethod;
     String path;
     String clientIpAddress;
-    Map<String, Object> headers;
+    Map<String, String> headers;
     User user;
     Object requestBody;
 
@@ -30,6 +32,12 @@ public class Request {
     public Request(HttpExchange httpExchange) {
         this.httpMethod = httpExchange.getRequestMethod();
         this.path = httpExchange.getRequestURI().getPath();
+        this.setHeaders(new HashMap<>());
+        Headers headers1 = httpExchange.getRequestHeaders();
+        for (String header : headers1.keySet()){
+            String value = headers1.getFirst(header);
+            this.getHeaders().put(header,value);
+        }
     }
 
     public String getHttpMethod() {
@@ -68,11 +76,11 @@ public class Request {
         this.clientIpAddress = clientIpAddress;
     }
 
-    public Map<String, Object> getHeaders() {
+    public Map<String, String> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(Map<String, Object> headers) {
+    public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
 

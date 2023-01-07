@@ -3,6 +3,7 @@ package org.finalproject.server.Http;
 import org.finalproject.DataObject.DataObject;
 import org.finalproject.server.ServerConfiguration;
 
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -27,8 +28,7 @@ public class Response {
         if (response instanceof List) {
             List<?> list = (List<?>) response;
             contentType = "list/java";
-            //todo convert list to bytes.
-            responseBytes = new byte[]{};
+            responseBytes = DataObject.toByteArray((Serializable) list);
         }
     }
 
