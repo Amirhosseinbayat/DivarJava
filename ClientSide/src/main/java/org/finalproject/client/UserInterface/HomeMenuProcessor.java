@@ -20,6 +20,13 @@ public class HomeMenuProcessor extends InputProcessor {
 
     @Override
     void processInput() {
-
+        String input = scanner.nextLine();
+        switch (input) {
+            case "1":
+                new ProfileScreenProcessor(scanner).guide().process();
+                return;
+            default:
+                restartWithError(input+" is not a meaningful command in this context.");
+        }
     }
 }

@@ -37,6 +37,7 @@ public class ServerMain {
             manager.assignHandler(new SignUpHandler());
             manager.assignHandler(new UserNameHandler());
             manager.assignHandler(new LoginHandler());
+            manager.assignHandler(new UserUpdateHandler());
             HttpServer server =
                     HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
             server.createContext("/", manager);
