@@ -16,7 +16,7 @@ public class ServerConfiguration {
     IDataBase dataBase;
 
     private ServerConfiguration() {
-        createTestDatabase();
+        createProductionDataBase();
     }
 
     private void createProductionDataBase() {
@@ -25,10 +25,12 @@ public class ServerConfiguration {
             File databaseFolder = new File(projectPath, "database");
             if (!databaseFolder.exists()) {
                 System.out.println("creating database files in "+databaseFolder.getAbsolutePath());
-                databaseFolder.mkdirs();
+                boolean createdDirs = databaseFolder.mkdirs();
+                if (!createdDirs) throw new RuntimeException("unable to create database folder at "
+                        +databaseFolder.getAbsolutePath());
             }
             File file = new File(databaseFolder, "PrimaryDataBase"+".divar");
-            dataBase = new DataBase(file);
+            setDataBase(new DataBase(file));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -39,7 +41,7 @@ public class ServerConfiguration {
     }
 
     public void createTestDatabase() {
-        dataBase = new SimpleRAMDatabase();
+        setDataBase(new SimpleRAMDatabase());
     }
 
     public IDataBase getDataBase() {

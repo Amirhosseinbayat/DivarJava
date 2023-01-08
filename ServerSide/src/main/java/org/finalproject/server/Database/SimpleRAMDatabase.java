@@ -10,6 +10,7 @@ import java.util.List;
  * This is a simple database not meant to be used in production.
  * It is used to test methods without having to wait for disk calls.
  */
+@SuppressWarnings("unchecked")
 public class SimpleRAMDatabase implements IDataBase {
     List<DataObject> dataObjects = new ArrayList<>();
 
@@ -65,5 +66,11 @@ public class SimpleRAMDatabase implements IDataBase {
             if (dataObject.getObjectId() == objectId) return (V) dataObject;
         }
         return null;
+    }
+
+    @Override
+    public void close() {
+        dataObjects.clear();
+        dataObjects = null;
     }
 }

@@ -72,7 +72,11 @@ public class DataBase implements IDataBase {
     }
 
     public void close() throws IOException {
+        reentrantLock.lock(); //waits for any ongoing read/write to be completed.
         randomAccessFile.close();
+        //reentrantLock.unlock();
+        // as we have closed the database,
+        //we will not release the lock to prevent any new operation and avoid crash due to exception.
     }
 
     public void save(DataObject dataObject) throws IOException {

@@ -8,11 +8,12 @@ import org.finalproject.server.Http.RequestHandlers.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
+import java.util.Scanner;
 import java.util.concurrent.Executors;
 
 public class ServerMain {
     static ServerConfiguration serverConfiguration = ServerConfiguration.getInstance();
-
+    static HttpServer server;
     public static void main(String[] args) {
         for (int x = 0; x<=args.length-1; x++) {
             String key = args[x];
@@ -38,15 +39,33 @@ public class ServerMain {
             manager.assignHandler(new UserNameHandler());
             manager.assignHandler(new LoginHandler());
             manager.assignHandler(new UserUpdateHandler());
-            HttpServer server =
-                    HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
+            server = HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
             server.createContext("/", manager);
             server.setExecutor(Executors.newFixedThreadPool(10));
             server.start();
             System.out.println("server is listening on "+server.getAddress().toString());
         } catch (IOException e) {
             System.out.println("failed to start the server: "+e.getMessage());
+            return;
         }
+
+        //called on ctrl+c or exit command. gracefully closes the database avoiding unfinished writes and corrupt data.
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                server.stop(0);
+                System.out.println("received shut down signal. gracefully terminating database process...");
+                serverConfiguration.getDataBase().close();
+                System.out.println("process terminated successfully. server is offline.");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }, "Shutdown-thread"));
+
+        Scanner scanner = new Scanner(System.in);
+        while (!scanner.nextLine().equals("exit")) {
+            System.out.println("unrecognized command. type 'exit' to close the server process...");
+        }
+        System.exit(0);
     }
 
     public static boolean processCLIArgs(int index, String key, String value) {

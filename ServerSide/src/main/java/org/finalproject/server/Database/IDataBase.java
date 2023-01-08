@@ -28,4 +28,5 @@ public interface IDataBase {
 
     <V extends DataObject> V getObjectWithId(long objectId) throws IOException;
 
+    void close() throws IOException;
 }
