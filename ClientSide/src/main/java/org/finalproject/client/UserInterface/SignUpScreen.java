@@ -8,10 +8,10 @@ import org.finalproject.client.Http.Response;
 
 import java.util.Scanner;
 
-public class SignUpProcessor extends InputProcessor {
+public class SignUpScreen extends UIScreen {
     String userName;
 
-    public SignUpProcessor(Scanner scanner) {
+    public SignUpScreen(Scanner scanner) {
         super(scanner);
     }
 
@@ -32,7 +32,7 @@ public class SignUpProcessor extends InputProcessor {
                     "enter a password with at least 8 characters."+ANSI_RESET);
             processPassword();
         } catch (RequestException e) {
-            restartWithError(userName+" has a problem!\n "+e.getMessage());
+            restartWithError(e.getMessage()+ANSI_RESET+"\nplease try again.");
         }
 
     }
@@ -45,7 +45,7 @@ public class SignUpProcessor extends InputProcessor {
         try {
             ClientConfiguration.getInstance().getRequestManager().sendRequest(request);
             System.out.println("sign up successful! now you can log in to your account.");
-            new LoginProcessor(scanner).guide().process();
+            new LoginScreen(scanner).guide().process();
         } catch (RequestException e) {
             if (e.getCode() == Response.ERR_WEAK_PASSWORD) {
                 System.out.println("you have entered an invalid password: "+e.getMessage());

@@ -4,7 +4,7 @@ import org.finalproject.client.Http.HttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
-import org.finalproject.client.UserInterface.MainMenuProcessor;
+import org.finalproject.client.UserInterface.AuthMenuScreen;
 
 import java.nio.charset.Charset;
 import java.util.Scanner;
@@ -27,7 +27,7 @@ public class ClientMain {
         }
         System.out.println("welcome to the cli client!");
         if (args.length != 0 && args[0].equals("--expert")) expertMode();
-        else new MainMenuProcessor(new Scanner(System.in)).guide().process();
+        else new AuthMenuScreen(new Scanner(System.in)).guide().process();
     }
 
     static void expertMode() {

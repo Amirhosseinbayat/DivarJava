@@ -8,13 +8,13 @@ import org.finalproject.client.Http.Response;
 
 import java.util.Scanner;
 
-public class LoginProcessor extends InputProcessor {
+public class LoginScreen extends UIScreen {
 
 
     String username;
     String password;
 
-    public LoginProcessor(Scanner scanner) {
+    public LoginScreen(Scanner scanner) {
         super(scanner);
     }
 
@@ -29,11 +29,11 @@ public class LoginProcessor extends InputProcessor {
     void processInput() {
         String line = scanner.nextLine();
         if (line.equals("5")) {
-            new SignUpProcessor(scanner).guide().process();
+            new SignUpScreen(scanner).guide().process();
             return;
         }
         if (line.equals("1")) {
-            new MainMenuProcessor(scanner).guide().process();
+            new AuthMenuScreen(scanner).guide().process();
             return;
         }
         username = line;
@@ -46,7 +46,7 @@ public class LoginProcessor extends InputProcessor {
                     .sendRequest(request);
             System.out.println("\nLogin successful! : "+response.getResponseBody().toString());
             ClientConfiguration.getInstance().setUser(response.getResponseBody());
-            new HomeMenuProcessor(scanner).guide().process();
+            new HomeMenuScreen(scanner).guide().process();
         } catch (RequestException e) {
             if (e.getCode() == Response.ERR_INVALID_CREDENTIALS) {
                 System.out.println("Invalid username/password. try again!\n"

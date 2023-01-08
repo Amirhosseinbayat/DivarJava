@@ -28,6 +28,7 @@ public class Request {
     }
 
     public Request setBody(Object body) {
+        if (this.httpMethod.equals("GET")) throw new RuntimeException("GET request cannot have a body.");
         this.body = body;
         return this;
     }

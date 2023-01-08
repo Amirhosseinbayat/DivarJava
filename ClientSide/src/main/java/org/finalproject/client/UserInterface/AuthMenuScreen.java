@@ -2,8 +2,8 @@ package org.finalproject.client.UserInterface;
 
 import java.util.Scanner;
 
-public class MainMenuProcessor extends InputProcessor {
-    public MainMenuProcessor(Scanner scanner) {
+public class AuthMenuScreen extends UIScreen {
+    public AuthMenuScreen(Scanner scanner) {
         super(scanner);
     }
 
@@ -20,10 +20,10 @@ public class MainMenuProcessor extends InputProcessor {
         String line = scanner.nextLine();
         switch (line) {
             case "1":
-                new SignUpProcessor(scanner).guide().process();
+                new SignUpScreen(scanner).guide().process();
                 break;
             case "2":
-                new LoginProcessor(scanner).guide().process();
+                new LoginScreen(scanner).guide().process();
                 break;
             case "3":
                 System.out.println("good bye!");

@@ -2,6 +2,7 @@ package org.finalproject.client.Http;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
+import org.finalproject.client.UserInterface.UIScreen;
 import sun.net.www.protocol.http.HttpURLConnection;
 
 import java.io.ByteArrayOutputStream;
@@ -23,7 +24,6 @@ public class HttpRequestManager implements IHttpRequestManager {
         if (request.isGET()) return GET(urlString, request.getHeaders());
         if (request.isPOST()) {
             request.addHeader("Content-Type", request.getContentType());
-            System.out.println("body:"+request.getBody().toString());
             return POST(urlString, request.getBodyBytes(), request.getHeaders());
         }
         throw new RuntimeException("unsupported http method");
@@ -61,7 +61,6 @@ public class HttpRequestManager implements IHttpRequestManager {
                 for (String key : headers.keySet()) {
                     String value = headers.get(key).toString();
                     connection.setRequestProperty(key, value);
-                    System.out.println("\n"+key+" : "+connection.getRequestProperty(key));
                 }
             }
             OutputStream outputStream = connection.getOutputStream();
@@ -71,7 +70,8 @@ public class HttpRequestManager implements IHttpRequestManager {
             connection.connect();
             return getResponse(connection);
         } catch (IOException | ClassNotFoundException e) {
-            throw new RequestException(999, e.getMessage());
+            System.out.print(UIScreen.ANSI_RED+" --- request failed!"+UIScreen.ANSI_RESET+"\n");
+            throw new RequestException(999, "error: "+e.getMessage());
         }
     }
 

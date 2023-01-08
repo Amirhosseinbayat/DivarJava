@@ -9,17 +9,18 @@ import org.finalproject.client.Http.Response;
 
 import java.util.Scanner;
 
-public class ProfileScreenProcessor extends InputProcessor{
+public class ProfileScreen extends UIScreen {
 
     User user;
-    public ProfileScreenProcessor(Scanner scanner) {
+
+    public ProfileScreen(Scanner scanner) {
         super(scanner);
         user = ClientConfiguration.getInstance().getUser();
     }
 
     @Override
     void printGuideMessage() {
-        System.out.println("Your profile info is listed below. send the number of any item to edit it.");
+        System.out.println("Your profile info is listed below:");
         assert user!=null;
         System.out.println(ANSI_BLUE + "1. username: " + ANSI_RESET + user.getUsername());
         System.out.println(ANSI_BLUE + "2. first name: " + ANSI_RESET + user.getFirstName());
@@ -27,50 +28,71 @@ public class ProfileScreenProcessor extends InputProcessor{
         System.out.println(ANSI_BLUE + "4. email: " + ANSI_RESET + user.getEmailAddress());
         System.out.println(ANSI_BLUE + "5. phone: " + ANSI_RESET + user.getPhoneNumber());
         System.out.println(ANSI_BLUE + "6. city: " + ANSI_RESET + user.getCity());
-        System.out.println(ANSI_BLUE + "7. profile picture: " + ANSI_RESET + user.getProfilePictureUrl());
+        System.out.println(ANSI_BLUE+"7. profile picture: "+ANSI_RESET+user.getProfilePictureUrl());
+        System.out.println("enter the number of any item to edit it, or enter 'back' to go back!");
     }
 
     @Override
     void processInput() {
-        String number = scanner.nextLine();
-        switch (number){
-            case "1":processUsernameChange();break;
-            case "2":processFirstNameChange();break;
-            case "3":processLastNameChange();break;
-            case "4":processEmailChange();break;
-            case "5":processPhoneChange();break;
-            case "6":processCityChange();break;
-            case "7":processProfilePicChange();break;
-
+        String input = scanner.nextLine();
+        switch (input) {
+            case "1":
+                processUsernameChange();
+                break;
+            case "2":
+                processFirstNameChange();
+                break;
+            case "3":
+                processLastNameChange();
+                break;
+            case "4":
+                processEmailChange();
+                break;
+            case "5":
+                processPhoneChange();
+                break;
+            case "6":
+                processCityChange();
+                break;
+            case "7":
+                processProfilePicChange();
+                break;
+            case "back":
+                new HomeMenuScreen(scanner).guide().process();
+                return;
         }
     }
 
-    String getInputBy(String guide){
+    String getInputBy(String guide) {
         System.out.println(guide);
         return scanner.nextLine();
     }
 
-    boolean trySaveUserObject() {
+    void trySaveUserObject() {
+        trySaveUserObject(ANSI_GREEN+"Update successful!"+ANSI_RESET);
+    }
+
+    void trySaveUserObject(String message) {
         IHttpRequestManager manager = ClientConfiguration.getInstance().getRequestManager();
         try {
             Response response =
-                    manager.sendRequest(new Request("POST","user/update").setBody(user));
+                    manager.sendRequest(new Request("POST", "user/update").setBody(user));
             user = response.getResponseBody();
             ClientConfiguration.getInstance().setUser(user);
-            System.out.println(ANSI_GREEN + "Update successful!"+ANSI_RESET);
-            guide();
-            processInput();
-            return true;
         } catch (RequestException e) {
-            System.out.println(ANSI_RED +"Could not update profile: " + e.getMessage()
-                    + ANSI_RESET);
-            return false;
+            System.out.println(ANSI_RED+"Could not update profile: "+e.getMessage()
+                    +ANSI_RESET);
+            return;
         }
+        System.out.println(message);
+        guide();
+        processInput();
     }
-    void processUsernameChange(){
+    void processUsernameChange() {
         String newUsername = getInputBy("OK! enter the username which you want to have.");
         user.setUsername(newUsername);
-        trySaveUserObject();
+        trySaveUserObject(ANSI_GREEN+"update successful.\n"+
+                "REMEMBER to login as '"+newUsername+"' next time."+ANSI_RESET);
     }
 
     void processFirstNameChange(){
