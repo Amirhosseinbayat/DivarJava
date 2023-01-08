@@ -9,28 +9,24 @@ public class AuthMenuScreen extends UIScreen {
 
     @Override
     void printGuideMessage() {
-        System.out.println("Main Menu: enter number to select:"+
-                "\n 1. Sign up"+
-                "\n 2. Log in"+
-                "\n 3. Exit");
+        System.out.println("""
+                Main Menu: enter number to select:
+                 1. Sign up
+                 2. Log in
+                 3. Exit""");
     }
 
     @Override
     void processInput() {
         String line = scanner.nextLine();
         switch (line) {
-            case "1":
-                new SignUpScreen(scanner).guide().process();
-                break;
-            case "2":
-                new LoginScreen(scanner).guide().process();
-                break;
-            case "3":
+            case "1" -> new SignUpScreen(scanner).guide().process();
+            case "2" -> new LoginScreen(scanner).guide().process();
+            case "3" -> {
                 System.out.println("good bye!");
                 System.exit(0);
-                break;
-            default:
-                this.restartWithError(line+" is not a meaningful command in this context.");
+            }
+            default -> this.restartWithError(line+" is not a meaningful command in this context.");
         }
     }
 }

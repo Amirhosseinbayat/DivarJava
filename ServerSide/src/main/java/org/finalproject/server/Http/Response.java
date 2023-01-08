@@ -8,9 +8,9 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 public class Response {
-    int statusCode;
+    final int statusCode;
     String contentType;
-    Object response;
+    final Object response;
     byte[] responseBytes;
 
     public Response(int statusCode, Object response) {
@@ -25,8 +25,7 @@ public class Response {
             contentType = "object/java";
             responseBytes = ((DataObject) response).toByteArray();
         }
-        if (response instanceof List) {
-            List<?> list = (List<?>) response;
+        if (response instanceof List<?> list) {
             contentType = "list/java";
             responseBytes = DataObject.toByteArray((Serializable) list);
         }

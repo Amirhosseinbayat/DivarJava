@@ -27,23 +27,23 @@ public class HomeMenuScreen extends UIScreen {
     void processInput() {
         String input = scanner.nextLine();
         switch (input) {
-            case "1":
+            case "1" -> {
                 new ProfileScreen(scanner).guide().process();
                 return;
-            case "2":
+            }
+            case "2" -> {
                 new PlacardsScreen(scanner).guide().process();
                 return;
-            case "3":
-            case "4":
-            case "5":
+            }
+            case "3", "4", "5" -> {
                 System.out.println(ANSI_YELLOW+"not implemented yet..."+ANSI_RESET);
                 processInput();
-                break;
-            case "exit":
+            }
+            case "exit" -> {
                 System.out.println("bye!");
                 System.exit(0);
-            default:
-                restartWithError(input+" is not a meaningful command in this context.");
+            }
+            default -> restartWithError(input+" is not a meaningful command in this context.");
         }
     }
 }

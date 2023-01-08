@@ -18,7 +18,7 @@ public class User extends DataObject {
     String profilePictureUrl = "";
     String city = "";
     String address = "";
-    HashSet<Long> likedPlacards = new HashSet<>();
+    final HashSet<Long> likedPlacards = new HashSet<>();
 
     public String getFirstName() {
         return firstName;

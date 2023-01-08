@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 
 public class ServerMain {
-    static ServerConfiguration serverConfiguration = ServerConfiguration.getInstance();
+    static final ServerConfiguration serverConfiguration = ServerConfiguration.getInstance();
     static HttpServer server;
     public static void main(String[] args) {
         for (int x = 0; x<=args.length-1; x++) {
@@ -95,10 +95,11 @@ public class ServerMain {
 
     public static void printHelpMessage() {
         System.out.println(
-                "Server process for Divar software."+
-                        "\n  usage: [options] "+
-                        "\n--help , -h               shows this message. interpreted only if it is the first arg"+
-                        "\n -port=number             specify port number to listen on [default: 12435]"
+                """
+                        Server process for Divar software.
+                          usage: [options]\s
+                        --help , -h               shows this message. interpreted only if it is the first arg
+                         -port=number             specify port number to listen on [default: 12435]"""
         );
     }
 }

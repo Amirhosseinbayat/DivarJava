@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PrintDataBaseMain {
     public static void main(String[] args) throws IOException {
-        QueryConstraints<DataObject> queryConstraints = new QueryConstraints<DataObject>() {
+        QueryConstraints<DataObject> queryConstraints = new QueryConstraints<>() {
             @Override
             public boolean test(DataObject object) {
                 return true;
@@ -26,9 +26,6 @@ public class PrintDataBaseMain {
         long took = System.currentTimeMillis()-before;
         System.out.println("there are "+dataObjectList.size()+" objects in database. took "+took
                 +"ms");
-        if (false) for (DataObject dataObject : dataObjectList) {
-            System.out.println(dataObject.toString()+" "+dataObject.getObjectId());
-        }
         long bef = System.currentTimeMillis();
         DataObject objectWithId =
                 ServerConfiguration.getInstance()

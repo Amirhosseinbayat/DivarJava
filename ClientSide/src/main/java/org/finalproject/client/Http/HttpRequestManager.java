@@ -3,12 +3,12 @@ package org.finalproject.client.Http;
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
 import org.finalproject.client.UserInterface.UIScreen;
-import sun.net.www.protocol.http.HttpURLConnection;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
@@ -33,8 +33,7 @@ public class HttpRequestManager implements IHttpRequestManager {
     private Response GET(String urlString, Map<String, Object> headers) throws RequestException {
         System.out.println("sending a GET request to "+urlString);
         try {
-            HttpURLConnection connection = new HttpURLConnection(
-                    new URL(urlString), null);
+            HttpURLConnection connection = (HttpURLConnection) new URL(urlString).openConnection();
             if (headers != null) {
                 for (String key : headers.keySet()) {
                     connection.setRequestProperty(key, headers.get(key).toString());
@@ -52,8 +51,7 @@ public class HttpRequestManager implements IHttpRequestManager {
     private Response POST(String urlString, byte[] body, Map<String, Object> headers) throws RequestException {
         System.out.print("sending a POST request to "+urlString);
         try {
-            HttpURLConnection connection = new HttpURLConnection(
-                    new URL(urlString), null);
+            HttpURLConnection connection = (HttpURLConnection) new URL(urlString).openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
             connection.setDoInput(true);

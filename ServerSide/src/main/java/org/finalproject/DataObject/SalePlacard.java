@@ -12,7 +12,7 @@ public class SalePlacard extends DataObject {
     long userId;
     long price;
 
-    Set<String> imageUrlSet = new HashSet<>();
+    final Set<String> imageUrlSet = new HashSet<>();
 
     public String getTitle() {
         return title;

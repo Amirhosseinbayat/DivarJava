@@ -12,8 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class DataBase implements IDataBase {
 
-    ReentrantLock reentrantLock = new ReentrantLock();
-    File file;
+    final ReentrantLock reentrantLock = new ReentrantLock();
+    final File file;
     RandomAccessFile randomAccessFile;
 
 

@@ -47,11 +47,11 @@ public class Request {
     }
 
     public byte[] getBodyBytes() {
-        if (body instanceof String) {
-            return ((String) body).getBytes(ClientConfiguration.getInstance().getCharset());
+        if (body instanceof String s) {
+            return s.getBytes(ClientConfiguration.getInstance().getCharset());
         }
-        if (body instanceof DataObject) {
-            return ((DataObject) body).toByteArray();
+        if (body instanceof DataObject d) {
+            return d.toByteArray();
         }
         if (body instanceof List) {
             return DataObject.toByteArray((Serializable) body);

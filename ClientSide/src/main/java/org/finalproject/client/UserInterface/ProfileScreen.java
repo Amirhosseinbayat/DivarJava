@@ -36,30 +36,16 @@ public class ProfileScreen extends UIScreen {
     void processInput() {
         String input = scanner.nextLine();
         switch (input) {
-            case "1":
-                processUsernameChange();
-                break;
-            case "2":
-                processFirstNameChange();
-                break;
-            case "3":
-                processLastNameChange();
-                break;
-            case "4":
-                processEmailChange();
-                break;
-            case "5":
-                processPhoneChange();
-                break;
-            case "6":
-                processCityChange();
-                break;
-            case "7":
-                processProfilePicChange();
-                break;
-            case "back":
+            case "1" -> processUsernameChange();
+            case "2" -> processFirstNameChange();
+            case "3" -> processLastNameChange();
+            case "4" -> processEmailChange();
+            case "5" -> processPhoneChange();
+            case "6" -> processCityChange();
+            case "7" -> processProfilePicChange();
+            case "back" -> {
                 new HomeMenuScreen(scanner).guide().process();
-                return;
+            }
         }
     }
 

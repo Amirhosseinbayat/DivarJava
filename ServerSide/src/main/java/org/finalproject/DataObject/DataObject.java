@@ -67,8 +67,7 @@ public class DataObject implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof DataObject)) return false;
-        DataObject that = (DataObject) o;
+        if (!(o instanceof DataObject that)) return false;
         return getObjectId() == that.getObjectId();
     }
 

@@ -12,8 +12,8 @@ import java.net.HttpURLConnection;
 import java.util.Objects;
 
 public class UserUpdateHandler implements RequestHandler {
-    UsernameValidator usernameValidator = new UsernameValidator();
-    PasswordValidator passwordValidator = new PasswordValidator();
+    final UsernameValidator usernameValidator = new UsernameValidator();
+    final PasswordValidator passwordValidator = new PasswordValidator();
 
     @Override
     public Response handle(Request request) throws Exception {
@@ -22,7 +22,7 @@ public class UserUpdateHandler implements RequestHandler {
             return new Response(HttpURLConnection.HTTP_UNAUTHORIZED, "access denied.");
         }
         User databaseUser = ServerConfiguration.getInstance()
-                .getDataBase().findOne(new QueryConstraints<User>() {
+                .getDataBase().findOne(new QueryConstraints<>() {
                     @Override
                     public boolean test(User object) {
                         return object.getObjectId() == user.getObjectId();

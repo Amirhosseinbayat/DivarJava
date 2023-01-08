@@ -20,7 +20,7 @@ import java.util.Objects;
 public class HTTPRequestManager implements IHttpRequestManager {
 
 
-    HashMap<String, RequestHandler> requestHandlerHashMap = new HashMap<>();
+    final HashMap<String, RequestHandler> requestHandlerHashMap = new HashMap<>();
 
     public HTTPRequestManager() {
 
@@ -32,7 +32,6 @@ public class HTTPRequestManager implements IHttpRequestManager {
 
     @Override
     public void handle(HttpExchange t) throws IOException {
-        System.out.println("handle request...");
         try {
             InputStream stream = t.getRequestBody();
             byte[] bytes = new byte[stream.available()];
@@ -107,10 +106,10 @@ public class HTTPRequestManager implements IHttpRequestManager {
         //if either id or password is null, it is not ok.
 
         long id = Long.parseLong(objectIdHeader);
-        User user = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<User>() {
+        User user = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<>() {
             @Override
             public boolean test(User object) {
-                return object.getObjectId()==id;
+                return object.getObjectId() == id;
             }
 
             @Override

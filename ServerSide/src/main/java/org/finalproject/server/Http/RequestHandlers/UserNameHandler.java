@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
  * will be used in sign up process when the user is choosing his/her username.
  */
 public class UserNameHandler implements RequestHandler {
-    UsernameValidator validator = new UsernameValidator();
+    final UsernameValidator validator = new UsernameValidator();
 
     @Override
     public Response handle(Request request) throws Exception {

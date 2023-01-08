@@ -17,8 +17,8 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class Request {
 
-    String httpMethod;
-    String path;
+    final String httpMethod;
+    final String path;
     String clientIpAddress;
     Map<String, String> headers;
     User user;

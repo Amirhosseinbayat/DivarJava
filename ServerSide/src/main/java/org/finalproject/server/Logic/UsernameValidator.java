@@ -9,7 +9,7 @@ import java.io.IOException;
 public class UsernameValidator implements BusinessLogic {
 
     public String validateUserName(String username) throws IOException {
-        User user = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<User>() {
+        User user = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<>() {
             @Override
             public boolean test(User object) {
                 return (username.equals(object.getUsername()));

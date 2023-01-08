@@ -13,7 +13,7 @@ public class GetAllRecordsHandler implements RequestHandler {
     @Override
     public Response handle(Request request) throws Exception {
         IDataBase dataBase = ServerConfiguration.getInstance().getDataBase();
-        List<SalePlacard> salePlacardList = dataBase.findAll(new QueryConstraints<SalePlacard>() {
+        List<SalePlacard> salePlacardList = dataBase.findAll(new QueryConstraints<>() {
             @Override
             public boolean test(SalePlacard object) {
                 return true;

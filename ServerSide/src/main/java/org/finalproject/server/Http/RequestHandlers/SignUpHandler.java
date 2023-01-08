@@ -13,11 +13,10 @@ import java.net.HttpURLConnection;
 /**
  * Will create a new user.
  */
-@SuppressWarnings("DuplicatedCode")
 public class SignUpHandler implements RequestHandler {
 
-    UsernameValidator usernameValidator = new UsernameValidator();
-    PasswordValidator passwordValidator = new PasswordValidator();
+    final UsernameValidator usernameValidator = new UsernameValidator();
+    final PasswordValidator passwordValidator = new PasswordValidator();
 
     @Override
     public Response handle(Request request) throws IOException {

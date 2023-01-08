@@ -61,7 +61,7 @@ public class SimpleRAMDatabase implements IDataBase {
     }
 
     @Override
-    public <V extends DataObject> V getObjectWithId(long objectId) throws IOException {
+    public <V extends DataObject> V getObjectWithId(long objectId) {
         for (DataObject dataObject : dataObjects) {
             if (dataObject.getObjectId() == objectId) return (V) dataObject;
         }
