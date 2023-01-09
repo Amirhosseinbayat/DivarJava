@@ -37,7 +37,7 @@ public abstract class UIScreen {
     abstract void processInput();
 
     void restartWithError(String description) {
-        UIUtils.danger(description);
+        UIUtils.danger("===================\n" + description + "\n===================");
         numberOfInvalidInputs++;
         processInput();
     }

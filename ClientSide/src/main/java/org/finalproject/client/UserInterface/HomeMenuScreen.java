@@ -31,9 +31,22 @@ public class HomeMenuScreen extends UIScreen {
                 new PlacardsScreen(scanner).guide().process();
                 return;
             }
-            case "3", "4", "5" -> {
-                System.out.println(ANSI_YELLOW+"not implemented yet..."+ANSI_RESET);
-                processInput();
+            case "3" -> {
+                new WishPlacardsScreen(scanner).guide().process();
+                return;
+            }
+            case "4" -> {
+                new CreatePlacardScreen(scanner).guide().process();
+                return;
+            }
+            case "5" -> {
+                new MyPlacardsScreen(scanner).guide().process();
+                return;
+            }
+            case "6" -> {
+                ClientConfiguration.getInstance().logOutUser();
+                new AuthMenuScreen(scanner).guide().process();
+                return;
             }
             case "7" -> {
                 UIUtils.primary("Good bye!");

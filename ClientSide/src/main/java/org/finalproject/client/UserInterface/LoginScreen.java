@@ -44,7 +44,7 @@ public class LoginScreen extends UIScreen {
         try {
             Response response = ClientConfiguration.getInstance().getRequestManager()
                     .sendRequest(request);
-            UIUtils.successful("Log in successful! press Enter to continue");
+            UIUtils.successful("Log in successful!(press Enter to continue)");
             scanner.nextLine();
             ClientConfiguration.getInstance().setUser(response.getResponseBody());
             new HomeMenuScreen(scanner).guide().process();

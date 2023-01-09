@@ -39,10 +39,15 @@ public class UIUtils {
         System.out.println(Colors.BLUE_BOLD + key + Colors.YELLOW + value + Colors.RESET);
     }
 
-    public static void card(int index, String firstImageUrl, String title, String description, String city, long price, String phoneNumber){
+    public static void hr(){
+        System.out.println(Colors.RED_BOLD + "||||||||||||||||||||||||||||||||||" + Colors.RESET);
+    }
+
+    public static void placardTemplate(int index, String imagesUrl, String title, String description, String city, long price, String phoneNumber){
         System.out.println(Colors.RED_BOLD + "=====================================");
-        form("#: ", Integer.toString(index));
-        form("First image: ", firstImageUrl);
+        if(index != 0)
+            form("#: ", Integer.toString(index));
+        form("Images: ", imagesUrl);
         form("Title: ", title);
         form("Description: ", description);
         form("City: ", city);

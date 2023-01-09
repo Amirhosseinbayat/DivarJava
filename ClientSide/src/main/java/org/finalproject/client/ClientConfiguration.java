@@ -66,4 +66,8 @@ public class ClientConfiguration {
     public void setCharset(Charset charset) {
         this.charset = charset;
     }
+
+    public void logOutUser(){
+        user = null;
+    }
 }
