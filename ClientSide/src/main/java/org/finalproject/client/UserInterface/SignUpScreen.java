@@ -17,19 +17,19 @@ public class SignUpScreen extends UIScreen {
 
     @Override
     void printGuideMessage() {
-        System.out.println("OK! enter a username of your choice for me to check it.");
+        UIUtils.header("Sign Up");
+        UIUtils.primary("Enter a username of your choice: ");
     }
 
     @Override
     void processInput() {
         userName = scanner.nextLine();
-        System.out.println("checking if "+userName+" is not already taken...");
+        UIUtils.secondary("Checking if "+userName+" is not already taken...");
         try {
             ClientConfiguration.getInstance().getRequestManager()
                     .sendRequest(new Request("POST", "username/check")
                             .setBody(userName));
-            System.out.println(userName+" looks ok. \n"+ANSI_BLUE+"Now lets create a strong password. "+
-                    "enter a password with at least 8 characters."+ANSI_RESET);
+            UIUtils.secondary("Now lets create a strong password(at least 8 characters): ");
             processPassword();
         } catch (RequestException e) {
             restartWithError(e.getMessage()+ANSI_RESET+"\nplease try again.");
@@ -44,16 +44,17 @@ public class SignUpScreen extends UIScreen {
         request.setBody(user);
         try {
             ClientConfiguration.getInstance().getRequestManager().sendRequest(request);
-            System.out.println("sign up successful! now you can log in to your account.");
+            UIUtils.successful("Sign up successful! press Enter to continue");
+            scanner.nextLine();
             new LoginScreen(scanner).guide().process();
         } catch (RequestException e) {
             if (e.getCode() == Response.ERR_WEAK_PASSWORD) {
-                System.out.println("you have entered an invalid password: "+e.getMessage());
-                System.out.println("please try a better password...");
+                UIUtils.danger("You have entered an invalid password: "+e.getMessage());
+                UIUtils.warning("Please try a better password...");
                 processPassword();
             }
             if (e.getCode() == Response.ERR_USERNAME_TAKEN) {
-                System.out.println("while you were deciding about your password,"+
+                UIUtils.danger("While you were deciding about your password,"+
                         " someone else has occupied the username you had selected! you will have to start over."
                         +e.getMessage());
                 processInput();

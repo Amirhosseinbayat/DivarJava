@@ -14,13 +14,9 @@ public class HomeMenuScreen extends UIScreen {
     @Override
     void printGuideMessage() {
         User user = ClientConfiguration.getInstance().getUser();
-        System.out.println("Hi "+user.getUsername()+"! Welcome to your home screen!");
-        System.out.println("1. my profile");
-        System.out.println("2. explore placards");
-        System.out.println("3. my wish list");
-        System.out.println("4. create a placard");
-        System.out.println("5. see/edit my placards");
-        System.out.println("send 'exit' to close the program.");
+        UIUtils.header("Home Menu");
+        UIUtils.primary("Hi "+user.getUsername()+"! Welcome to your home screen!");
+        UIUtils.options("My profile", "Explore placards", "My wish list", "Create a placard", "See/edit my placards", "Log out", "Close program");
     }
 
     @Override
@@ -39,8 +35,8 @@ public class HomeMenuScreen extends UIScreen {
                 System.out.println(ANSI_YELLOW+"not implemented yet..."+ANSI_RESET);
                 processInput();
             }
-            case "exit" -> {
-                System.out.println("bye!");
+            case "7" -> {
+                UIUtils.primary("Good bye!");
                 System.exit(0);
             }
             default -> restartWithError(input+" is not a meaningful command in this context.");

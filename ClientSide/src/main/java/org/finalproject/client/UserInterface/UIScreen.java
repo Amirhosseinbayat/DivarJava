@@ -23,6 +23,7 @@ public abstract class UIScreen {
     }
 
     public UIScreen guide() {
+        UIUtils.clearScreen();
         printGuideMessage();
         return this;
     }
@@ -36,7 +37,7 @@ public abstract class UIScreen {
     abstract void processInput();
 
     void restartWithError(String description) {
-        System.out.println(ANSI_RED+description+ANSI_RESET);
+        UIUtils.danger(description);
         numberOfInvalidInputs++;
         processInput();
     }
