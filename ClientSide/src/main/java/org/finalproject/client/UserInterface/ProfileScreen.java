@@ -20,16 +20,16 @@ public class ProfileScreen extends UIScreen {
 
     @Override
     void printGuideMessage() {
-        System.out.println("Your profile info is listed below:");
+        UIUtils.header("Profile Page");
         assert user!=null;
-        System.out.println(ANSI_BLUE + "1. username: " + ANSI_RESET + user.getUsername());
-        System.out.println(ANSI_BLUE + "2. first name: " + ANSI_RESET + user.getFirstName());
-        System.out.println(ANSI_BLUE + "3. last name: " + ANSI_RESET + user.getLastName());
-        System.out.println(ANSI_BLUE + "4. email: " + ANSI_RESET + user.getEmailAddress());
-        System.out.println(ANSI_BLUE + "5. phone: " + ANSI_RESET + user.getPhoneNumber());
-        System.out.println(ANSI_BLUE + "6. city: " + ANSI_RESET + user.getCity());
-        System.out.println(ANSI_BLUE+"7. profile picture: "+ANSI_RESET+user.getProfilePictureUrl());
-        System.out.println("enter the number of any item to edit it, or enter 'back' to go back!");
+        UIUtils.form("1. Username: ", user.getUsername());
+        UIUtils.form("2. First name: ", user.getFirstName());
+        UIUtils.form("3. Last name: ", user.getLastName());
+        UIUtils.form("4. Email: ", user.getEmailAddress());
+        UIUtils.form("5. Phone: ", user.getPhoneNumber());
+        UIUtils.form("6. City: ", user.getCity());
+        UIUtils.form("7. Profile picture: ", user.getProfilePictureUrl());
+        UIUtils.secondary("Enter the number of any item to edit it, or enter 'back' to go back!");
     }
 
     @Override
@@ -50,12 +50,12 @@ public class ProfileScreen extends UIScreen {
     }
 
     String getInputBy(String guide) {
-        System.out.println(guide);
+        UIUtils.secondary(guide);
         return scanner.nextLine();
     }
 
     void trySaveUserObject() {
-        trySaveUserObject(ANSI_GREEN+"Update successful!"+ANSI_RESET);
+        trySaveUserObject("Update successful!");
     }
 
     void trySaveUserObject(String message) {
@@ -66,19 +66,18 @@ public class ProfileScreen extends UIScreen {
             user = response.getResponseBody();
             ClientConfiguration.getInstance().setUser(user);
         } catch (RequestException e) {
-            System.out.println(ANSI_RED+"Could not update profile: "+e.getMessage()
-                    +ANSI_RESET);
+            UIUtils.danger("Could not update profile: "+e.getMessage());
             return;
         }
-        System.out.println(message);
+        UIUtils.successful(message);
         guide();
         processInput();
     }
     void processUsernameChange() {
         String newUsername = getInputBy("OK! enter the username which you want to have.");
         user.setUsername(newUsername);
-        trySaveUserObject(ANSI_GREEN+"update successful.\n"+
-                "REMEMBER to login as '"+newUsername+"' next time."+ANSI_RESET);
+        trySaveUserObject("Update successful.\n"+
+                "Remember to login as '"+newUsername+"' next time.");
     }
 
     void processFirstNameChange(){

@@ -25,7 +25,6 @@ public class ClientMain {
                 if (!continueProcess) return;
             }
         }
-        System.out.println("welcome to the cli client!");
         if (args.length != 0 && args[0].equals("--expert")) expertMode();
         else new AuthMenuScreen(new Scanner(System.in)).guide().process();
     }

@@ -20,37 +20,38 @@ public class LoginScreen extends UIScreen {
 
     @Override
     void printGuideMessage() {
-        System.out.println(ANSI_GREEN+"Login to your account \nEnter your username.\n"
-                +ANSI_BLUE+"Don't have an account?"+
-                " enter 5 to sign up first or send 1 to go back to the main menu."+ANSI_RESET);
-    }
+        UIUtils.header("Log In");
+        UIUtils.options("Create an account", "Back to main menu");
+        UIUtils.primary("Or enter your username: ");
+        }
 
     @Override
     void processInput() {
         String line = scanner.nextLine();
-        if (line.equals("5")) {
+        if (line.equals("1")) {
             new SignUpScreen(scanner).guide().process();
             return;
         }
-        if (line.equals("1")) {
+        if (line.equals("2")) {
             new AuthMenuScreen(scanner).guide().process();
             return;
         }
         username = line;
-        System.out.println("now enter your password.");
+        UIUtils.secondary("Now enter your password: ");
         password = scanner.nextLine();
         Request request = new Request("POST", "login");
         request.setBody(new User(username, password));
         try {
             Response response = ClientConfiguration.getInstance().getRequestManager()
                     .sendRequest(request);
-            System.out.println("\nLogin successful! : "+response.getResponseBody().toString());
+            UIUtils.successful("Log in successful! press Enter to continue");
+            scanner.nextLine();
             ClientConfiguration.getInstance().setUser(response.getResponseBody());
             new HomeMenuScreen(scanner).guide().process();
         } catch (RequestException e) {
             if (e.getCode() == Response.ERR_INVALID_CREDENTIALS) {
-                System.out.println("Invalid username/password. try again!\n"
-                        +ANSI_BLUE+"send 1 to go back to the main menu."+ANSI_RESET);
+                UIUtils.danger("Invalid username/password. try again!\n"
+                        +"send 2 to go back to the main menu.");
                 this.process();
             }
         }

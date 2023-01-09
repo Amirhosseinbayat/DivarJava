@@ -17,25 +17,11 @@ public class PlacardsScreen extends UIScreen {
 
     @Override
     void printGuideMessage() {
-        System.out.println("getting the list of placards...");
+        UIUtils.header("Placards Page");
         List<SalePlacard> placardList = getTestPlacards();
+        int i = 1;
         for (SalePlacard placard : placardList) {
-            String str = "-------------------------------\n";
-            str += "title:  "+ANSI_BLUE+placard.getTitle()+ANSI_RESET+
-                    "\ndescription:  "+
-                    //ANSI_BLUE +
-                    placard.getDescription()
-                            .substring(0, Math.min(placard.getDescription().length(), 60))+"..."+
-                    //ANSI_RESET +
-                    "\ncity: "+
-                    ANSI_GREEN+
-                    placard.getCity()+
-                    ANSI_RESET+
-                    " price:"+
-                    ANSI_GREEN+
-                    placard.getPriceInRials()+"Rials"+
-                    ANSI_RESET;
-            System.out.println(str);
+            UIUtils.card(i++,(String) placard.getImagesUrl().toArray()[0], placard.getTitle(), placard.getDescription().substring(0, Math.min(placard.getDescription().length(), 60)), placard.getCity(), placard.getPriceInRials(), null);
         }
     }
 
@@ -46,6 +32,8 @@ public class PlacardsScreen extends UIScreen {
             placard.setPriceInRials(410000*(x+1));
             placard.setCity("Tehran");
             placard.setDescription("some kind of description is here. purchase this item!!!");
+            placard.setPhoneNumber("+989900229691");
+            placard.addImageUrl("sdlkfjskdfj.jpg");
             placardList.add(placard);
         }
         return placardList;
@@ -63,6 +51,9 @@ public class PlacardsScreen extends UIScreen {
         }
         return new ArrayList<>();
     }
+
+    //TODO Implementation of filter by city, filter by search in
+    // description and sort and filter by price
 
     @Override
     void processInput() {

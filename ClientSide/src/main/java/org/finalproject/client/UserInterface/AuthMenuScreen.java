@@ -9,11 +9,8 @@ public class AuthMenuScreen extends UIScreen {
 
     @Override
     void printGuideMessage() {
-        System.out.println("""
-                Main Menu: enter number to select:
-                 1. Sign up
-                 2. Log in
-                 3. Exit""");
+        UIUtils.header("Main Menu");
+        UIUtils.options("Sign up", "Log in", "Exit");
     }
 
     @Override
@@ -23,7 +20,7 @@ public class AuthMenuScreen extends UIScreen {
             case "1" -> new SignUpScreen(scanner).guide().process();
             case "2" -> new LoginScreen(scanner).guide().process();
             case "3" -> {
-                System.out.println("good bye!");
+                UIUtils.primary("Good bye!");
                 System.exit(0);
             }
             default -> this.restartWithError(line+" is not a meaningful command in this context.");
