@@ -2,7 +2,6 @@ package org.finalproject.server.Http;
 
 import com.sun.net.httpserver.HttpExchange;
 import org.finalproject.DataObject.User;
-import org.finalproject.server.Database.QueryConstraints;
 import org.finalproject.server.Http.RequestHandlers.RequestHandler;
 import org.finalproject.server.ServerConfiguration;
 
@@ -106,17 +105,7 @@ public class HTTPRequestManager implements IHttpRequestManager {
         //if either id or password is null, it is not ok.
 
         long id = Long.parseLong(objectIdHeader);
-        User user = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<>() {
-            @Override
-            public boolean test(User object) {
-                return object.getObjectId() == id;
-            }
-
-            @Override
-            public int compare(User o1, User o2) {
-                return 0;
-            }
-        });
+        User user = ServerConfiguration.getInstance().getDataBase().getObjectWithId(id);
         if (!Objects.equals(user.getPassword(), passwordHeader)){
             return HttpURLConnection.HTTP_UNAUTHORIZED;
         }
