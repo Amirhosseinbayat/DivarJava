@@ -44,7 +44,7 @@ public class SignUpScreen extends UIScreen {
         request.setBody(user);
         try {
             ClientConfiguration.getInstance().getRequestManager().sendRequest(request);
-            UIUtils.successful("Sign up successful! press Enter to continue");
+            UIUtils.successful("Sign up successful!(press Enter to continue)");
             scanner.nextLine();
             new LoginScreen(scanner).guide().process();
         } catch (RequestException e) {

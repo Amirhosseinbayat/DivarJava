@@ -7,10 +7,18 @@ import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class PlacardsScreen extends UIScreen {
+    HashMap<String, String> filter = new HashMap<String, String>() {{
+        put("searchedText", "");
+        put("order", "asc");
+        put("city", "tehran");
+        put("priceMoreThan", "0");
+        put("priceLessThan", Long.toString(Long.MAX_VALUE));
+    }};
     public PlacardsScreen(Scanner scanner) {
         super(scanner);
     }
@@ -21,8 +29,15 @@ public class PlacardsScreen extends UIScreen {
         List<SalePlacard> placardList = getTestPlacards();
         int i = 1;
         for (SalePlacard placard : placardList) {
-            UIUtils.card(i++,(String) placard.getImagesUrl().toArray()[0], placard.getTitle(), placard.getDescription().substring(0, Math.min(placard.getDescription().length(), 60)), placard.getCity(), placard.getPriceInRials(), null);
+            UIUtils.placardTemplate(i++,(String) placard.getImagesUrl().toArray()[0], placard.getTitle(), placard.getDescription().substring(0, Math.min(placard.getDescription().length(), 60)), placard.getCity(), placard.getPriceInRials(), null);
         }
+        UIUtils.hr();
+        UIUtils.form("1. Searched text in descriptions: ", filter.get("searchedText"));
+        UIUtils.form("2. City: ", filter.get("city"));
+        UIUtils.form("3. Order by price: ", filter.get("order"));
+        UIUtils.form("4. Price more than: ", filter.get("priceMoreThan"));
+        UIUtils.form("5. Price less than: ", filter.get("priceLessThan"));
+        UIUtils.hr();
     }
 
     List<SalePlacard> getTestPlacards() {
