@@ -11,9 +11,19 @@ public class SalePlacard extends DataObject {
     private String title;
     private String description = "";
     private long priceInRials;
+
+    long createdBy;
     private String city = "";
     private String address = "";
     private String phoneNumber = "";
+
+    public long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(long createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public SalePlacard(String title) {
         this.title = title;
