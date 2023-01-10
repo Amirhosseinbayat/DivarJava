@@ -1,5 +1,7 @@
 package org.finalproject.client.UserInterface;
 
+import org.finalproject.DataObject.SalePlacard;
+
 public class UIUtils {
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -43,17 +45,25 @@ public class UIUtils {
         System.out.println(ANSICodes.RED_BOLD+"||||||||||||||||||||||||||||||||||"+ANSICodes.RESET);
     }
 
-    public static void placardTemplate(int index, String imagesUrl, String title, String description, String city, long price, String phoneNumber){
+    public static void placardTemplate(int index, SalePlacard placard, Boolean hideDetails){
         System.out.println(ANSICodes.RED_BOLD+"=====================================");
         if(index != 0)
             form("#: ", Integer.toString(index));
-        form("Images: ", imagesUrl);
-        form("Title: ", title);
-        form("Description: ", description);
-        form("City: ", city);
-        form("Price: ", price + " Rials");
-        if(phoneNumber != null){
-            form("Contact: ", phoneNumber);
+        if(hideDetails){
+            form("Images: ", (String) placard.getImagesUrl().toArray()[0]);
+        }else{
+            form("Images: ", placard.getImagesUrl().toString());
+        }
+        form("Title: ", placard.getTitle());
+        if(hideDetails){
+            form("Description: ", placard.getDescription().substring(0, Math.min(placard.getDescription().length(), 60)));
+        }else{
+            form("Description: ", placard.getDescription());
+        }
+        form("City: ", placard.getCity());
+        form("Price: ", placard.getPriceInRials() + " Rials");
+        if(!hideDetails){
+            form("Contact: ", placard.getPhoneNumber());
         }
     }
 }
