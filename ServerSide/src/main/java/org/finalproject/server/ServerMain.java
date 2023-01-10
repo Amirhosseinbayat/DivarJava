@@ -1,6 +1,7 @@
 package org.finalproject.server;
 
 import com.sun.net.httpserver.HttpServer;
+import org.finalproject.server.Database.IDataBase;
 import org.finalproject.server.Http.HTTPRequestManager;
 import org.finalproject.server.Http.IHttpRequestManager;
 import org.finalproject.server.Http.RequestHandlers.*;
@@ -33,12 +34,14 @@ public class ServerMain {
 
         try {
             IHttpRequestManager manager = new HTTPRequestManager();
+            IDataBase dataBase = serverConfiguration.getDataBase();
             manager.assignHandler(new PingHandler());
-            manager.assignHandler(new GetAllRecordsHandler());
-            manager.assignHandler(new SignUpHandler());
-            manager.assignHandler(new UserNameHandler());
-            manager.assignHandler(new LoginHandler());
-            manager.assignHandler(new UserUpdateHandler());
+            manager.assignHandler(new GetAllRecordsHandler(dataBase));
+            manager.assignHandler(new SignUpHandler(dataBase));
+            manager.assignHandler(new UserNameHandler(dataBase));
+            manager.assignHandler(new LoginHandler(dataBase));
+            manager.assignHandler(new UserUpdateHandler(dataBase));
+            manager.assignHandler(new PlacardCreationHandler(dataBase));
             server = HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
             server.createContext("/", manager);
             server.setExecutor(Executors.newFixedThreadPool(10));

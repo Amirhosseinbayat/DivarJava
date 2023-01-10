@@ -18,12 +18,8 @@ public class User extends DataObject {
     String profilePictureUrl = "";
     String city = "";
     String address = "";
-    HashSet<Long> likedPlacards = new HashSet<>();
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+    HashSet<Long> likedPlacards;
+    HashSet<Long> createdPlacards;
 
     public String getFirstName() {
         return firstName;
@@ -86,11 +82,28 @@ public class User extends DataObject {
     }
 
     public void addToLikedPlacards(long objectId) {
-        this.likedPlacards.add(objectId);
+        getLikedPlacards().add(objectId);
     }
 
-    public void removeFromLikedPlacards(long objectId) {
-        this.likedPlacards.remove(objectId);
+    public void removeFromLikedPlacards(long objectId){
+        getLikedPlacards().remove(objectId);
+    }
+
+    public HashSet<Long> getCreatedPlacards() {
+        if (createdPlacards==null)createdPlacards= new HashSet<>();
+        return createdPlacards;
+    }
+
+    public void addToCreatedPlacards(long objectId) {
+        getCreatedPlacards().add(objectId);
+    }
+
+    public void removeFromCreatedPlacards(long objectId){
+        getCreatedPlacards().remove(objectId);
+    }
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {

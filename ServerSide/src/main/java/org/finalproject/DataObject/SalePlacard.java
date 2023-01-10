@@ -1,18 +1,35 @@
 package org.finalproject.DataObject;
 
 import java.util.HashSet;
-import java.util.Set;
 
 public class SalePlacard extends DataObject {
 
-    String title;
-    String description;
-    String category;
-    String city;
-    long userId;
-    long price;
+    //should be increased when serialized versions of older objects can not be deserialized to the new class...
+    static final long serialVersionUID = 1L;
 
-    final Set<String> imageUrlSet = new HashSet<>();
+    private final HashSet<String> imagesUrl = new HashSet<>();
+    private String title;
+    private String description = "";
+    private long priceInRials;
+    private String city = "";
+    private String address = "";
+    private String phoneNumber = "";
+
+    public SalePlacard(String title) {
+        this.title = title;
+    }
+
+    public HashSet<String> getImagesUrl() {
+        return imagesUrl;
+    }
+
+    public void addImageUrl(String imageUrl) {
+        this.imagesUrl.add(imageUrl);
+    }
+
+    public void removeImageUrl(String imageUrl) {
+        this.imagesUrl.remove(imageUrl);
+    }
 
     public String getTitle() {
         return title;
@@ -30,12 +47,13 @@ public class SalePlacard extends DataObject {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
+    public long getPriceInRials() {
+        //TODO: add a method to get formatted price, like 410,000 rials. maybe user should set preference of rial/tooman
+        return priceInRials;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setPriceInRials(long priceInRials) {
+        this.priceInRials = priceInRials;
     }
 
     public String getCity() {
@@ -46,31 +64,20 @@ public class SalePlacard extends DataObject {
         this.city = city;
     }
 
-    public long getUserId() {
-        return userId;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public long getPrice() {
-        return price;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPrice(long price) {
-        this.price = price;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public Set<String> getImageUrlSet() {
-        return imageUrlSet;
-    }
-
-    public void addImageUrl(String imageUrl) {
-        this.imageUrlSet.add(imageUrl);
-    }
-
-    public void removeImageUrl(String imageUrl){
-        this.imageUrlSet.remove(imageUrl);
-    }
 }

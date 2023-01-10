@@ -1,6 +1,7 @@
 package org.finalproject.server.Http.RequestHandlers;
 
 import org.finalproject.DataObject.User;
+import org.finalproject.server.Database.IDataBase;
 import org.finalproject.server.Http.Request;
 import org.finalproject.server.Http.Response;
 import org.finalproject.server.Logic.PasswordValidator;
@@ -15,8 +16,15 @@ import java.net.HttpURLConnection;
  */
 public class SignUpHandler implements RequestHandler {
 
-    final UsernameValidator usernameValidator = new UsernameValidator();
-    final PasswordValidator passwordValidator = new PasswordValidator();
+    final UsernameValidator usernameValidator;
+    final PasswordValidator passwordValidator;
+    IDataBase dataBase; //dependency injection.
+
+    public SignUpHandler(IDataBase dataBase) {
+        this.dataBase = dataBase;
+        usernameValidator = new UsernameValidator(dataBase);
+        passwordValidator = new PasswordValidator();
+    }
 
     @Override
     public Response handle(Request request) throws IOException {

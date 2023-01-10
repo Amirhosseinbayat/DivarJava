@@ -1,5 +1,6 @@
 package org.finalproject.server.Http.RequestHandlers;
 
+import org.finalproject.server.Database.IDataBase;
 import org.finalproject.server.Http.Request;
 import org.finalproject.server.Http.Response;
 import org.finalproject.server.Logic.UsernameValidator;
@@ -11,7 +12,13 @@ import java.net.HttpURLConnection;
  * will be used in sign up process when the user is choosing his/her username.
  */
 public class UserNameHandler implements RequestHandler {
-    final UsernameValidator validator = new UsernameValidator();
+    final UsernameValidator validator;
+    IDataBase dataBase; //dependency injection.
+
+    public UserNameHandler(IDataBase dataBase) {
+        this.dataBase = dataBase;
+        validator = new UsernameValidator(dataBase);
+    }
 
     @Override
     public Response handle(Request request) throws Exception {

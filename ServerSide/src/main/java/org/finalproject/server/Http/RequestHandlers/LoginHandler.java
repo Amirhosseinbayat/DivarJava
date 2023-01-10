@@ -1,18 +1,24 @@
 package org.finalproject.server.Http.RequestHandlers;
 
 import org.finalproject.DataObject.User;
+import org.finalproject.server.Database.IDataBase;
 import org.finalproject.server.Database.QueryConstraints;
 import org.finalproject.server.Http.Request;
 import org.finalproject.server.Http.Response;
-import org.finalproject.server.ServerConfiguration;
 
 import java.net.HttpURLConnection;
 
 public class LoginHandler implements RequestHandler {
+    IDataBase dataBase; //dependency injection.
+
+    public LoginHandler(IDataBase dataBase) {
+        this.dataBase = dataBase;
+    }
+
     @Override
     public Response handle(Request request) throws Exception {
         User user = request.getRequestBody();
-        User databaseUser = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<>() {
+        User databaseUser = dataBase.findOne(new QueryConstraints<>() {
             @Override
             public boolean test(User object) {
                 if (object.getUsername() == null) return false;
