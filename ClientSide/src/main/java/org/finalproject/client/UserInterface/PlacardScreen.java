@@ -15,7 +15,7 @@ public class PlacardScreen extends UIScreen{
     @Override
     void printGuideMessage() {
         UIUtils.header("Placard Details");
-        UIUtils.placardTemplate(0, placard.getImagesUrl().toString(), placard.getTitle(), placard.getDescription(), placard.getCity(), placard.getPriceInRials(), placard.getPhoneNumber());
+        UIUtils.placardTemplate(0, placard);
     }
 
     @Override

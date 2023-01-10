@@ -1,25 +1,36 @@
 package org.finalproject.DataObject;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class SalePlacard extends DataObject {
 
     //should be increased when serialized versions of older objects can not be deserialized to the new class...
     static final long serialVersionUID = 1L;
 
-    private final HashSet<String> imagesUrl = new HashSet<>();
+    private final Set<String> imagesUrl = new LinkedHashSet<>();
     private String title;
     private String description = "";
     private long priceInRials;
+
+    long createdBy;
     private String city = "";
     private String address = "";
     private String phoneNumber = "";
+
+    public long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(long createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public SalePlacard(String title) {
         this.title = title;
     }
 
-    public HashSet<String> getImagesUrl() {
+    public Set<String> getImagesUrl() {
         return imagesUrl;
     }
 
@@ -80,4 +91,21 @@ public class SalePlacard extends DataObject {
         this.phoneNumber = phoneNumber;
     }
 
+
+    @Override
+    public String toString() {
+        return "SalePlacard{"+
+                "title='"+title+'\''+
+                ", priceInRials="+priceInRials+
+                ", city='"+city+'\''+
+                '}';
+    }
+
+    public String getFirstImageUrl() {
+        return getImagesUrl().toArray(new String[0])[0];
+    }
+
+    public String getShortenedDescription() {
+        return getDescription().substring(0, Math.min(getDescription().length(), 60));
+    }
 }

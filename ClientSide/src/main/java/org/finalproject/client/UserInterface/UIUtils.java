@@ -1,12 +1,14 @@
 package org.finalproject.client.UserInterface;
 
+import org.finalproject.DataObject.SalePlacard;
+
 public class UIUtils {
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    public static void successful(String text){
+    public static void successful(String text) {
         System.out.println(ANSICodes.GREEN_BOLD+text+ANSICodes.RESET);
     }
 
@@ -43,17 +45,18 @@ public class UIUtils {
         System.out.println(ANSICodes.RED_BOLD+"||||||||||||||||||||||||||||||||||"+ANSICodes.RESET);
     }
 
-    public static void placardTemplate(int index, String imagesUrl, String title, String description, String city, long price, String phoneNumber){
+    public static void placardTemplate(int index, SalePlacard placard) {
         System.out.println(ANSICodes.RED_BOLD+"=====================================");
-        if(index != 0)
+        if (index != 0)
             form("#: ", Integer.toString(index));
-        form("Images: ", imagesUrl);
-        form("Title: ", title);
-        form("Description: ", description);
-        form("City: ", city);
-        form("Price: ", price + " Rials");
-        if(phoneNumber != null){
-            form("Contact: ", phoneNumber);
+        form("Images: ", placard.getFirstImageUrl());
+        form("Title: ", placard.getTitle());
+        form("Description: ", placard.getShortenedDescription());
+        form("City: ", placard.getCity());
+        form("Price: ", placard.getPriceInRials()+" Rials");
+        //TODO: remove contact information, move to placard details screen.
+        if (placard.getPhoneNumber() != null) {
+            form("Contact: ", placard.getPhoneNumber());
         }
     }
 }

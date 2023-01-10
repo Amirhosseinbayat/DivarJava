@@ -75,4 +75,24 @@ public class DataObject implements Serializable {
     public int hashCode() {
         return Objects.hash(getObjectId());
     }
+
+    long createdAt;
+    long updatedAt;
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+        setUpdatedAt(createdAt);
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

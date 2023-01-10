@@ -13,7 +13,6 @@ public class DataObject implements Serializable {
     public static final int RECORD_LIMIT = 1024;
     //should be increased when serialized versions of older objects can not be deserialized to the new class...
     static final long serialVersionUID = 1L;
-    long objectId = -1; //must not be 0 at first because 0 itself is a valid objectId.
 
     /**
      * Creates a subclass of SerializableDataObject from the byte array provided.
@@ -36,6 +35,8 @@ public class DataObject implements Serializable {
         }
     }
 
+    long objectId = -1; //must not be 0 at first because 0 itself is a valid objectId.
+
     public static byte[] toByteArray(Serializable serializable) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -57,10 +58,7 @@ public class DataObject implements Serializable {
         return objectId;
     }
 
-    public void setObjectId(long objectId) {
-        if (objectId<0) throw new RuntimeException("invalid object id");
-        this.objectId = objectId;
-    }
+    long createdAt;
 
 
     @Override
@@ -73,5 +71,29 @@ public class DataObject implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getObjectId());
+    }
+
+    long updatedAt;
+
+    public void setObjectId(long objectId) {
+        if (objectId<0) throw new RuntimeException("invalid object id");
+        this.objectId = objectId;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+        setUpdatedAt(createdAt);
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -2,17 +2,14 @@ package org.finalproject.DataObject;
 
 public class PlacardQuery extends DataObject {
 
-    //should be increased when serialized versions of older objects can not be deserialized to the new class...
-    static final long serialVersionUID = 1L;
-
-
     public static final String ORDER_BY_PRICE_ASC = "price_asc";
     public static final String ORDER_BY_PRICE_DESC = "price_desc";
     public static final String ORDER_BY_UPDATE_ASC = "update_asc";
     public static final String ORDER_BY_UPDATE_DESC = "update_desc";
     public static final String ORDER_BY_CREATION_ASC = "creation_asc";
     public static final String ORDER_BY_CREATION_DESC = "creation_desc";
-
+    //should be increased when serialized versions of older objects can not be deserialized to the new class...
+    static final long serialVersionUID = 1L;
     long priceGreaterThan = 0;
     long priceLessThan = Long.MAX_VALUE;
     String city;

@@ -42,6 +42,7 @@ public class ServerMain {
             manager.assignHandler(new LoginHandler(dataBase));
             manager.assignHandler(new UserUpdateHandler(dataBase));
             manager.assignHandler(new PlacardCreationHandler(dataBase));
+            manager.assignHandler(new GetPlacardsHandler(dataBase));
             server = HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
             server.createContext("/", manager);
             server.setExecutor(Executors.newFixedThreadPool(10));

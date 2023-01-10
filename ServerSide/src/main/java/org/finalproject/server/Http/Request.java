@@ -38,6 +38,7 @@ public class Request {
             String value = headers1.getFirst(header);
             this.getHeaders().put(header,value);
         }
+        setClientIpAddress(httpExchange.getRemoteAddress().toString());
     }
 
     public String getHttpMethod() {
@@ -78,6 +79,10 @@ public class Request {
 
     public Map<String, String> getHeaders() {
         return headers;
+    }
+
+    public String getHeader(String key) {
+        return getHeaders().get(key);
     }
 
     public void setHeaders(Map<String, String> headers) {

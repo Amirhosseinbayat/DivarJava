@@ -44,7 +44,7 @@ public class DataBase implements IDataBase {
             }
         }
         reentrantLock.unlock();
-
+        list.sort((o1, o2) -> queryConstraints.compare(o1, o2));
         return list;
     }
 
@@ -85,6 +85,9 @@ public class DataBase implements IDataBase {
             long fileLength = file.length();
             dataObject.setObjectId(fileLength);
         }
+        if (dataObject.getCreatedAt() == 0) {
+            dataObject.setCreatedAt(System.currentTimeMillis()); //automatically sets updatedAt.
+        } else dataObject.setUpdatedAt(System.currentTimeMillis());
         saveObjectAt(dataObject.getObjectId(), dataObject);
         reentrantLock.unlock();
 

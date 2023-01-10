@@ -85,12 +85,12 @@ public class User extends DataObject {
         getLikedPlacards().add(objectId);
     }
 
-    public void removeFromLikedPlacards(long objectId){
+    public void removeFromLikedPlacards(long objectId) {
         getLikedPlacards().remove(objectId);
     }
 
     public HashSet<Long> getCreatedPlacards() {
-        if (createdPlacards==null)createdPlacards= new HashSet<>();
+        if (createdPlacards == null) createdPlacards = new HashSet<>();
         return createdPlacards;
     }
 
@@ -98,9 +98,10 @@ public class User extends DataObject {
         getCreatedPlacards().add(objectId);
     }
 
-    public void removeFromCreatedPlacards(long objectId){
+    public void removeFromCreatedPlacards(long objectId) {
         getCreatedPlacards().remove(objectId);
     }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;

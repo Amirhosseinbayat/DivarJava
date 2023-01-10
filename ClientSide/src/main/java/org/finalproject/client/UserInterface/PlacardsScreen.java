@@ -39,6 +39,13 @@ public class PlacardsScreen extends UIScreen {
         UIUtils.secondary("Press Enter to fetch results.");
     }
 
+    void printPlacards(List<SalePlacard> list) {
+        int i = 1;
+        for (SalePlacard placard : list) {
+            UIUtils.placardTemplate(i++, placard);
+        }
+    }
+
     List<SalePlacard> getTestPlacards() {
         List<SalePlacard> placardList = new ArrayList<>();
         for (int x = 0; x != 10; x++) {
@@ -53,10 +60,11 @@ public class PlacardsScreen extends UIScreen {
         return placardList;
     }
 
-    List<SalePlacard> getPlacards() {
+    List<SalePlacard> getPlacards(PlacardQuery query) {
         try {
             Response response = ClientConfiguration.getInstance().getRequestManager()
-                    .sendRequest(new Request("GET", "placards/list"));
+                    .sendRequest(new Request("POST", "placard/query")
+                            .setBody(query));
             List<SalePlacard> placardList = response.getResponseBody();
             System.out.println("retrieved "+placardList.size()+" placards:");
             return placardList;
@@ -77,9 +85,10 @@ public class PlacardsScreen extends UIScreen {
             case "4" -> processPriceRange();
         }
         if (input.isEmpty() || input.equals("\n")) {
-            UIUtils.warning("not implemented yet.");
+            List<SalePlacard> list = getPlacards(placardQuery);
+            printPlacards(list);
+            printQuery();
             process();
-            //TODO fetch the result from server and show them.
         }
     }
 
