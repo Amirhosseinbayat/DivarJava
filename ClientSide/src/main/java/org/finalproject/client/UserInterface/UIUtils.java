@@ -7,44 +7,44 @@ public class UIUtils {
     }
 
     public static void successful(String text){
-        System.out.println(Colors.GREEN_BOLD + text + Colors.RESET);
+        System.out.println(ANSICodes.GREEN_BOLD+text+ANSICodes.RESET);
     }
 
     public static void header(String text){
-        System.out.println(Colors.PURPLE_BOLD + "--- " + text + " ---" + Colors.RESET);
+        System.out.println(ANSICodes.PURPLE_BOLD+"--- "+text+" ---"+ANSICodes.RESET);
     }
     public static void options(String ...options){
         for(int i = 0; i < options.length; i++){
-            System.out.println(Colors.PURPLE + (i + 1) + ". " + options[i] + Colors.RESET);
+            System.out.println(ANSICodes.PURPLE+(i+1)+". "+options[i]+ANSICodes.RESET);
         }
     }
 
     public static void secondary(String text){
-        System.out.println(Colors.PURPLE + text + Colors.RESET);
+        System.out.println(ANSICodes.PURPLE+text+ANSICodes.RESET);
     }
 
     public static void primary(String text){
-        System.out.println(Colors.PURPLE_BOLD + text + Colors.RESET);
+        System.out.println(ANSICodes.PURPLE_BOLD+text+ANSICodes.RESET);
     }
 
     public static void warning(String text){
-        System.out.println(Colors.YELLOW_BOLD + text + Colors.RESET);
+        System.out.println(ANSICodes.YELLOW_BOLD+text+ANSICodes.RESET);
     }
 
     public static void danger(String text){
-        System.out.println(Colors.RED_BOLD + text + Colors.RESET);
+        System.out.println(ANSICodes.RED_BOLD+text+ANSICodes.RESET);
     }
 
     public static void form(String key, String value){
-        System.out.println(Colors.BLUE_BOLD + key + Colors.YELLOW + value + Colors.RESET);
+        System.out.println(ANSICodes.BLUE_BOLD+key+ANSICodes.YELLOW+value+ANSICodes.RESET);
     }
 
     public static void hr(){
-        System.out.println(Colors.RED_BOLD + "||||||||||||||||||||||||||||||||||" + Colors.RESET);
+        System.out.println(ANSICodes.RED_BOLD+"||||||||||||||||||||||||||||||||||"+ANSICodes.RESET);
     }
 
     public static void placardTemplate(int index, String imagesUrl, String title, String description, String city, long price, String phoneNumber){
-        System.out.println(Colors.RED_BOLD + "=====================================");
+        System.out.println(ANSICodes.RED_BOLD+"=====================================");
         if(index != 0)
             form("#: ", Integer.toString(index));
         form("Images: ", imagesUrl);

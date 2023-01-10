@@ -4,7 +4,10 @@ import java.util.HashSet;
 
 public class SalePlacard extends DataObject {
 
-    private HashSet<String> imagesUrl = new HashSet<>();
+    //should be increased when serialized versions of older objects can not be deserialized to the new class...
+    static final long serialVersionUID = 1L;
+
+    private final HashSet<String> imagesUrl = new HashSet<>();
     private String title;
     private String description = "";
     private long priceInRials;
