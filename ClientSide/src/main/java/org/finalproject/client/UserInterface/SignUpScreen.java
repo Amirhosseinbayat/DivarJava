@@ -2,6 +2,7 @@ package org.finalproject.client.UserInterface;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
+import org.finalproject.client.Http.IHttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
@@ -38,7 +39,7 @@ public class SignUpScreen extends UIScreen {
             UIUtils.primary("Enter a password which as all the qualities mentioned above.");
             processPassword();
         } catch (RequestException e) {
-            restartWithError(e.getMessage()+ANSI_RESET+"\nplease try again.");
+            restartWithError(e.getMessage()+ANSICodes.RESET+"\nplease try again.");
         }
 
     }
@@ -49,10 +50,10 @@ public class SignUpScreen extends UIScreen {
         Request request = new Request("POST", "signup");
         request.setBody(user);
         try {
-            ClientConfiguration.getInstance().getRequestManager().sendRequest(request);
-            UIUtils.successful("Sign up successful!(press Enter to continue)");
-            scanner.nextLine();
-            new LoginScreen(scanner).guide().process();
+            Response response = ClientConfiguration.getInstance().getRequestManager().sendRequest(request);
+            ClientConfiguration.getInstance().setUser(response.getResponseBody());
+            UIUtils.successful("Very well! ");
+            processEmailChange();
         } catch (RequestException e) {
             if (e.getCode() == Response.ERR_WEAK_PASSWORD) {
                 UIUtils.danger(e.getMessage());
@@ -67,5 +68,34 @@ public class SignUpScreen extends UIScreen {
             }
         }
 
+    }
+
+
+    void processEmailChange() {
+        User user = ClientConfiguration.getInstance().getUser();
+        String input = getInputBy("now Enter your email address carefully.");
+        String previous = user.getEmailAddress();
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setEmailAddress(input);
+            try {
+                IHttpRequestManager manager = ClientConfiguration.getInstance().getRequestManager();
+                Response response =
+                        manager.sendRequest(new Request("POST", "user/update").setBody(user));
+                ClientConfiguration.getInstance().setUser(response.getResponseBody());
+                UIUtils.successful("Sign up done! press Enter to continue");
+                scanner.nextLine();
+                new HomeMenuScreen(scanner).guide().process();
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update Email: "+e.getMessage());
+                user.setEmailAddress(previous);
+                input = getInputBy("Try again with a different one. \npress enter to go back.");
+            }
+        }
     }
 }

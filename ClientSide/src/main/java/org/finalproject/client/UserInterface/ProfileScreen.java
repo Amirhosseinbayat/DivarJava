@@ -50,11 +50,6 @@ public class ProfileScreen extends UIScreen {
         }
     }
 
-    String getInputBy(String guide) {
-        UIUtils.secondary(guide);
-        return scanner.nextLine();
-    }
-
     void trySaveUserObject() throws RequestException {
         trySaveUserObject("Update successful!");
     }
