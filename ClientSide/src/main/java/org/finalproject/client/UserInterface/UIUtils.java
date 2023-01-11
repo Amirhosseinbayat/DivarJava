@@ -24,6 +24,9 @@ public class UIUtils {
     public static void secondary(String text){
         System.out.println(ANSICodes.PURPLE+text+ANSICodes.RESET);
     }
+    public static void usual(String text){
+        System.out.println(ANSICodes.RESET+text);
+    }
 
     public static void primary(String text){
         System.out.println(ANSICodes.PURPLE_BOLD+text+ANSICodes.RESET);

@@ -16,6 +16,21 @@ public class PasswordValidator implements BusinessLogic {
         return (resultOfANDOperator == 0);
     }
 
+    public static String sequence = "0123456789";
+
+    public static boolean areDigitsASequence(String number) {
+        char[] chars = number.toCharArray();
+        int previousIndex = -1;
+        for (char ch : chars) {
+            int currentIndex = sequence.indexOf(ch);
+            if (previousIndex != -1 && currentIndex != previousIndex+1) {
+                return false;
+            }
+            previousIndex = currentIndex;
+        }
+        return true;
+    }
+
     public String validatePassword(String password) {
         if (password == null || password.isEmpty()) return "Password can not be empty.";
         if (password.length()<8) return "Password should contain at least 8 characters.";
@@ -38,6 +53,7 @@ public class PasswordValidator implements BusinessLogic {
         for (String num : numbers) {
             if (num.isEmpty()) continue; //it was a letter stroke at original password, and has become empty here.
             int n = Integer.parseInt(num);
+            if (areDigitsASequence(num)) return "You have used "+num+" in your password, whose digits are a sequence.";
             if (isTheNumberAPowerOfTwo(n)) {
                 containsANumberInPowerOfTwo = true;
             }
