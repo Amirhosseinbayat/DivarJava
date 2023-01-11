@@ -22,7 +22,8 @@ public class LoginHandler implements RequestHandler {
             @Override
             public boolean test(User object) {
                 if (object.getUsername() == null) return false;
-                return object.getUsername().equals(user.getUsername());
+                return object.getUsername()
+                        .equalsIgnoreCase(user.getUsername()); //usernames should not be case-sensitive.
             }
 
             @Override

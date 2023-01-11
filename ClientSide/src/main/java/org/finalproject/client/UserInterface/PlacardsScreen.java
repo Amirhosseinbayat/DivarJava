@@ -24,25 +24,24 @@ public class PlacardsScreen extends UIScreen {
     @Override
     void printGuideMessage() {
         UIUtils.header("Placards Page");
-        UIUtils.hr();
         UIUtils.primary("What kind of placards are you looking for?");
         printQuery();
-        UIUtils.hr();
     }
 
     void printQuery() {
+        UIUtils.hr();
         UIUtils.secondary("Enter the number of any query criteria to edit it.");
         UIUtils.form("1. Placards containing the text: ", placardQuery.getSearchText());
         UIUtils.form("2. City: ", placardQuery.getCity());
         UIUtils.form("3. Sort: ", placardQuery.getOrderByHumanReadable());
         UIUtils.form("4. Price Range: ", placardQuery.getPriceRange());
-        UIUtils.secondary("Press Enter to fetch results.");
+        UIUtils.secondary("Press Enter to fetch results. send 'back' to go back.");
     }
 
     void printPlacards(List<SalePlacard> list) {
         int i = 1;
         for (SalePlacard placard : list) {
-            UIUtils.placardTemplate(i++, placard);
+            UIUtils.placardTemplate(i++, placard,true);
         }
     }
 
@@ -83,6 +82,7 @@ public class PlacardsScreen extends UIScreen {
             case "2" -> processCityName();
             case "3" -> processSort();
             case "4" -> processPriceRange();
+            case "back" -> {new HomeMenuScreen(scanner).guide().process();}
         }
         if (input.isEmpty() || input.equals("\n")) {
             List<SalePlacard> list = getPlacards(placardQuery);

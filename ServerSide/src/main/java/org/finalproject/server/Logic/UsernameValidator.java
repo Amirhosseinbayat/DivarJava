@@ -18,7 +18,7 @@ public class UsernameValidator implements BusinessLogic {
         User user = dataBase.findOne(new QueryConstraints<>() {
             @Override
             public boolean test(User object) {
-                return (username.equals(object.getUsername()));
+                return (username.equalsIgnoreCase(object.getUsername())); //usernames should not be case-sensitive.
             }
 
             @Override
@@ -26,8 +26,12 @@ public class UsernameValidator implements BusinessLogic {
                 return 0;
             }
         });
-        if (user == null) return null;
-        else return "این نام کاربری قبلا گرفته شده است.";
+        if (user != null) return "This username is already taken!";
+
+        if (!username.matches("^[a-zA-z0-9]+$")) { //^ beginning of the string, $ end of the string.
+            return "Username can only contain letters and numbers without space.";
+        }
+        return null;
     }
 
 }
