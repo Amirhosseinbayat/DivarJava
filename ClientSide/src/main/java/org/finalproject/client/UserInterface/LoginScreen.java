@@ -21,9 +21,9 @@ public class LoginScreen extends UIScreen {
     @Override
     void printGuideMessage() {
         UIUtils.header("Log In");
-        UIUtils.options("Create an account", "Back to main menu");
-        UIUtils.primary("Or enter your username: ");
-        }
+        UIUtils.primary("Enter your username to login.");
+        UIUtils.options("Create an account first", "Go back to main menu");
+    }
 
     @Override
     void processInput() {
@@ -38,7 +38,16 @@ public class LoginScreen extends UIScreen {
         }
         username = line;
         UIUtils.secondary("Now enter your password: ");
+        processPassword();
+    }
+
+    private void processPassword() {
         password = scanner.nextLine();
+        if (password.isEmpty() || password.equals("\n")) {
+            guide();
+            process();
+            return;
+        }
         Request request = new Request("POST", "login");
         request.setBody(new User(username, password));
         try {
@@ -50,9 +59,10 @@ public class LoginScreen extends UIScreen {
             new HomeMenuScreen(scanner).guide().process();
         } catch (RequestException e) {
             if (e.getCode() == Response.ERR_INVALID_CREDENTIALS) {
-                UIUtils.danger("Invalid username/password. try again!\n"
-                        +"send 2 to go back to the main menu.");
-                this.process();
+                UIUtils.danger("Invalid username/password!\n"
+                        +"Enter your password for "+username+" again,"
+                        +"press Enter to go back and correct your username.");
+                processPassword();
             }
         }
     }

@@ -20,11 +20,16 @@ public class SignUpScreen extends UIScreen {
     void printGuideMessage() {
         UIUtils.header("Sign Up");
         UIUtils.primary("Enter a username of your choice: ");
+        UIUtils.secondary("press enter to go back to the main menu. ");
     }
 
     @Override
     void processInput() {
         userName = scanner.nextLine();
+        if (userName.isEmpty() || userName.equals("\n")) {
+            new AuthMenuScreen(scanner).guide().process();
+            return;
+        }
         UIUtils.secondary("Checking if "+userName+" can be set as your username...");
         try {
             ClientConfiguration.getInstance().getRequestManager()
