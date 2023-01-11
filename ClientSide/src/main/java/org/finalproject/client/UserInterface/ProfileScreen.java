@@ -46,6 +46,7 @@ public class ProfileScreen extends UIScreen {
             case "back" -> {
                 new HomeMenuScreen(scanner).guide().process();
             }
+            default -> this.restartWithError(input+" is not a meaningful command in this context.");
         }
     }
 

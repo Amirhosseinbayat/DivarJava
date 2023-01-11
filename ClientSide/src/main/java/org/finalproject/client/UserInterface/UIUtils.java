@@ -45,17 +45,24 @@ public class UIUtils {
         System.out.println(ANSICodes.RED_BOLD+"||||||||||||||||||||||||||||||||||"+ANSICodes.RESET);
     }
 
-    public static void placardTemplate(int index, SalePlacard placard) {
+    public static void placardTemplate(int index, SalePlacard placard, Boolean hideDetails){
         System.out.println(ANSICodes.RED_BOLD+"=====================================");
         if (index != 0)
             form("#: ", Integer.toString(index));
-        form("Images: ", placard.getFirstImageUrl());
+        if(hideDetails){
+            form("Images: ", (String) placard.getImagesUrl().toArray()[0]);
+        }else{
+            form("Images: ", placard.getImagesUrl().toString());
+        }
         form("Title: ", placard.getTitle());
-        form("Description: ", placard.getShortenedDescription());
+        if(hideDetails){
+            form("Description: ", placard.getDescription().substring(0, Math.min(placard.getDescription().length(), 60)));
+        }else{
+            form("Description: ", placard.getDescription());
+        }
         form("City: ", placard.getCity());
-        form("Price: ", placard.getPriceInRials()+" Rials");
-        //TODO: remove contact information, move to placard details screen.
-        if (placard.getPhoneNumber() != null) {
+        form("Price: ", placard.getPriceInRials() + " Rials");
+        if(!hideDetails){
             form("Contact: ", placard.getPhoneNumber());
         }
     }

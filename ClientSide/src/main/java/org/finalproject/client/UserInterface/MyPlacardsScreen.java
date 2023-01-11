@@ -17,7 +17,7 @@ public class MyPlacardsScreen extends PlacardsScreen{
         List<SalePlacard> placardList = getTestPlacards();
         int i = 1;
         for (SalePlacard placard : placardList) {
-            UIUtils.placardTemplate(i++, placard);
+            UIUtils.placardTemplate(i++, placard, true);
         }
     }
 }

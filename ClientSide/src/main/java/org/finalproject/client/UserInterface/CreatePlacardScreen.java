@@ -28,14 +28,16 @@ public class CreatePlacardScreen extends UIScreen{
         UIUtils.primary("Write some description about what you are selling: ");
         String description = scanner.nextLine();
         long price;
-        try{
-            UIUtils.primary("Enter it's price in rials: ");
-            price = scanner.nextLong();
-        }catch(InputMismatchException ex){
-            price = -1;
-            //TODO show error message and assign new input to price, possibly in a method.
-        }finally {
-            scanner.nextLine();
+        while(true){
+            try{
+                UIUtils.primary("Enter it's price in rials: ");
+                price = scanner.nextLong();
+                break;
+            }catch(InputMismatchException ex){
+                UIUtils.danger("Price must be a decimal number.");
+            }finally {
+                scanner.nextLine();
+            }
         }
         //TODO: automatically set to user's city, with option to edit or press enter to continue with default.
         UIUtils.primary("City related to placard: ");
@@ -54,6 +56,7 @@ public class CreatePlacardScreen extends UIScreen{
         placard.setCity(city);
         placard.setAddress(address);
         placard.setPhoneNumber(phoneNumber);
+        // TODO placard.setUserId
         for(String imageUrl : imagesUrlRaw.split(","))
             placard.addImageUrl(imageUrl.trim());
 
@@ -65,7 +68,10 @@ public class CreatePlacardScreen extends UIScreen{
             ClientConfiguration.getInstance().getRequestManager().sendRequest(
                     new Request("POST", "placard/new")
                             .setBody(placard));
-            UIUtils.successful("successfully published your placard!");
+
+            UIUtils.successful("successfully published your placard!(press Enter to continue)");
+            scanner.nextLine();
+
             new HomeMenuScreen(scanner).guide().process();
         }catch(RequestException ex){
             restartWithError(ex.getMessage());
