@@ -1,6 +1,7 @@
 package org.finalproject.client.UserInterface;
 
 import org.finalproject.DataObject.SalePlacard;
+import org.finalproject.client.Http.RequestException;
 
 import java.util.Scanner;
 
@@ -42,7 +43,55 @@ public class EditPlacardScreen extends PlacardScreen{
     }
 
     private void processTitleChange(){
+        String input = getInputBy("Enter new title (press Enter to go back): ");
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            placard.setTitle(input);
+            try {
+                trySavePlacardObject("Title changed successfully.");
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update title: "+e.getMessage());
+                input = getInputBy("Try again, Enter a valid title. \npress enter to go back.");
+            }
+        }
 
     }
 
+    private void processImagesChange(){
+        String[] images = (String[]) placard.getImagesUrl().toArray();
+        UIUtils.primary("Enter index of image to delete or enter new image url. (press Enter to go back)");
+        for(int i = 0; i < images.length; i++)
+            UIUtils.secondary((i+1) + ". " + images[i]);
+
+        String input = scanner.nextLine();
+        while(true){
+            if(input.equals("")){
+                guide().process();
+                return;
+            }
+            try {
+                int imageIndex = Integer.parseInt(input) - 1;
+                if(imageIndex >= 0 && imageIndex < images.length){
+                   placard.removeImageUrl(images[imageIndex]);
+                }else{
+                    placard.addImageUrl(input);
+                }
+            }catch(NumberFormatException ex){}
+        }
+    }
+    void trySavePlacardObject() throws RequestException {
+        trySavePlacardObject("Update successful!");
+    }
+
+    void trySavePlacardObject(String message) throws RequestException {
+        //TODO related http request to update placard
+        UIUtils.successful(message);
+        guide();
+        processInput();
+    }
 }
