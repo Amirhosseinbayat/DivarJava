@@ -1,18 +1,19 @@
 package org.finalproject.client.UserInterface;
 
 import org.finalproject.DataObject.SalePlacard;
+import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
-
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CreatePlacardScreen extends UIScreen{
     private SalePlacard placard;
+    private User user;
 
     public CreatePlacardScreen(Scanner scanner) {
         super(scanner);
+        this.user = ClientConfiguration.getInstance().getUser();
     }
 
 
@@ -23,43 +24,14 @@ public class CreatePlacardScreen extends UIScreen{
 
     @Override
     void processInput() {
-        UIUtils.primary("Enter a short title for your placard:");
-        String title = scanner.nextLine();
-        UIUtils.primary("Write some description about what you are selling: ");
-        String description = scanner.nextLine();
-        long price;
-        while(true){
-            try{
-                UIUtils.primary("Enter it's price in rials: ");
-                price = scanner.nextLong();
-                break;
-            }catch(InputMismatchException ex){
-                UIUtils.danger("Price must be a decimal number.");
-            }finally {
-                scanner.nextLine();
-            }
-        }
-        //TODO: automatically set to user's city, with option to edit or press enter to continue with default.
-        UIUtils.primary("City related to placard: ");
-        String city = scanner.nextLine();
-        UIUtils.primary("Address related to placard: ");
-        String address = scanner.nextLine();
-        //TODO: automatically set to user's phone number, with option to edit or press enter to continue with default.
-        UIUtils.primary("Owner's phone number: ");
-        String phoneNumber = scanner.nextLine();
-        UIUtils.primary("Enter image urls splitted by comma. (ex: img1.jpg, img2.jpg): ");
-        String imagesUrlRaw = scanner.nextLine();
-
-        placard = new SalePlacard(title);
-        placard.setDescription(description);
-        placard.setPriceInRials(price);
-        placard.setCity(city);
-        placard.setAddress(address);
-        placard.setPhoneNumber(phoneNumber);
+        processTitle();
+        processDescription();
+        processImagesUrl();
+        processPrice();
+        processCity();
+        processAddress();
+        processPhoneNumber();
         // TODO placard.setUserId
-        for(String imageUrl : imagesUrlRaw.split(","))
-            placard.addImageUrl(imageUrl.trim());
-
         trySavePlacard();
     }
 
@@ -76,5 +48,73 @@ public class CreatePlacardScreen extends UIScreen{
         }catch(RequestException ex){
             restartWithError(ex.getMessage());
         }
+    }
+
+    private void processTitle(){
+        UIUtils.primary("Enter a short title for your placard:");
+        String title = checkInput(scanner.nextLine());
+        placard = new SalePlacard(title);
+    }
+
+    private void processDescription(){
+        UIUtils.primary("Write some description about what you are selling: ");
+        String description = checkInput(scanner.nextLine());
+        placard.setDescription(description);
+    }
+
+    private void processPrice(){
+        long price;
+        while(true){
+            try{
+                UIUtils.primary("Enter it's price in rials: ");
+                String input = checkInput(scanner.nextLine());
+                price = Long.parseLong(input);
+                break;
+            }catch(NumberFormatException ex){
+                UIUtils.danger("Price must be a decimal number.");
+            }
+        }
+        placard.setPriceInRials(price);
+    }
+
+    private void processCity(){
+        UIUtils.primary("City related to placard: ");
+        if(!user.getCity().equals("")){
+            UIUtils.secondary(user.getCity() + " (press Enter to continue with your current city or type desired city: )");
+
+        }
+        String city = scanner.nextLine();
+        city = city.equals("") ? checkInput(user.getCity()) : city;
+        placard.setCity(city);
+    }
+
+    private void processAddress(){
+        UIUtils.primary("Address related to placard: ");
+        String address = checkInput(scanner.nextLine());
+        placard.setAddress(address);
+    }
+
+    private void processPhoneNumber(){
+        UIUtils.primary("Owner's phone number: ");
+        if(!user.getPhoneNumber().equals("")){
+            UIUtils.secondary(user.getPhoneNumber() + " (press Enter to continue with your phone number or type desired phone number: )");
+        }
+        String phoneNumber = scanner.nextLine();
+        phoneNumber = phoneNumber.equals("") ? checkInput(user.getPhoneNumber()) : phoneNumber;
+        placard.setPhoneNumber(phoneNumber);
+    }
+
+    private void processImagesUrl(){
+        UIUtils.primary("Enter image urls splited by comma. (ex: img1.jpg, img2.jpg): ");
+        String imagesUrlRaw = checkInput(scanner.nextLine());
+        for(String imageUrl : imagesUrlRaw.split(","))
+            placard.addImageUrl(imageUrl.trim());
+    }
+    private String checkInput(String input){
+        if (input.equals("")){
+            UIUtils.warning("You can't skip this field.");
+            return checkInput(scanner.nextLine());
+        }
+        return input;
     }
 }
