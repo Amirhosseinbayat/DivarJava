@@ -2,7 +2,7 @@ package org.finalproject.client.Http;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
-import org.finalproject.client.UserInterface.UIScreen;
+import org.finalproject.client.UserInterface.ANSICodes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -68,7 +68,7 @@ public class HttpRequestManager implements IHttpRequestManager {
             connection.connect();
             return getResponse(connection);
         } catch (IOException | ClassNotFoundException e) {
-            System.out.print(UIScreen.ANSI_RED+" --- request failed!"+UIScreen.ANSI_RESET+"\n");
+            System.out.print(ANSICodes.RED+" --- request failed!"+ANSICodes.RESET+"\n");
             throw new RequestException(999, "error: "+e.getMessage());
         }
     }
