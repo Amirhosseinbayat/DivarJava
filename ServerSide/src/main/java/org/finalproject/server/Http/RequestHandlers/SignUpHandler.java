@@ -29,6 +29,9 @@ public class SignUpHandler implements RequestHandler {
     @Override
     public Response handle(Request request) throws IOException {
         User user = request.getRequestBody();
+        if (user.getObjectId() != -1) return new Response(HttpURLConnection.HTTP_CONFLICT, "Security exception. "+
+                "Do not try to hack us!"); //avoids setting objectId on sign up and overwriting another user's data.
+
         String nameResult = usernameValidator.validateUserName(user.getUsername());
         if (nameResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, nameResult);
         String passwordResult = passwordValidator.validatePassword(user.getPassword());
