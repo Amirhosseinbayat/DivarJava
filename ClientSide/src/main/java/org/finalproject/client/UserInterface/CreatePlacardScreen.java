@@ -52,13 +52,13 @@ public class CreatePlacardScreen extends UIScreen{
 
     private void processTitle(){
         UIUtils.primary("Enter a short title for your placard:");
-        String title = checkInput(scanner.nextLine());
+        String title = notEmptyInput(scanner.nextLine());
         placard = new SalePlacard(title);
     }
 
     private void processDescription(){
         UIUtils.primary("Write some description about what you are selling: ");
-        String description = checkInput(scanner.nextLine());
+        String description = notEmptyInput(scanner.nextLine());
         placard.setDescription(description);
     }
 
@@ -67,7 +67,7 @@ public class CreatePlacardScreen extends UIScreen{
         while(true){
             try{
                 UIUtils.primary("Enter it's price in rials: ");
-                String input = checkInput(scanner.nextLine());
+                String input = notEmptyInput(scanner.nextLine());
                 price = Long.parseLong(input);
                 break;
             }catch(NumberFormatException ex){
@@ -84,13 +84,13 @@ public class CreatePlacardScreen extends UIScreen{
 
         }
         String city = scanner.nextLine();
-        city = city.equals("") ? checkInput(user.getCity()) : city;
+        city = city.equals("") ? notEmptyInput(user.getCity()) : city;
         placard.setCity(city);
     }
 
     private void processAddress(){
         UIUtils.primary("Address related to placard: ");
-        String address = checkInput(scanner.nextLine());
+        String address = notEmptyInput(scanner.nextLine());
         placard.setAddress(address);
     }
 
@@ -100,21 +100,14 @@ public class CreatePlacardScreen extends UIScreen{
             UIUtils.secondary(user.getPhoneNumber() + " (press Enter to continue with your phone number or type desired phone number: )");
         }
         String phoneNumber = scanner.nextLine();
-        phoneNumber = phoneNumber.equals("") ? checkInput(user.getPhoneNumber()) : phoneNumber;
+        phoneNumber = phoneNumber.equals("") ? notEmptyInput(user.getPhoneNumber()) : phoneNumber;
         placard.setPhoneNumber(phoneNumber);
     }
 
     private void processImagesUrl(){
         UIUtils.primary("Enter image urls splited by comma. (ex: img1.jpg, img2.jpg): ");
-        String imagesUrlRaw = checkInput(scanner.nextLine());
+        String imagesUrlRaw = notEmptyInput(scanner.nextLine());
         for(String imageUrl : imagesUrlRaw.split(","))
             placard.addImageUrl(imageUrl.trim());
-    }
-    private String checkInput(String input){
-        if (input.equals("")){
-            UIUtils.warning("You can't skip this field.");
-            return checkInput(scanner.nextLine());
-        }
-        return input;
     }
 }

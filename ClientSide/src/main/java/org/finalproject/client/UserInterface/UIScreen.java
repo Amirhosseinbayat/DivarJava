@@ -41,5 +41,12 @@ public abstract class UIScreen {
         return scanner.nextLine();
     }
 
+    String notEmptyInput(String input){
+        if(input.equals("")){
+            UIUtils.warning("You can't skip this field.");
+            notEmptyInput(scanner.nextLine());
+        }
+        return input;
+    }
 
 }

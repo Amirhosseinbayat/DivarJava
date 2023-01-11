@@ -59,7 +59,10 @@ public class PlacardScreen extends UIScreen{
 
     private void toggleWishStatus(){
         //TODO remove or add placard objectId in user wish list
-        trySaveUserObject("The placard added to your wish list successfully");
+        trySaveUserObject("The placard " + (isUserWish()? "removed from": "added to")  + " your wish list successfully");
+        UIUtils.successful("(press Enter to continue: )");
+        scanner.nextLine();
+        previousScreen.guide().process();
     }
 
     private boolean isOwnedByUser(){

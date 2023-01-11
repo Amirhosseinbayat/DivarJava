@@ -23,5 +23,26 @@ public class EditPlacardScreen extends PlacardScreen{
         UIUtils.primary("8. Back to previous page");
         UIUtils.hr();
     }
-    //TODO other stuff
+
+    @Override
+    void processInput(){
+        String input = scanner.nextLine();
+        switch (input){
+            case "1" -> processTitleChange();
+//            case "2" -> processImagesChange();
+//            case "3" -> processDescriptionChange();
+//            case "4" -> processCityChange();
+//            case "5" -> processPriceChange();
+//            case "6" -> processPhoneNumberChange();
+//            case "7" -> processDeletion();
+            case "8" -> {
+                previousScreen.guide().process();
+            }
+        }
+    }
+
+    private void processTitleChange(){
+
+    }
+
 }
