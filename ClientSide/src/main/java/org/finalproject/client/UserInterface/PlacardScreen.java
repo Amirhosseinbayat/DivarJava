@@ -32,6 +32,7 @@ public class PlacardScreen extends UIScreen{
         }else{
             UIUtils.options(isUserWish() ? "Remove from wish list" : "Add to wish list", "Back to previous page");
         }
+
     }
 
     @Override

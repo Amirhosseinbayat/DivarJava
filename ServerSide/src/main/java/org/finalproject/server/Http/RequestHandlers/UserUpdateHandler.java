@@ -2,10 +2,10 @@ package org.finalproject.server.Http.RequestHandlers;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.server.Database.IDataBase;
-import org.finalproject.server.Database.QueryConstraints;
 import org.finalproject.server.Http.Request;
 import org.finalproject.server.Http.Response;
 import org.finalproject.server.Logic.PasswordValidator;
+import org.finalproject.server.Logic.ProfileDataValidator;
 import org.finalproject.server.Logic.UsernameValidator;
 
 import java.net.HttpURLConnection;
@@ -29,19 +29,9 @@ public class UserUpdateHandler implements RequestHandler {
         if (request.getUser() == null || request.getUser().getObjectId() != user.getObjectId()) {
             return new Response(HttpURLConnection.HTTP_UNAUTHORIZED, "access denied.");
         }
-        User databaseUser = dataBase.findOne(new QueryConstraints<>() {
-            @Override
-            public boolean test(User object) {
-                return object.getObjectId() == user.getObjectId();
-            }
-
-            @Override
-            public int compare(User o1, User o2) {
-                return 0;
-            }
-        });
+        User databaseUser = dataBase.getObjectWithId(user.getObjectId());
         if (databaseUser == null) return
-                new Response(HttpURLConnection.HTTP_NOT_FOUND, "record not found for update.");
+                new Response(HttpURLConnection.HTTP_NOT_FOUND, "record not found to update.");
         if (!Objects.equals(databaseUser.getPassword(), user.getPassword())) {
             String passwordResult = passwordValidator.validatePassword(user.getPassword());
             if (passwordResult != null) return new Response(601, passwordResult);
@@ -50,6 +40,8 @@ public class UserUpdateHandler implements RequestHandler {
             String nameResult = usernameValidator.validateUserName(user.getUsername());
             if (nameResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, nameResult);
         }
+        String profileResult = new ProfileDataValidator().validateUserProfile(user);
+        if (profileResult!=null)return new Response(HttpURLConnection.HTTP_CONFLICT,profileResult);
         dataBase.save(user);
         return new Response(200, user);
     }

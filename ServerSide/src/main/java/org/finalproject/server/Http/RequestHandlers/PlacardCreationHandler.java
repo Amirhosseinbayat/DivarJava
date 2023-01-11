@@ -22,6 +22,12 @@ public class PlacardCreationHandler implements RequestHandler {
         User user = request.getUser();
         if (user == null) return new Response(HttpURLConnection.HTTP_UNAUTHORIZED
                 , "you need to signUp/logIn to create a placard.");
+        if (salePlacard.getObjectId() != -1) {
+            if (user.getObjectId() != -1) return new Response(HttpURLConnection.HTTP_CONFLICT, "Security exception. "+
+                    "Do not try to hack us!"); //avoids setting objectId on creation and overwriting another placard.
+        }
+
+        salePlacard.setCreatedBy(user.getObjectId()); //ensures createdBy is set to this user (prevent hack)
         dataBase.save(salePlacard);
         user.addToCreatedPlacards(salePlacard.getObjectId());
         dataBase.save(user); //updates user.

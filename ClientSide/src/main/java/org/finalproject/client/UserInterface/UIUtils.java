@@ -8,7 +8,7 @@ public class UIUtils {
         System.out.flush();
     }
 
-    public static void successful(String text){
+    public static void successful(String text) {
         System.out.println(ANSICodes.GREEN_BOLD+text+ANSICodes.RESET);
     }
 
@@ -47,7 +47,7 @@ public class UIUtils {
 
     public static void placardTemplate(int index, SalePlacard placard, Boolean hideDetails){
         System.out.println(ANSICodes.RED_BOLD+"=====================================");
-        if(index != 0)
+        if (index != 0)
             form("#: ", Integer.toString(index));
         if(hideDetails){
             form("Images: ", (String) placard.getImagesUrl().toArray()[0]);

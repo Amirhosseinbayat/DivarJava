@@ -55,67 +55,168 @@ public class ProfileScreen extends UIScreen {
         return scanner.nextLine();
     }
 
-    void trySaveUserObject() {
+    void trySaveUserObject() throws RequestException {
         trySaveUserObject("Update successful!");
     }
 
-    void trySaveUserObject(String message) {
+    void trySaveUserObject(String message) throws RequestException {
         IHttpRequestManager manager = ClientConfiguration.getInstance().getRequestManager();
-        try {
-            Response response =
-                    manager.sendRequest(new Request("POST", "user/update").setBody(user));
-            user = response.getResponseBody();
-            ClientConfiguration.getInstance().setUser(user);
-        } catch (RequestException e) {
-            UIUtils.danger("Could not update profile: "+e.getMessage());
-            return;
-        }
+
+        Response response =
+                manager.sendRequest(new Request("POST", "user/update").setBody(user));
+        user = response.getResponseBody();
+        ClientConfiguration.getInstance().setUser(user);
         UIUtils.successful(message);
         guide();
         processInput();
     }
     void processUsernameChange() {
-        String newUsername = getInputBy("OK! enter the username which you want to have.");
-        user.setUsername(newUsername);
-        trySaveUserObject("Update successful.\n"+
-                "Remember to login as '"+newUsername+"' next time.");
+        String input = getInputBy("OK! enter the username which you want to have.\npress enter to go back.");
+        String previous = user.getUsername();
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setUsername(input);
+            try {
+                trySaveUserObject("Update successful.\n"+
+                        "Remember to login as '"+input+"' next time.");
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update username: "+e.getMessage());
+                user.setUsername(previous);
+                input = getInputBy("Try again, Enter a valid email address. \npress enter to go back.");
+            }
+        }
     }
 
-    void processFirstNameChange(){
+    void processFirstNameChange() {
         String input = getInputBy("OK! enter the name you want to set as your firstName");
-        user.setFirstName(input);
-        trySaveUserObject();
+        String previous = user.getFirstName();
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setFirstName(input);
+            try {
+                trySaveUserObject();
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update firstName: "+e.getMessage());
+                user.setFirstName(previous);
+                input = getInputBy("Try again with a different one. \npress enter to go back.");
+            }
+        }
     }
 
-    void processLastNameChange(){
+    void processLastNameChange() {
         String input = getInputBy("OK! enter the name you want to set as your lastName");
-        user.setLastName(input);
-        trySaveUserObject();
+        String previous = user.getLastName();
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setLastName(input);
+            try {
+                trySaveUserObject();
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update lastName: "+e.getMessage());
+                user.setLastName(previous);
+                input = getInputBy("Try again with a different one. \npress enter to go back.");
+            }
+        }
     }
 
-    void processEmailChange(){
+    void processEmailChange() {
         String input = getInputBy("OK! enter your email address carefully.");
-        user.setEmailAddress(input);
-        trySaveUserObject();
+        String previous = user.getEmailAddress();
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setEmailAddress(input);
+            try {
+                trySaveUserObject();
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update Email: "+e.getMessage());
+                user.setEmailAddress(previous);
+                input = getInputBy("Try again with a different one. \npress enter to go back.");
+            }
+        }
     }
 
-    void processPhoneChange(){
+    void processPhoneChange() {
         String input = getInputBy("OK! enter your phone number for it to be updated.");
-        user.setPhoneNumber(input);
-        trySaveUserObject();
+        String previous = user.getPhoneNumber();
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setPhoneNumber(input);
+            try {
+                trySaveUserObject();
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update phone: "+e.getMessage());
+                user.setPhoneNumber(previous);
+                input = getInputBy("Try again with a different one. \npress enter to go back.");
+
+            }
+        }
     }
 
-    void processCityChange(){
-        String input = getInputBy("OK! enter the name of the city where you live." +
+    void processCityChange() {
+        String input = getInputBy("OK! enter the name of the city where you live."+
                 " this will be used to show local placards to you.");
-        user.setCity(input);
-        trySaveUserObject();
+        String previous = user.getCity();
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setCity(input);
+            try {
+                trySaveUserObject();
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update city: "+e.getMessage());
+                user.setCity(previous);
+                input = getInputBy("Try again with a different one. \npress enter to go back.");
+            }
+        }
     }
 
-    void processProfilePicChange(){
+    void processProfilePicChange() {
         String input = getInputBy("OK! enter a valid url to a jpg or png image for it to be set as your profile picture.");
-        user.setProfilePictureUrl(input);
-        trySaveUserObject();
+        String previous = user.getProfilePictureUrl();
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setProfilePictureUrl(input);
+            try {
+                trySaveUserObject();
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update profile picture: "+e.getMessage());
+                user.setProfilePictureUrl(previous);
+                input = getInputBy("Try again with a different one. \npress enter to go back.");
+            }
+        }
     }
 
 }
