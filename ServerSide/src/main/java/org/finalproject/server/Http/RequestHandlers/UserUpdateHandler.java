@@ -32,9 +32,10 @@ public class UserUpdateHandler implements RequestHandler {
         User databaseUser = dataBase.getObjectWithId(user.getObjectId());
         if (databaseUser == null) return
                 new Response(HttpURLConnection.HTTP_NOT_FOUND, "record not found to update.");
-        if (!Objects.equals(databaseUser.getPassword(), user.getPassword())) {
-            String passwordResult = passwordValidator.validatePassword(user.getPassword());
+        if (user.getNewPassword()!=null) {
+            String passwordResult = passwordValidator.validatePassword(user.getNewPassword());
             if (passwordResult != null) return new Response(601, passwordResult);
+            else user.setPassword(user.getNewPassword());
         }
         if (!Objects.equals(databaseUser.getUsername(), user.getUsername())) {
             String nameResult = usernameValidator.validateUserName(user.getUsername());

@@ -14,6 +14,7 @@ public class User extends DataObject {
     String emailAddress = "";
     String phoneNumber = "";
     String password;
+    String newPassword;
 
     String profilePictureUrl = "";
     String city = "";
@@ -123,6 +124,13 @@ public class User extends DataObject {
         this.password = password;
     }
 
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 
     @Override
     public String toString() {

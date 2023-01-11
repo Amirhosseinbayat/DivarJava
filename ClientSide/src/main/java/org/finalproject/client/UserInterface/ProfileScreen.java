@@ -29,6 +29,7 @@ public class ProfileScreen extends UIScreen {
         UIUtils.form("5. Phone: ", user.getPhoneNumber());
         UIUtils.form("6. City: ", user.getCity());
         UIUtils.form("7. Profile picture: ", user.getProfilePictureUrl());
+        UIUtils.danger("8. Change your password");
         UIUtils.secondary("Enter the number of any item to edit it, or enter 'back' to go back!");
     }
 
@@ -43,6 +44,7 @@ public class ProfileScreen extends UIScreen {
             case "5" -> processPhoneChange();
             case "6" -> processCityChange();
             case "7" -> processProfilePicChange();
+            case "8" -> processPasswordChange();
             case "back" -> {
                 new HomeMenuScreen(scanner).guide().process();
             }
@@ -82,7 +84,28 @@ public class ProfileScreen extends UIScreen {
             } catch (RequestException e) {
                 UIUtils.danger("failed to update username: "+e.getMessage());
                 user.setUsername(previous);
-                input = getInputBy("Try again, Enter a valid email address. \npress enter to go back.");
+                input = getInputBy("Try again, Enter a valid username. \npress enter to go back.");
+            }
+        }
+    }
+
+    void processPasswordChange() {
+        String input = getInputBy("Do you want to change your password!?\nEnter your new password.\npress enter to go back");
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            user.setNewPassword(input); //current password itself is used for Authentication.
+            // setting newPassword tells the server that we know the current password and want to change it to the new one.
+            try {
+                trySaveUserObject("Update successful.\n"+
+                        "Remember to login with your new password next time.");
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger(e.getMessage());
+                input = getInputBy("Try again, Enter a valid password \npress enter to go back.");
             }
         }
     }
