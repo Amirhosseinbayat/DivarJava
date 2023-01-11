@@ -5,6 +5,7 @@ import org.finalproject.server.Database.IDataBase;
 import org.finalproject.server.Http.Request;
 import org.finalproject.server.Http.Response;
 import org.finalproject.server.Logic.PasswordValidator;
+import org.finalproject.server.Logic.ProfileDataValidator;
 import org.finalproject.server.Logic.UsernameValidator;
 
 import java.net.HttpURLConnection;
@@ -39,6 +40,8 @@ public class UserUpdateHandler implements RequestHandler {
             String nameResult = usernameValidator.validateUserName(user.getUsername());
             if (nameResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, nameResult);
         }
+        String profileResult = new ProfileDataValidator().validateUserProfile(user);
+        if (profileResult!=null)return new Response(HttpURLConnection.HTTP_CONFLICT,profileResult);
         dataBase.save(user);
         return new Response(200, user);
     }
