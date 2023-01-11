@@ -9,6 +9,7 @@ public class HomeMenuScreen extends UIScreen {
 
     public HomeMenuScreen(Scanner scanner) {
         super(scanner);
+        clearScreen();
     }
 
     @Override

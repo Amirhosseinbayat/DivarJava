@@ -102,6 +102,7 @@ public class SalePlacard extends DataObject {
     }
 
     public String getFirstImageUrl() {
+        if (getImagesUrl().isEmpty()) return "";
         return getImagesUrl().toArray(new String[0])[0];
     }
 

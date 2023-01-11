@@ -20,12 +20,16 @@ public abstract class UIScreen {
 
     public UIScreen(Scanner scanner) {
         this.scanner = scanner;
+        clearScreen();
     }
 
     public UIScreen guide() {
-        UIUtils.clearScreen();
         printGuideMessage();
         return this;
+    }
+
+    public void clearScreen() {
+        UIUtils.clearScreen();
     }
 
     abstract void printGuideMessage();
