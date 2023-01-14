@@ -4,6 +4,7 @@ import org.finalproject.DataObject.SalePlacard;
 import org.finalproject.client.Http.RequestException;
 
 import java.util.Scanner;
+import java.util.Set;
 
 public class EditPlacardScreen extends PlacardScreen{
     public EditPlacardScreen(Scanner scanner, SalePlacard placard, UIScreen previousScreen) {
@@ -30,12 +31,12 @@ public class EditPlacardScreen extends PlacardScreen{
         String input = scanner.nextLine();
         switch (input){
             case "1" -> processTitleChange();
-//            case "2" -> processImagesChange();
-//            case "3" -> processDescriptionChange();
-//            case "4" -> processCityChange();
-//            case "5" -> processPriceChange();
-//            case "6" -> processPhoneNumberChange();
-//            case "7" -> processDeletion();
+            case "2" -> processImagesChange();
+            case "3" -> processDescriptionChange();
+            case "4" -> processCityChange();
+            case "5" -> processPriceChange();
+            case "6" -> processPhoneNumberChange();
+            case "7" -> processDeletion();
             case "8" -> {
                 previousScreen.guide().process();
             }
@@ -43,6 +44,7 @@ public class EditPlacardScreen extends PlacardScreen{
     }
 
     private void processTitleChange(){
+        String prevTitle = placard.getTitle();
         String input = getInputBy("Enter new title (press Enter to go back): ");
         while (true) {
             if (input.isEmpty() || input.equals("\n")) {
@@ -55,6 +57,7 @@ public class EditPlacardScreen extends PlacardScreen{
                 trySavePlacardObject("Title changed successfully.");
                 break;
             } catch (RequestException e) {
+                placard.setTitle(prevTitle);
                 UIUtils.danger("failed to update title: "+e.getMessage());
                 input = getInputBy("Try again, Enter a valid title. \npress enter to go back.");
             }
@@ -64,7 +67,7 @@ public class EditPlacardScreen extends PlacardScreen{
 
     private void processImagesChange(){
         String[] images = (String[]) placard.getImagesUrl().toArray();
-        UIUtils.primary("Enter index of image to delete or enter new image url. (press Enter to go back)");
+        UIUtils.primary("Enter index of image to delete or enter new image urls splitted by comma. (press Enter to go back)");
         for(int i = 0; i < images.length; i++)
             UIUtils.secondary((i+1) + ". " + images[i]);
 
@@ -76,20 +79,117 @@ public class EditPlacardScreen extends PlacardScreen{
             }
             try {
                 int imageIndex = Integer.parseInt(input) - 1;
-                if(imageIndex >= 0 && imageIndex < images.length){
+                if(imageIndex >= 0 && imageIndex < images.length)
                    placard.removeImageUrl(images[imageIndex]);
-                }else{
-                    placard.addImageUrl(input);
-                }
-            }catch(NumberFormatException ex){}
+
+            }catch(NumberFormatException ex){
+                for(String imgUrl : input.split(","))
+                    placard.addImageUrl(imgUrl.trim());
+            }
+
+            try {
+                trySavePlacardObject("Images updated successfully.");
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update images: "+e.getMessage());
+                input = getInputBy("Try again, Enter a valid syntax. \npress enter to go back.");
+            }
         }
+    }
+
+    private void processDescriptionChange(){
+        String input = getInputBy("Type new description for your placard (press Enter to go back): ");
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            placard.setDescription(input);
+            try {
+                trySavePlacardObject("Description updated successfully.");
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update description: "+e.getMessage());
+                input = getInputBy("Try again, Enter a valid description. \npress enter to go back.");
+            }
+        }
+    }
+
+    private void processCityChange(){
+        String input = getInputBy("Enter new City for your placard (press Enter to go back): ");
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            placard.setCity(input);
+            try {
+                trySavePlacardObject("Related city updated successfully.");
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update related city: "+e.getMessage());
+                input = getInputBy("Try again, Enter a valid city. \npress enter to go back.");
+            }
+        }
+    }
+
+    private void processPriceChange(){
+        String input = getInputBy("Type new price in rials for your placard (press Enter to go back): ");
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            while(true){
+                try{
+                    long price = Long.parseLong(input);
+                    break;
+                }catch(NumberFormatException ex){
+                    UIUtils.warning("Price must be a numeric value. try again");
+                    input = scanner.nextLine();
+                }
+            }
+            try {
+                trySavePlacardObject("Price of placard updated successfully.");
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update price: "+e.getMessage());
+                input = getInputBy("Try again, Enter a valid price in rials. \npress enter to go back.");
+            }
+        }
+    }
+
+    private void processPhoneNumberChange(){
+        String input = getInputBy("Enter new phone number (press Enter to go back): ");
+        while (true) {
+            if (input.isEmpty() || input.equals("\n")) {
+                guide();
+                process();
+                return;
+            }
+            placard.setPhoneNumber(input);
+            try {
+                trySavePlacardObject("Phone number updated successfully.");
+                break;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update phone number: "+e.getMessage());
+                input = getInputBy("Try again, Enter a valid phone number. \npress enter to go back.");
+            }
+        }
+    }
+
+    private void processDeletion(){
+        //TODO related http request to delete the placard
     }
     void trySavePlacardObject() throws RequestException {
         trySavePlacardObject("Update successful!");
     }
 
     void trySavePlacardObject(String message) throws RequestException {
-        //TODO related http request to update placard
+        //TODO related http request to update the placard
         UIUtils.successful(message);
         guide();
         processInput();

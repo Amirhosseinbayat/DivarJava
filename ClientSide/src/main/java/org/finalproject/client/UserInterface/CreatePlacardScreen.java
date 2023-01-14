@@ -31,7 +31,6 @@ public class CreatePlacardScreen extends UIScreen{
         processCity();
         processAddress();
         processPhoneNumber();
-        // TODO placard.setUserId
         trySavePlacard();
     }
 
