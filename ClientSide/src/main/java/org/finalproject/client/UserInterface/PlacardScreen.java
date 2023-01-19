@@ -28,27 +28,39 @@ public class PlacardScreen extends UIScreen{
         UIUtils.placardTemplate(0, placard, false);
         UIUtils.hr();
         if(isOwnedByUser()){
-            UIUtils.options("Edit placard details", "Back to previous page");
+            UIUtils.secondary("1. Edit placard details");
+            if(!isSpecialPlacard())
+                UIUtils.secondary("2. Make it special");
         }else{
-            UIUtils.options(isUserWish() ? "Remove from wish list" : "Add to wish list", "Back to previous page");
+            UIUtils.options(isUserWish() ? "Remove from wish list" : "Add to wish list");
         }
-
+        UIUtils.secondary("Type 'back' to go back.");
     }
 
     @Override
     void processInput() {
         String line = scanner.nextLine();
-        if (line.equals("1")) {
-            if(isOwnedByUser()){
-                new EditPlacardScreen(scanner, placard, previousScreen).guide().process();
-            }else{
-                toggleWishStatus();
+        switch(line){
+            case "1" ->{
+                if(isOwnedByUser()){
+                    new EditPlacardScreen(scanner, placard, previousScreen).guide().process();
+                }else{
+                    toggleWishStatus();
+                }
             }
-        } else if(line.equals("2")){
-            previousScreen.guide().process();
-        }
-        else {
-            this.restartWithError(line + " is not a meaningful command in this context.");
+            case "2" -> {
+                if(!isSpecialPlacard()){
+                    new PaymentScreen(scanner, this, placard).guide().process();
+                }else{
+                    this.restartWithError(line + " is not a meaningful command in this context.");
+                }
+            }
+            case "back" -> {
+                previousScreen.guide().process();
+            }
+            default -> {
+                this.restartWithError(line + " is not a meaningful command in this context.");
+            }
         }
     }
 
@@ -68,6 +80,11 @@ public class PlacardScreen extends UIScreen{
     private boolean isOwnedByUser(){
         //TODO check placard objectId whether is in the user placard list
         return true;
+    }
+
+    private boolean isSpecialPlacard(){
+        //TODO check placard is paid to be special
+        return false;
     }
 
     void trySaveUserObject(String message) {

@@ -40,7 +40,7 @@ public class WishPlacardsScreen extends UIScreen{
             int index = Integer.parseInt(input) - 1;
             new PlacardScreen(scanner, placards.get(index), this).guide().process();
             return;
-        }catch(NumberFormatException ex){
+        }catch(Exception ex){
             restartWithError(input+" is not a meaningful command in this context.");
         }
     }
