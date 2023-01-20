@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MyPlacardsScreen extends PlacardsScreen{
-    private List<SalePlacard> placards;
+
     public MyPlacardsScreen(Scanner scanner) {
         super(scanner);
-        placards = fetchMyPlacards();
+        placardList = fetchMyPlacards();
     }
 
     @Override
     void printGuideMessage() {
         UIUtils.header("My Placards Page");
         //TODO remove this assignment
-        List<SalePlacard> placards = getTestPlacards();
-        printPlacards(placards);
+        placardList = getTestPlacards();
+        printPlacards();
         UIUtils.secondary("Select placard to see more details. type 'back' to go back.");
     }
 
@@ -30,7 +30,7 @@ public class MyPlacardsScreen extends PlacardsScreen{
         }
         try{
             int index = Integer.parseInt(input) - 1;
-            new PlacardScreen(scanner, placards.get(index), this).guide().process();
+            new PlacardScreen(scanner, placardList.get(index), this).guide().process();
             return;
         }catch(Exception ex){
             restartWithError(input+" is not a meaningful command in this context.");

@@ -18,6 +18,8 @@ public class SalePlacard extends DataObject {
     private String address = "";
     private String phoneNumber = "";
 
+    long promotionExpireData = -1;
+
     public long getCreatedBy() {
         return createdBy;
     }
@@ -102,10 +104,24 @@ public class SalePlacard extends DataObject {
     }
 
     public String getFirstImageUrl() {
+        if (getImagesUrl().isEmpty()) return "";
         return getImagesUrl().toArray(new String[0])[0];
     }
 
     public String getShortenedDescription() {
         return getDescription().substring(0, Math.min(getDescription().length(), 60));
+    }
+
+    public boolean isCreatedBy(User user) {
+        return getCreatedBy() == user.getObjectId();
+    }
+
+
+    public long getPromotionExpireData() {
+        return promotionExpireData;
+    }
+
+    public void setPromotionExpireData(long promotionExpireData) {
+        this.promotionExpireData = promotionExpireData;
     }
 }

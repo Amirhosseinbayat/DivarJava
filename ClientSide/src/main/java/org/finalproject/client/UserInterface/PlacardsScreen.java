@@ -15,6 +15,7 @@ public class PlacardsScreen extends UIScreen {
 
     PlacardQuery placardQuery;
 
+    protected List<SalePlacard> placardList;
     public PlacardsScreen(Scanner scanner) {
         super(scanner);
         placardQuery = new PlacardQuery();
@@ -35,12 +36,12 @@ public class PlacardsScreen extends UIScreen {
         UIUtils.form("2. City: ", placardQuery.getCity());
         UIUtils.form("3. Sort: ", placardQuery.getOrderByHumanReadable());
         UIUtils.form("4. Price Range: ", placardQuery.getPriceRange());
-        UIUtils.secondary("Press Enter to fetch results. send 'back' to go back.");
+        UIUtils.secondary("Press Enter to fetch results | send #N to select placard N | send 'back' to go back ");
     }
 
-    void printPlacards(List<SalePlacard> list) {
+    void printPlacards() {
         int i = 1;
-        for (SalePlacard placard : list) {
+        for (SalePlacard placard : placardList) {
             UIUtils.placardTemplate(i++, placard,true);
         }
     }
@@ -84,9 +85,15 @@ public class PlacardsScreen extends UIScreen {
             case "4" -> processPriceRange();
             case "back" -> {new HomeMenuScreen(scanner).guide().process();}
         }
+        if (input.startsWith("#")){
+            int placardIndex = Integer.parseInt(input.replace("#",""))-1;
+            SalePlacard placard = placardList.get(placardIndex);
+            new PlacardScreen(scanner,placard,this).guide().process();
+            return;
+        }
         if (input.isEmpty() || input.equals("\n")) {
-            List<SalePlacard> list = getPlacards(placardQuery);
-            printPlacards(list);
+            placardList = getPlacards(placardQuery);
+            printPlacards();
             printQuery();
             process();
         }

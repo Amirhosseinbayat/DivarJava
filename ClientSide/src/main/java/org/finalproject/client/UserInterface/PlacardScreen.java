@@ -27,9 +27,9 @@ public class PlacardScreen extends UIScreen{
         UIUtils.header("Placard Details");
         UIUtils.placardTemplate(0, placard, false);
         UIUtils.hr();
-        if(isOwnedByUser()){
+        if(placard.isCreatedBy(user)){
             UIUtils.secondary("1. Edit placard details");
-            if(!isSpecialPlacard())
+            if(placard.isStillPromoted())
                 UIUtils.secondary("2. Make it special");
         }else{
             UIUtils.options(isUserWish() ? "Remove from wish list" : "Add to wish list");
@@ -42,14 +42,14 @@ public class PlacardScreen extends UIScreen{
         String line = scanner.nextLine();
         switch(line){
             case "1" ->{
-                if(isOwnedByUser()){
+                if(placard.isCreatedBy(user)){
                     new EditPlacardScreen(scanner, placard, previousScreen).guide().process();
                 }else{
                     toggleWishStatus();
                 }
             }
             case "2" -> {
-                if(!isSpecialPlacard()){
+                if(!placard.isStillPromoted()){
                     new PaymentScreen(scanner, this, placard).guide().process();
                 }else{
                     this.restartWithError(line + " is not a meaningful command in this context.");
@@ -75,16 +75,6 @@ public class PlacardScreen extends UIScreen{
         UIUtils.successful("(press Enter to continue: )");
         scanner.nextLine();
         previousScreen.guide().process();
-    }
-
-    private boolean isOwnedByUser(){
-        //TODO check placard objectId whether is in the user placard list
-        return true;
-    }
-
-    private boolean isSpecialPlacard(){
-        //TODO check placard is paid to be special
-        return false;
     }
 
     void trySaveUserObject(String message) {
