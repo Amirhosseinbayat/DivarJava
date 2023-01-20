@@ -5,25 +5,20 @@ import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
-import java.util.Scanner;
+import org.finalproject.client.ImprovedUserInterface.Navigation;
 
-public class CreatePlacardScreen extends UIScreen{
+public class CreatePlacardScreen extends UIScreen {
     private SalePlacard placard;
     private User user;
 
-    public CreatePlacardScreen(Scanner scanner) {
-        super(scanner);
-        this.user = ClientConfiguration.getInstance().getUser();
+    public CreatePlacardScreen(User user) {
+        this.user = user;
     }
 
 
     @Override
-    void printGuideMessage() {
+    public void startScreen() {
         UIUtils.header("Create Placard");
-    }
-
-    @Override
-    void processInput() {
         processTitle();
         processDescription();
         processImagesUrl();
@@ -43,21 +38,21 @@ public class CreatePlacardScreen extends UIScreen{
             UIUtils.successful("successfully published your placard!(press Enter to continue)");
             scanner.nextLine();
 
-            new HomeMenuScreen(scanner).guide().process();
+            Navigation.popBackStack();
         }catch(RequestException ex){
-            restartWithError(ex.getMessage());
+            ex.printDetails();
         }
     }
 
     private void processTitle(){
         UIUtils.primary("Enter a short title for your placard:");
-        String title = notEmptyInput(scanner.nextLine());
+        String title = requiredPrompt(scanner.nextLine());
         placard = new SalePlacard(title);
     }
 
     private void processDescription(){
         UIUtils.primary("Write some description about what you are selling: ");
-        String description = notEmptyInput(scanner.nextLine());
+        String description = requiredPrompt(scanner.nextLine());
         placard.setDescription(description);
     }
 
@@ -66,7 +61,7 @@ public class CreatePlacardScreen extends UIScreen{
         while(true){
             try{
                 UIUtils.primary("Enter it's price in rials: ");
-                String input = notEmptyInput(scanner.nextLine());
+                String input = requiredPrompt(scanner.nextLine());
                 price = Long.parseLong(input);
                 break;
             }catch(NumberFormatException ex){
@@ -83,13 +78,13 @@ public class CreatePlacardScreen extends UIScreen{
 
         }
         String city = scanner.nextLine();
-        city = city.equals("") ? notEmptyInput(user.getCity()) : city;
+        city = city.equals("") ? requiredPrompt(user.getCity()) : city;
         placard.setCity(city);
     }
 
     private void processAddress(){
         UIUtils.primary("Address related to placard: ");
-        String address = notEmptyInput(scanner.nextLine());
+        String address = requiredPrompt(scanner.nextLine());
         placard.setAddress(address);
     }
 
@@ -99,13 +94,13 @@ public class CreatePlacardScreen extends UIScreen{
             UIUtils.secondary(user.getPhoneNumber() + " (press Enter to continue with your phone number or type desired phone number: )");
         }
         String phoneNumber = scanner.nextLine();
-        phoneNumber = phoneNumber.equals("") ? notEmptyInput(user.getPhoneNumber()) : phoneNumber;
+        phoneNumber = phoneNumber.equals("") ? requiredPrompt(user.getPhoneNumber()) : phoneNumber;
         placard.setPhoneNumber(phoneNumber);
     }
 
     private void processImagesUrl(){
         UIUtils.primary("Enter image urls splited by comma. (ex: img1.jpg, img2.jpg): ");
-        String imagesUrlRaw = notEmptyInput(scanner.nextLine());
+        String imagesUrlRaw = requiredPrompt(scanner.nextLine());
         for(String imageUrl : imagesUrlRaw.split(","))
             placard.addImageUrl(imageUrl.trim());
     }

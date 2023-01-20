@@ -1,29 +1,32 @@
 package org.finalproject.client.UserInterface;
 
-import java.util.Scanner;
+import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
+import org.finalproject.client.ImprovedUserInterface.InputHandler;
+import org.finalproject.client.ImprovedUserInterface.Navigation;
 
 public class AuthMenuScreen extends UIScreen {
-    public AuthMenuScreen(Scanner scanner) {
-        super(scanner);
+    InputHandler inputHandler = new BackSupportedInputHandler("3") {
+        @Override
+        public boolean handleValidInput(String input) {
+            switch (input) {
+                case "1" -> Navigation.navigateTo(new SignUpScreen());
+                case "2" -> Navigation.navigateTo(new LoginScreen());
+                default -> {
+                    return false;
+                }
+            }
+            return true;
+        }
+    };
+
+    public AuthMenuScreen() {
+
     }
 
     @Override
-    void printGuideMessage() {
+    public void startScreen() {
         UIUtils.header("Main Menu");
         UIUtils.options("Sign up", "Log in", "Exit");
-    }
-
-    @Override
-    void processInput() {
-        String line = scanner.nextLine();
-        switch (line) {
-            case "1" -> new SignUpScreen(scanner).guide().process();
-            case "2" -> new LoginScreen(scanner).guide().process();
-            case "3" -> {
-                UIUtils.primary("Good bye!");
-                System.exit(0);
-            }
-            default -> this.restartWithError(line+" is not a meaningful command in this context.");
-        }
+        promptInput(inputHandler);
     }
 }

@@ -2,45 +2,45 @@ package org.finalproject.client.UserInterface;
 
 import org.finalproject.DataObject.SalePlacard;
 import org.finalproject.client.Http.RequestException;
+import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
+import org.finalproject.client.ImprovedUserInterface.Navigation;
 
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class PaymentScreen extends UIScreen{
-    private UIScreen previousScreen;
+public class PaymentScreen extends UIScreen {
     private SalePlacard placard;
-    public PaymentScreen(Scanner scanner, UIScreen previousScreen, SalePlacard placard) {
-        super(scanner);
-        this.previousScreen = previousScreen;
+
+    public PaymentScreen(SalePlacard placard) {
+        super();
         this.placard = placard;
     }
 
     @Override
-    void printGuideMessage() {
+    public void startScreen() {
         UIUtils.header("Payment Screen");
-    }
+        String input = prompt("Enter your card number or 'back' to go back");
+        promptInput(new BackSupportedInputHandler() {
+            @Override
+            public boolean handleValidInput(String input) {
+                while (!Pattern.matches("[0-9]{16}", input)) {
+                    UIUtils.danger("Invalid card number format. try again");
+                    input = scanner.nextLine();
+                }
+                prompt("Now enter secondary password of your card.");
+                try {
+                    makeThePlacardSpecial();
+                    return true;
+                } catch (RequestException ex) {
+                    System.out.println("Failed to specialize the placard."+ex.getMessage());
+                    return false;
+                }
+            }
+        });
 
-    @Override
-    void processInput() {
-        String input = getInputBy("Enter your card number or 'back' to go back");
-        if(input.equals("back")){
-            previousScreen.guide().process();
-            return;
-        }
-        while(!Pattern.matches("[0-9]{16}", input)){
-            UIUtils.danger("Invalid card number format. try again");
-            input = scanner.nextLine();
-        }
-        getInputBy("Now enter secondary password of your card.");
-        try{
-            makeThePlacardSpecial();
-        }catch(RequestException ex){
-            restartWithError("Failed to specialize the placard." + ex.getMessage());
-        }
 
         UIUtils.successful("Payment has done successfully. press Enter to go back");
         scanner.nextLine();
-        previousScreen.guide().process();
+        Navigation.popBackStack();
     }
 
     void makeThePlacardSpecial() throws RequestException{

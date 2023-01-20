@@ -4,6 +4,7 @@ import org.finalproject.client.Http.HttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
+import org.finalproject.client.ImprovedUserInterface.Navigation;
 import org.finalproject.client.UserInterface.AuthMenuScreen;
 
 import java.nio.charset.Charset;
@@ -26,7 +27,7 @@ public class ClientMain {
             }
         }
         if (args.length != 0 && args[0].equals("--expert")) expertMode();
-        else new AuthMenuScreen(new Scanner(System.in)).guide().process();
+        else Navigation.navigateTo(new AuthMenuScreen());
     }
 
     static void expertMode() {

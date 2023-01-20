@@ -8,7 +8,7 @@ import java.util.Objects;
  * DataObjects will contain data that either has to be transmitted over network or saved in database.
  * These objects will be serializable.
  */
-public class DataObject implements Serializable {
+public class DataObject implements Serializable, Cloneable {
 
     public static final int RECORD_LIMIT = 1024;
     //should be increased when serialized versions of older objects can not be deserialized to the new class...
@@ -95,5 +95,14 @@ public class DataObject implements Serializable {
 
     public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public DataObject clone() {
+        try {
+            return (DataObject) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

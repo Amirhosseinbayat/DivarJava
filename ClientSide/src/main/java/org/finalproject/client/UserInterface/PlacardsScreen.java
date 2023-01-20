@@ -6,27 +6,21 @@ import org.finalproject.client.ClientConfiguration;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
+import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
+import org.finalproject.client.ImprovedUserInterface.Navigation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class PlacardsScreen extends UIScreen {
 
     PlacardQuery placardQuery;
 
     protected List<SalePlacard> placardList;
-    public PlacardsScreen(Scanner scanner) {
-        super(scanner);
+
+    public PlacardsScreen() {
         placardQuery = new PlacardQuery();
         placardQuery.setCity(ClientConfiguration.getInstance().getUser().getCity());
-    }
-
-    @Override
-    void printGuideMessage() {
-        UIUtils.header("Placards Page");
-        UIUtils.primary("What kind of placards are you looking for?");
-        printQuery();
     }
 
     void printQuery() {
@@ -76,27 +70,36 @@ public class PlacardsScreen extends UIScreen {
 
 
     @Override
-    void processInput() {
+    public void startScreen() {
+        UIUtils.header("Placards Page");
+        UIUtils.primary("What kind of placards are you looking for?");
+        printQuery();
         String input = scanner.nextLine();
-        switch (input) {
-            case "1" -> processSearchText();
-            case "2" -> processCityName();
-            case "3" -> processSort();
-            case "4" -> processPriceRange();
-            case "back" -> {new HomeMenuScreen(scanner).guide().process();}
-        }
-        if (input.startsWith("#")){
-            int placardIndex = Integer.parseInt(input.replace("#",""))-1;
-            SalePlacard placard = placardList.get(placardIndex);
-            new PlacardScreen(scanner,placard,this).guide().process();
-            return;
-        }
-        if (input.isEmpty() || input.equals("\n")) {
-            placardList = getPlacards(placardQuery);
-            printPlacards();
-            printQuery();
-            process();
-        }
+        promptInput(new BackSupportedInputHandler() {
+            @Override
+            public boolean handleValidInput(String input) {
+                switch (input) {
+                    case "1" -> processSearchText();
+                    case "2" -> processCityName();
+                    case "3" -> processSort();
+                    case "4" -> processPriceRange();
+                }
+                if (input.startsWith("#")) {
+                    int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
+                    SalePlacard placard = placardList.get(placardIndex);
+                    Navigation.navigateTo(new PlacardScreen(placard));
+                    return true;
+                }
+                if (input.isEmpty() || input.equals("\n")) {
+                    placardList = getPlacards(placardQuery);
+                    printPlacards();
+                    printQuery();
+                    startScreen();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void processPriceRange() {
@@ -112,7 +115,7 @@ public class PlacardsScreen extends UIScreen {
                 }
                 if (input.equals("back")) {
                     printQuery();
-                    process();
+                    startScreen();
                     return;
                 }
                 max = Long.parseLong(input);
@@ -132,7 +135,7 @@ public class PlacardsScreen extends UIScreen {
                 }
                 if (input.equals("back")) {
                     printQuery();
-                    process();
+                    startScreen();
                     return;
                 }
                 min = Long.parseLong(input);
@@ -145,7 +148,7 @@ public class PlacardsScreen extends UIScreen {
         placardQuery.setPriceLessThan(max);
         placardQuery.setPriceGreaterThan(min);
         printQuery();
-        process();
+        startScreen();
     }
 
     private void processSort() {
@@ -162,7 +165,7 @@ public class PlacardsScreen extends UIScreen {
         String input = scanner.nextLine();
         if (input.isEmpty() || input.equals("\n")) {
             printQuery();
-            process();
+            startScreen();
             return;
         }
         switch (input) {
@@ -177,7 +180,7 @@ public class PlacardsScreen extends UIScreen {
             }
         }
         printQuery();
-        process();
+        startScreen();
     }
 
     void processSearchText() {
@@ -186,12 +189,12 @@ public class PlacardsScreen extends UIScreen {
         String input = scanner.nextLine();
         if (input.isEmpty() || input.equals("\n")) {
             printQuery();
-            process();
+            startScreen();
             return;
         }
         placardQuery.setSearchText(input);
         printQuery();
-        process();
+        startScreen();
     }
 
     void processCityName() {
@@ -200,12 +203,12 @@ public class PlacardsScreen extends UIScreen {
         String input = scanner.nextLine();
         if (input.isEmpty() || input.equals("\n")) {
             printQuery();
-            process();
+            startScreen();
             return;
         }
         placardQuery.setCity(input);
         printQuery();
-        process();
+        startScreen();
     }
 
 

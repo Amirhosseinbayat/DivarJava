@@ -7,61 +7,59 @@ import org.finalproject.client.Http.IHttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
-
-import java.util.Scanner;
+import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
+import org.finalproject.client.ImprovedUserInterface.Navigation;
 
 public class PlacardScreen extends UIScreen{
     SalePlacard placard;
     User user;
-    UIScreen previousScreen;
 
-    public PlacardScreen(Scanner scanner, SalePlacard placard, UIScreen previousScreen) {
-        super(scanner);
+    public PlacardScreen(SalePlacard placard) {
         this.placard = placard;
         this.user = ClientConfiguration.getInstance().getUser();
-        this.previousScreen = previousScreen;
     }
 
     @Override
-    void printGuideMessage() {
+    public void startScreen() {
         UIUtils.header("Placard Details");
         UIUtils.placardTemplate(0, placard, false);
         UIUtils.hr();
-        if(placard.isCreatedBy(user)){
+        if (placard.isCreatedBy(user)) {
             UIUtils.secondary("1. Edit placard details");
-            if(placard.isStillPromoted())
+            if (placard.isStillPromoted())
                 UIUtils.secondary("2. Make it special");
-        }else{
+        } else {
             UIUtils.options(isUserWish() ? "Remove from wish list" : "Add to wish list");
         }
         UIUtils.secondary("Type 'back' to go back.");
-    }
 
-    @Override
-    void processInput() {
-        String line = scanner.nextLine();
-        switch(line){
-            case "1" ->{
-                if(placard.isCreatedBy(user)){
-                    new EditPlacardScreen(scanner, placard, previousScreen).guide().process();
-                }else{
-                    toggleWishStatus();
+        promptInput(new BackSupportedInputHandler() {
+            @Override
+            public boolean handleValidInput(String input) {
+                switch (input) {
+                    case "1" -> {
+                        if (placard.isCreatedBy(user)) {
+                            Navigation.navigateTo(new EditPlacardScreen(placard));
+                        } else {
+                            toggleWishStatus();
+                        }
+                    }
+                    case "2" -> {
+                        if (!placard.isStillPromoted()) {
+                            Navigation.navigateTo(new PaymentScreen(placard));
+                        } else {
+                            return false;
+                        }
+                    }
+                    case "back" -> Navigation.popBackStack();
+                    default -> {
+                        System.out.println(input+" is not a meaningful command in this context.");
+                        return false;
+                    }
                 }
+                return true;
             }
-            case "2" -> {
-                if(!placard.isStillPromoted()){
-                    new PaymentScreen(scanner, this, placard).guide().process();
-                }else{
-                    this.restartWithError(line + " is not a meaningful command in this context.");
-                }
-            }
-            case "back" -> {
-                previousScreen.guide().process();
-            }
-            default -> {
-                this.restartWithError(line + " is not a meaningful command in this context.");
-            }
-        }
+        });
     }
 
     private boolean isUserWish(){
@@ -74,7 +72,7 @@ public class PlacardScreen extends UIScreen{
         trySaveUserObject("The placard " + (isUserWish()? "removed from": "added to")  + " your wish list successfully");
         UIUtils.successful("(press Enter to continue: )");
         scanner.nextLine();
-        previousScreen.guide().process();
+        Navigation.popBackStack();
     }
 
     void trySaveUserObject(String message) {

@@ -126,6 +126,15 @@ public class SalePlacard extends DataObject {
     }
 
     public boolean isStillPromoted() {
-        return this.getPromotionExpireData() > System.currentTimeMillis();
+        return this.getPromotionExpireData()>System.currentTimeMillis();
+    }
+
+    @Override
+    public DataObject clone() {
+        SalePlacard clone = (SalePlacard) super.clone();
+        for (String imgUrl : imagesUrl) {
+            clone.addImageUrl(imgUrl);
+        }
+        return clone;
     }
 }
