@@ -1,9 +1,6 @@
 package org.finalproject.client.UserInterface;
 
 
-import org.finalproject.client.ImprovedUserInterface.InputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
-
 import java.util.Scanner;
 
 @SuppressWarnings("unused")
@@ -37,12 +34,12 @@ public abstract class UIScreen {
         }
     }
 
-    String prompt(String guide) {
+    protected String prompt(String guide) {
         UIUtils.secondary(guide);
         return scanner.nextLine();
     }
 
-    String requiredPrompt(String input) {
+    protected String requiredPrompt(String input) {
         if (input.isEmpty() || input.isBlank()) {
             UIUtils.warning("You can't leave this field blank.");
             requiredPrompt(scanner.nextLine());

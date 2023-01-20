@@ -1,4 +1,4 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.SalePlacard;
 import org.finalproject.DataObject.User;
@@ -7,14 +7,16 @@ import org.finalproject.client.Http.IHttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.BackSupportedInputHandler;
+import org.finalproject.client.UserInterface.Navigation;
+import org.finalproject.client.UserInterface.UIScreen;
+import org.finalproject.client.UserInterface.UIUtils;
 
-public class PlacardScreen extends UIScreen{
+public class PlacardDetailsScreen extends UIScreen {
     SalePlacard placard;
     User user;
 
-    public PlacardScreen(SalePlacard placard) {
+    public PlacardDetailsScreen(SalePlacard placard) {
         this.placard = placard;
         this.user = ClientConfiguration.getInstance().getUser();
     }
@@ -39,7 +41,7 @@ public class PlacardScreen extends UIScreen{
                 switch (input) {
                     case "1" -> {
                         if (placard.isCreatedBy(user)) {
-                            Navigation.navigateTo(new EditPlacardScreen(placard));
+                            Navigation.navigateTo(new PlacardEditScreen(user, placard));
                         } else {
                             toggleWishStatus();
                         }

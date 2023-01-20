@@ -1,10 +1,8 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.InputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.*;
 
 public class HomeMenuScreen extends UIScreen {
 
@@ -14,10 +12,10 @@ public class HomeMenuScreen extends UIScreen {
         public boolean handleValidInput(String input) {
             switch (input) {
                 case "1" -> Navigation.navigateTo(new ProfileScreen());
-                case "2" -> Navigation.navigateTo(new PlacardsScreen());
+                case "2" -> Navigation.navigateTo(new PlacardListScreen());
                 case "3" -> Navigation.navigateTo(new WishPlacardsScreen());
-                case "4" -> Navigation.navigateTo(new CreatePlacardScreen(user));
-                case "5" -> Navigation.navigateTo(new MyPlacardsScreen());
+                case "4" -> Navigation.navigateTo(new PlacardCreateScreen(user));
+                case "5" -> Navigation.navigateTo(new MyPlacardListScreen());
                 case "6" -> {
                     ClientConfiguration.getInstance().logOutUser();
                     Navigation.navigateTo(new AuthMenuScreen());

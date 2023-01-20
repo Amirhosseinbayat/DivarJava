@@ -1,4 +1,4 @@
-package org.finalproject.client.ImprovedUserInterface;
+package org.finalproject.client.UserInterface;
 
 public abstract class BackSupportedInputHandler implements InputHandler {
 

@@ -140,4 +140,9 @@ public class User extends DataObject {
                 ", objectId="+objectId+
                 '}';
     }
+
+    @Override
+    public User clone() {
+        return (User) super.clone();
+    }
 }

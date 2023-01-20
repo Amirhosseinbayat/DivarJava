@@ -4,8 +4,8 @@ import org.finalproject.client.Http.HttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
-import org.finalproject.client.UserInterface.AuthMenuScreen;
+import org.finalproject.client.UserInterface.Navigation;
+import org.finalproject.client.UserInterface.Screens.AuthMenuScreen;
 
 import java.nio.charset.Charset;
 import java.util.Scanner;

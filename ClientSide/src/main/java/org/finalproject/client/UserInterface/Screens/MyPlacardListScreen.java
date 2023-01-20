@@ -1,15 +1,16 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.SalePlacard;
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.BackSupportedInputHandler;
+import org.finalproject.client.UserInterface.Navigation;
+import org.finalproject.client.UserInterface.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPlacardsScreen extends PlacardsScreen{
+public class MyPlacardListScreen extends PlacardListScreen {
 
-    public MyPlacardsScreen() {
+    public MyPlacardListScreen() {
         placardList = fetchMyPlacards();
     }
 
@@ -25,7 +26,7 @@ public class MyPlacardsScreen extends PlacardsScreen{
             public boolean handleValidInput(String input) {
                 try {
                     int index = Integer.parseInt(input)-1;
-                    Navigation.navigateTo(new PlacardScreen(placardList.get(index)));
+                    Navigation.navigateTo(new PlacardDetailsScreen(placardList.get(index)));
                     return true;
                 } catch (Exception ex) {
                     System.out.println(input+" is not a meaningful command in this context.");

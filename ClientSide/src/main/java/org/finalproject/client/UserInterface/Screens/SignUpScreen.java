@@ -1,4 +1,4 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
@@ -6,9 +6,7 @@ import org.finalproject.client.Http.IHttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.InputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.*;
 
 public class SignUpScreen extends UIScreen {
     String userName;
@@ -79,7 +77,7 @@ public class SignUpScreen extends UIScreen {
                 ClientConfiguration.getInstance().setUser(response.getResponseBody());
                 UIUtils.successful("Sign up done! press Enter to continue");
                 scanner.nextLine();
-                Navigation.navigateTo(new HomeMenuScreen(user));
+                Navigation.clearRootNavigate(new HomeMenuScreen(user));
                 return true;
             } catch (RequestException e) {
                 UIUtils.danger("failed to update Email: "+e.getMessage());

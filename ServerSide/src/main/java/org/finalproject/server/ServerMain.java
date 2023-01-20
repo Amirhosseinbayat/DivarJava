@@ -61,7 +61,7 @@ public class ServerMain {
                 , new UserNameHandler(dataBase)
                 , new LoginHandler(dataBase)
                 , new UserUpdateHandler(dataBase)
-                , new PlacardCreationHandler(dataBase)
+                , new PlacardSaveHandler(dataBase)
                 , new GetPlacardsHandler(dataBase));
         server = HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
         server.createContext("/", manager);

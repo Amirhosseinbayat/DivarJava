@@ -53,19 +53,22 @@ public class UIUtils {
         if (index != 0)
             form("#: ", Integer.toString(index));
         if(hideDetails){
-            form("Images: ", (String) placard.getImagesUrl().toArray()[0]);
-        }else{
-            form("Images: ", placard.getImagesUrl().toString());
+            form("First Image: ", placard.getFirstImageUrl());
+        } else {
+            form("Images: ", placard.getImageUrlSet().toString());
         }
         form("Title: ", placard.getTitle());
-        if(hideDetails){
+        if (hideDetails) {
             form("Description: ", placard.getDescription().substring(0, Math.min(placard.getDescription().length(), 60)));
-        }else{
-            form("Description: ", placard.getDescription());
+        } else {
+            form("Full Description: ", placard.getDescription());
         }
         form("City: ", placard.getCity());
-        form("Price: ", placard.getPriceInRials() + " Rials");
-        if(!hideDetails){
+        if (!hideDetails) {
+            form("Address: ", placard.getAddress());
+        }
+        form("Price: ", placard.getPriceInRials()+" Rials");
+        if (!hideDetails) {
             form("Contact: ", placard.getPhoneNumber());
         }
     }

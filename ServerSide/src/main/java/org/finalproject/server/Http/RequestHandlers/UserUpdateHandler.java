@@ -35,7 +35,10 @@ public class UserUpdateHandler implements RequestHandler {
         if (user.getNewPassword()!=null) {
             String passwordResult = passwordValidator.validatePassword(user.getNewPassword());
             if (passwordResult != null) return new Response(601, passwordResult);
-            else user.setPassword(user.getNewPassword());
+            else{
+                user.setPassword(user.getNewPassword());
+                user.setNewPassword(null); //clear newPassword field to avoid reprocessing it.
+            }
         }
         if (!Objects.equals(databaseUser.getUsername(), user.getUsername())) {
             String nameResult = usernameValidator.validateUserName(user.getUsername());

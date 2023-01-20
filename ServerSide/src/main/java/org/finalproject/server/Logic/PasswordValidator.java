@@ -1,6 +1,6 @@
 package org.finalproject.server.Logic;
 
-public class PasswordValidator implements BusinessLogic {
+public class PasswordValidator {
     public static boolean isTheNumberAPowerOfTwo(int number) {
         /*
          * a binary representation of a power of two will be like 10000... , and if we subtract 1 from it, it will

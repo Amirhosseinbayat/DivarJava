@@ -8,11 +8,11 @@ import org.finalproject.server.Http.Response;
 
 import java.net.HttpURLConnection;
 
-public class PlacardCreationHandler implements RequestHandler {
+public class PlacardSaveHandler implements RequestHandler {
 
     IDataBase dataBase; //dependency injection.
 
-    public PlacardCreationHandler(IDataBase dataBase) {
+    public PlacardSaveHandler(IDataBase dataBase) {
         this.dataBase = dataBase;
     }
 
@@ -22,9 +22,12 @@ public class PlacardCreationHandler implements RequestHandler {
         User user = request.getUser();
         if (user == null) return new Response(HttpURLConnection.HTTP_UNAUTHORIZED
                 , "you need to signUp/logIn to create a placard.");
+        SalePlacard original;
         if (salePlacard.getObjectId() != -1) {
-            if (user.getObjectId() != -1) return new Response(HttpURLConnection.HTTP_CONFLICT, "Security exception. "+
-                    "Do not try to hack us!"); //avoids setting objectId on creation and overwriting another placard.
+            original = dataBase.getObjectWithId(salePlacard.getObjectId());
+            if (original==null)return new Response(HttpURLConnection.HTTP_NOT_FOUND,"placard not found.");
+            if (!original.isCreatedBy(user)){return new Response(HttpURLConnection.HTTP_UNAUTHORIZED
+                    ,"You are not authorized to edit this placard.");}
         }
 
         salePlacard.setCreatedBy(user.getObjectId()); //ensures createdBy is set to this user (prevent hack)
@@ -36,6 +39,6 @@ public class PlacardCreationHandler implements RequestHandler {
 
     @Override
     public String getHandlerCode() {
-        return "POST:/placard/new";
+        return "POST:/placard/";
     }
 }

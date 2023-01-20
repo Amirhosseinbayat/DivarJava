@@ -1,6 +1,4 @@
-package org.finalproject.client.ImprovedUserInterface;
-
-import org.finalproject.client.UserInterface.UIScreen;
+package org.finalproject.client.UserInterface;
 
 import java.util.Stack;
 
@@ -15,6 +13,11 @@ public class Navigation {
 
     public static void popNavigate(UIScreen uiScreen) {
         if (!backStack.isEmpty()) backStack.pop();
+        navigateTo(uiScreen);
+    }
+
+    public static void clearRootNavigate(UIScreen uiScreen) {
+        backStack.clear();
         navigateTo(uiScreen);
     }
 

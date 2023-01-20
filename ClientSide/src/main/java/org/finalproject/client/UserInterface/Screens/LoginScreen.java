@@ -1,13 +1,11 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.InputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.*;
 
 public class LoginScreen extends UIScreen {
 
@@ -41,7 +39,7 @@ public class LoginScreen extends UIScreen {
                 scanner.nextLine();
                 User user = response.getResponseBody();
                 ClientConfiguration.getInstance().setUser(user);
-                Navigation.navigateTo(new HomeMenuScreen(user));
+                Navigation.clearRootNavigate(new HomeMenuScreen(user));
                 return true;
             } catch (RequestException e) {
                 if (e.getCode() == Response.ERR_INVALID_CREDENTIALS) {
@@ -51,6 +49,7 @@ public class LoginScreen extends UIScreen {
                     return false;
                 }
                 e.printDetails();
+                UIUtils.danger("try again!");
                 return false;
             }
         }
@@ -62,7 +61,7 @@ public class LoginScreen extends UIScreen {
         UIUtils.primary("Enter your username to login.");
         UIUtils.options("Create an account first", "Go back to main menu");
         promptInput(usernameHandler);
-        promptInput("Now enter your password: ", passwordHandler);
+        promptInput("Enter your password: (username: "+username+")", passwordHandler);
     }
 
 

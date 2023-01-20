@@ -1,8 +1,6 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.InputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.*;
 
 public class AuthMenuScreen extends UIScreen {
     InputHandler inputHandler = new BackSupportedInputHandler("3") {
@@ -12,6 +10,7 @@ public class AuthMenuScreen extends UIScreen {
                 case "1" -> Navigation.navigateTo(new SignUpScreen());
                 case "2" -> Navigation.navigateTo(new LoginScreen());
                 default -> {
+                    System.out.println(input+" is not a meaningful command here. try again.");
                     return false;
                 }
             }

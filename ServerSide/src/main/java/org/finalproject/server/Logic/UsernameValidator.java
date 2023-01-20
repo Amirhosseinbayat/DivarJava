@@ -6,7 +6,7 @@ import org.finalproject.server.Database.QueryConstraints;
 
 import java.io.IOException;
 
-public class UsernameValidator implements BusinessLogic {
+public class UsernameValidator {
 
     IDataBase dataBase; //dependency injection.
 

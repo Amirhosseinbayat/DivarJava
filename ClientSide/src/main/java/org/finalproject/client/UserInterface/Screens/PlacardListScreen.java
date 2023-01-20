@@ -1,4 +1,4 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.PlacardQuery;
 import org.finalproject.DataObject.SalePlacard;
@@ -6,19 +6,21 @@ import org.finalproject.client.ClientConfiguration;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.BackSupportedInputHandler;
+import org.finalproject.client.UserInterface.Navigation;
+import org.finalproject.client.UserInterface.UIScreen;
+import org.finalproject.client.UserInterface.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlacardsScreen extends UIScreen {
+public class PlacardListScreen extends UIScreen {
 
     PlacardQuery placardQuery;
 
     protected List<SalePlacard> placardList;
 
-    public PlacardsScreen() {
+    public PlacardListScreen() {
         placardQuery = new PlacardQuery();
         placardQuery.setCity(ClientConfiguration.getInstance().getUser().getCity());
     }
@@ -74,7 +76,6 @@ public class PlacardsScreen extends UIScreen {
         UIUtils.header("Placards Page");
         UIUtils.primary("What kind of placards are you looking for?");
         printQuery();
-        String input = scanner.nextLine();
         promptInput(new BackSupportedInputHandler() {
             @Override
             public boolean handleValidInput(String input) {
@@ -87,15 +88,14 @@ public class PlacardsScreen extends UIScreen {
                 if (input.startsWith("#")) {
                     int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
                     SalePlacard placard = placardList.get(placardIndex);
-                    Navigation.navigateTo(new PlacardScreen(placard));
+                    Navigation.navigateTo(new PlacardDetailsScreen(placard));
                     return true;
                 }
                 if (input.isEmpty() || input.equals("\n")) {
                     placardList = getPlacards(placardQuery);
                     printPlacards();
                     printQuery();
-                    startScreen();
-                    return true;
+                    return false; //continue getting input from user.
                 }
                 return false;
             }

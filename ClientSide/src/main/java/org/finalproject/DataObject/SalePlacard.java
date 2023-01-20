@@ -8,7 +8,7 @@ public class SalePlacard extends DataObject {
     //should be increased when serialized versions of older objects can not be deserialized to the new class...
     static final long serialVersionUID = 1L;
 
-    private final Set<String> imagesUrl = new LinkedHashSet<>();
+    private Set<String> imageUrlSet;
     private String title;
     private String description = "";
     private long priceInRials;
@@ -32,16 +32,17 @@ public class SalePlacard extends DataObject {
         this.title = title;
     }
 
-    public Set<String> getImagesUrl() {
-        return imagesUrl;
+    public Set<String> getImageUrlSet() {
+        if (imageUrlSet == null) imageUrlSet = new LinkedHashSet<>();
+        return imageUrlSet;
     }
 
     public void addImageUrl(String imageUrl) {
-        this.imagesUrl.add(imageUrl);
+        this.getImageUrlSet().add(imageUrl);
     }
 
     public void removeImageUrl(String imageUrl) {
-        this.imagesUrl.remove(imageUrl);
+        this.imageUrlSet.remove(imageUrl);
     }
 
     public String getTitle() {
@@ -104,8 +105,8 @@ public class SalePlacard extends DataObject {
     }
 
     public String getFirstImageUrl() {
-        if (getImagesUrl().isEmpty()) return "";
-        return getImagesUrl().toArray(new String[0])[0];
+        if (getImageUrlSet().isEmpty()) return "";
+        return getImageUrlSet().toArray(new String[0])[0];
     }
 
     public String getShortenedDescription() {
@@ -130,9 +131,9 @@ public class SalePlacard extends DataObject {
     }
 
     @Override
-    public DataObject clone() {
+    public SalePlacard clone() {
         SalePlacard clone = (SalePlacard) super.clone();
-        for (String imgUrl : imagesUrl) {
+        for (String imgUrl : getImageUrlSet()) {
             clone.addImageUrl(imgUrl);
         }
         return clone;

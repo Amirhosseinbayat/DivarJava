@@ -1,4 +1,4 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.User;
 import org.finalproject.client.ClientConfiguration;
@@ -6,20 +6,46 @@ import org.finalproject.client.Http.IHttpRequestManager;
 import org.finalproject.client.Http.Request;
 import org.finalproject.client.Http.RequestException;
 import org.finalproject.client.Http.Response;
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.InputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.*;
 
 public class ProfileScreen extends UIScreen {
 
-    User user;
-
-    String previousEmail;
-
-
-    public ProfileScreen() {
-        user = ClientConfiguration.getInstance().getUser();
-    }
+    User originalUser;
+    User editedUser;
+    InputHandler usernameHandler = new BackSupportedInputHandler() {
+        @Override
+        public boolean handleValidInput(String input) {
+            if (input.isEmpty() || input.equals("\n")) {
+                return false;
+            }
+            getNewCopy().setUsername(input);
+            try {
+                trySaveUserObject("Update successful.\n"+
+                        "Remember to login as '"+input+"' next time.");
+                return true;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update username: "+e.getMessage());
+                System.out.println("Try again, Enter a valid username. \npress enter to go back.");
+                return false;
+            }
+        }
+    };
+    InputHandler passwordHandler = new BackSupportedInputHandler() {
+        @Override
+        public boolean handleValidInput(String input) {
+            getNewCopy().setNewPassword(input); //current password itself is used for Authentication.
+            // setting newPassword tells the server that we know the current password and want to change it to the new one.
+            try {
+                trySaveUserObject("Update successful.\n"+
+                        "Remember to login with your new password next time.");
+                return true;
+            } catch (RequestException e) {
+                UIUtils.danger(e.getMessage());
+                System.out.println("Try again, Enter a valid password \npress enter to go back.");
+                return false;
+            }
+        }
+    };
 
     InputHandler menuHandler = new BackSupportedInputHandler() {
         @Override
@@ -41,36 +67,28 @@ public class ProfileScreen extends UIScreen {
             return true;
         }
     };
+    InputHandler emailHandler = new BackSupportedInputHandler() {
 
-    @Override
-    public void startScreen() {
-        UIUtils.header("Profile Page");
-        assert user != null;
-        UIUtils.form("1. Username: ", user.getUsername());
-        UIUtils.form("2. First name: ", user.getFirstName());
-        UIUtils.form("3. Last name: ", user.getLastName());
-        UIUtils.form("4. Email: ", user.getEmailAddress());
-        UIUtils.form("5. Phone: ", user.getPhoneNumber());
-        UIUtils.form("6. City: ", user.getCity());
-        UIUtils.form("7. Profile picture: ", user.getProfilePictureUrl());
-        UIUtils.danger("8. Change your password");
-        UIUtils.secondary("Enter the number of any item to edit it, or enter 'back' to go back!");
-        promptInput(menuHandler);
-    }
+        @Override
+        public boolean handleValidInput(String input) {
+            getNewCopy().setEmailAddress(input);
+            try {
+                trySaveUserObject();
+                return true;
+            } catch (RequestException e) {
+                UIUtils.danger("failed to update Email: "+e.getMessage());
+                System.out.println("Try again with a different one. \npress enter to go back.");
+                return true;
+            }
+        }
+    };
 
     void trySaveUserObject() throws RequestException {
         trySaveUserObject("Update successful!");
     }
 
-    void trySaveUserObject(String message) throws RequestException {
-        IHttpRequestManager manager = ClientConfiguration.getInstance().getRequestManager();
-
-        Response response =
-                manager.sendRequest(new Request("POST", "user/update").setBody(user));
-        user = response.getResponseBody();
-        ClientConfiguration.getInstance().setUser(user);
-        UIUtils.successful(message);
-        startScreen();
+    public ProfileScreen() {
+        originalUser = ClientConfiguration.getInstance().getUser();
     }
 
     void processUsernameChange() {
@@ -79,26 +97,10 @@ public class ProfileScreen extends UIScreen {
 
     }
 
-    InputHandler usernameHandler = new BackSupportedInputHandler() {
-        @Override
-        public boolean handleValidInput(String input) {
-            String previous = user.getUsername();
-            if (input.isEmpty() || input.equals("\n")) {
-                return false;
-            }
-            user.setUsername(input);
-            try {
-                trySaveUserObject("Update successful.\n"+
-                        "Remember to login as '"+input+"' next time.");
-                return true;
-            } catch (RequestException e) {
-                UIUtils.danger("failed to update username: "+e.getMessage());
-                user.setUsername(previous);
-                System.out.println("Try again, Enter a valid username. \npress enter to go back.");
-                return false;
-            }
-        }
-    };
+    public User getNewCopy() {
+        editedUser = originalUser.clone();
+        return editedUser;
+    }
 
     void processPasswordChange() {
         promptInput("""
@@ -108,19 +110,43 @@ public class ProfileScreen extends UIScreen {
 
     }
 
-    void processFirstNameChange() {
+    @Override
+    public void startScreen() {
+        UIUtils.header("Profile Page");
+        assert originalUser != null;
+        UIUtils.form("1. Username: ", originalUser.getUsername());
+        UIUtils.form("2. First name: ", originalUser.getFirstName());
+        UIUtils.form("3. Last name: ", originalUser.getLastName());
+        UIUtils.form("4. Email: ", originalUser.getEmailAddress());
+        UIUtils.form("5. Phone: ", originalUser.getPhoneNumber());
+        UIUtils.form("6. City: ", originalUser.getCity());
+        UIUtils.form("7. Profile picture: ", originalUser.getProfilePictureUrl());
+        UIUtils.danger("8. Change your password");
+        UIUtils.secondary("Enter the number of any item to edit it, or enter 'back' to go back!");
+        promptInput(menuHandler);
+    }
 
-        String previous = user.getFirstName();
+    void trySaveUserObject(String message) throws RequestException {
+        IHttpRequestManager manager = ClientConfiguration.getInstance().getRequestManager();
+
+        Response response =
+                manager.sendRequest(new Request("POST", "user/update").setBody(editedUser));
+        originalUser = response.getResponseBody();
+        ClientConfiguration.getInstance().setUser(originalUser);
+        UIUtils.successful(message);
+        startScreen();
+    }
+
+    void processFirstNameChange() {
         promptInput("OK! enter the name you want to set as your firstName", new BackSupportedInputHandler() {
             @Override
             public boolean handleValidInput(String input) {
-                user.setFirstName(input);
+                getNewCopy().setFirstName(input);
                 try {
                     trySaveUserObject();
                     return true;
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update firstName: "+e.getMessage());
-                    user.setFirstName(previous);
                     System.out.println("Try again with a different one. \npress enter to go back.");
                     return false;
                 }
@@ -129,35 +155,20 @@ public class ProfileScreen extends UIScreen {
 
     }
 
-    InputHandler passwordHandler = new BackSupportedInputHandler() {
-        @Override
-        public boolean handleValidInput(String input) {
-            user.setNewPassword(input); //current password itself is used for Authentication.
-            // setting newPassword tells the server that we know the current password and want to change it to the new one.
-            try {
-                trySaveUserObject("Update successful.\n"+
-                        "Remember to login with your new password next time.");
-                return true;
-            } catch (RequestException e) {
-                UIUtils.danger(e.getMessage());
-                System.out.println("Try again, Enter a valid password \npress enter to go back.");
-                return false;
-            }
-        }
-    };
+    void processEmailChange() {
+        promptInput("OK! enter your email address carefully.", emailHandler);
+    }
 
     void processLastNameChange() {
-        String previousLastName = user.getLastName();
         promptInput("OK! enter the name you want to set as your lastName", new BackSupportedInputHandler() {
             @Override
             public boolean handleValidInput(String input) {
-                user.setLastName(input);
+                getNewCopy().setLastName(input);
                 try {
                     trySaveUserObject();
                     return true;
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update lastName: "+e.getMessage());
-                    user.setLastName(previousLastName);
                     System.out.println("Try again with a different one. \npress enter to go back.");
                     return false;
                 }
@@ -167,25 +178,17 @@ public class ProfileScreen extends UIScreen {
 
     }
 
-    void processEmailChange() {
-        previousEmail = user.getEmailAddress();
-        promptInput("OK! enter your email address carefully.", emailHandler);
-    }
-
     void processPhoneChange() {
-
-        String previous = user.getPhoneNumber();
 
         promptInput("OK! enter your phone number for it to be updated.", new BackSupportedInputHandler() {
             @Override
             public boolean handleValidInput(String input) {
-                user.setPhoneNumber(input);
+                getNewCopy().setPhoneNumber(input);
                 try {
                     trySaveUserObject();
                     return true;
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update phone: "+e.getMessage());
-                    user.setPhoneNumber(previous);
                     System.out.println("Try again with a different one. \npress enter to go back.");
                     return false;
                 }
@@ -195,18 +198,16 @@ public class ProfileScreen extends UIScreen {
     }
 
     void processCityChange() {
-        String previous = user.getCity();
         promptInput("OK! enter the name of the city where you live."+
                 " this will be used to show local placards to you.", new BackSupportedInputHandler() {
             @Override
             public boolean handleValidInput(String input) {
-                user.setCity(input);
+                getNewCopy().setCity(input);
                 try {
                     trySaveUserObject();
                     return true;
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update city: "+e.getMessage());
-                    user.setCity(previous);
                     System.out.println("Try again with a different one. \npress enter to go back.");
                     return true;
                 }
@@ -214,36 +215,17 @@ public class ProfileScreen extends UIScreen {
         });
     }
 
-    InputHandler emailHandler = new BackSupportedInputHandler() {
-
-        @Override
-        public boolean handleValidInput(String input) {
-            user.setEmailAddress(input);
-            try {
-                trySaveUserObject();
-                return true;
-            } catch (RequestException e) {
-                UIUtils.danger("failed to update Email: "+e.getMessage());
-                user.setEmailAddress(previousEmail);
-                System.out.println("Try again with a different one. \npress enter to go back.");
-                return true;
-            }
-        }
-    };
-
     void processProfilePicChange() {
-        String previous = user.getProfilePictureUrl();
         promptInput("OK! enter a valid url to a jpg or png image for it to be set as your profile picture."
                 , new BackSupportedInputHandler() {
                     @Override
                     public boolean handleValidInput(String input) {
-                        user.setProfilePictureUrl(input);
+                        getNewCopy().setProfilePictureUrl(input);
                         try {
                             trySaveUserObject();
                             return true;
                         } catch (RequestException e) {
                             UIUtils.danger("failed to update profile picture: "+e.getMessage());
-                            user.setProfilePictureUrl(previous);
                             System.out.println("Try again with a different one. \npress enter to go back.");
                             return false;
                         }

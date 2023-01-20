@@ -1,9 +1,11 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.SalePlacard;
 import org.finalproject.client.Http.RequestException;
-import org.finalproject.client.ImprovedUserInterface.BackSupportedInputHandler;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.BackSupportedInputHandler;
+import org.finalproject.client.UserInterface.Navigation;
+import org.finalproject.client.UserInterface.UIScreen;
+import org.finalproject.client.UserInterface.UIUtils;
 
 import java.util.regex.Pattern;
 

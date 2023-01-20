@@ -1,15 +1,17 @@
-package org.finalproject.client.UserInterface;
+package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.SalePlacard;
-import org.finalproject.client.ImprovedUserInterface.Navigation;
+import org.finalproject.client.UserInterface.Navigation;
+import org.finalproject.client.UserInterface.UIScreen;
+import org.finalproject.client.UserInterface.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WishPlacardsScreen extends UIScreen{
+public class WishPlacardsScreen extends UIScreen {
     private List<SalePlacard> placards;
 
-    void fetchPlacards(){
+    void fetchPlacards() {
         //TODO related http request to fetch wish list of the user
         placards = new ArrayList<>();
     }
@@ -32,7 +34,7 @@ public class WishPlacardsScreen extends UIScreen{
         }
         try {
             int index = Integer.parseInt(input)-1;
-            Navigation.navigateTo(new PlacardScreen(placards.get(index)));
+            Navigation.navigateTo(new PlacardDetailsScreen(placards.get(index)));
             return;
         } catch (Exception ex) {
             System.out.println(input+" is not a meaningful command in this context.");

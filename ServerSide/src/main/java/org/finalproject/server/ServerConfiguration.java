@@ -24,7 +24,7 @@ public class ServerConfiguration {
             String projectPath = System.getProperty("user.dir");
             File databaseFolder = new File(projectPath, "database");
             if (!databaseFolder.exists()) {
-                System.out.println("creating database files in "+databaseFolder.getAbsolutePath());
+                System.out.println("creating database files at "+databaseFolder.getAbsolutePath());
                 boolean createdDirs = databaseFolder.mkdirs();
                 if (!createdDirs) throw new RuntimeException("unable to create database folder at "
                         +databaseFolder.getAbsolutePath());
