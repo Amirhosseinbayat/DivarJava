@@ -22,7 +22,7 @@ public class UserNameHandler implements RequestHandler {
 
     @Override
     public Response handle(Request request) throws Exception {
-        String username = request.getRequestBody();
+        String username = request.getBodyObject();
         String result = validator.validateUserName(username);
         if (result == null) return new Response(200, "username_ok");
         else return new Response(HttpURLConnection.HTTP_CONFLICT, result);

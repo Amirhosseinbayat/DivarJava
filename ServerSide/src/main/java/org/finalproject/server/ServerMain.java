@@ -15,45 +15,31 @@ import java.util.concurrent.Executors;
 public class ServerMain {
     static final ServerConfiguration serverConfiguration = ServerConfiguration.getInstance();
     static HttpServer server;
+
     public static void main(String[] args) {
-        for (int x = 0; x<=args.length-1; x++) {
-            String key = args[x];
-            String value;
-            if (key.startsWith("-") && x+2<args.length) {
-                value = args[x+1];
-                boolean continueProcess = processCLIArgs(x, key, value);
-                if (!continueProcess) return;
-                x++;
-            } else {
-                boolean continueProcess = processCLIArgs(x, key, null);
-                if (!continueProcess) return;
-            }
-        }
+        if (processCliArgs(args)) return;
 
         System.out.println("Server Process is starting on port "+serverConfiguration.getPortNumber());
-
         try {
-            IHttpRequestManager manager = new HTTPRequestManager();
-            IDataBase dataBase = serverConfiguration.getDataBase();
-            manager.assignHandler(new PingHandler());
-            manager.assignHandler(new GetAllRecordsHandler(dataBase));
-            manager.assignHandler(new SignUpHandler(dataBase));
-            manager.assignHandler(new UserNameHandler(dataBase));
-            manager.assignHandler(new LoginHandler(dataBase));
-            manager.assignHandler(new UserUpdateHandler(dataBase));
-            manager.assignHandler(new PlacardCreationHandler(dataBase));
-            manager.assignHandler(new GetPlacardsHandler(dataBase));
-            server = HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
-            server.createContext("/", manager);
-            server.setExecutor(Executors.newFixedThreadPool(10));
-            server.start();
-            System.out.println("server is listening on "+server.getAddress().toString());
+            tryStartHttpServer();
         } catch (IOException e) {
             System.out.println("failed to start the server: "+e.getMessage());
             return;
         }
+        addGracefulShutDownHook();
 
-        //called on ctrl+c or exit command. gracefully closes the database avoiding unfinished writes and corrupt data.
+        System.out.println("server is listening on "+server.getAddress().toString()
+                +"\nyou can send 'exit' to shutdown the server.");
+        Scanner scanner = new Scanner(System.in);
+        while (!scanner.nextLine().equalsIgnoreCase("exit")) {
+            System.out.println("unrecognized command. type 'exit' to close the server process...");
+        }
+        System.exit(0);
+    }
+
+    private static void addGracefulShutDownHook() {
+        //called on ctrl+c or exit command.
+        //gracefully closes the database avoiding unfinished writes causing corrupt data.
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 server.stop(0);
@@ -64,15 +50,44 @@ public class ServerMain {
                 throw new RuntimeException(e);
             }
         }, "Shutdown-thread"));
-
-        Scanner scanner = new Scanner(System.in);
-        while (!scanner.nextLine().equals("exit")) {
-            System.out.println("unrecognized command. type 'exit' to close the server process...");
-        }
-        System.exit(0);
     }
 
-    public static boolean processCLIArgs(int index, String key, String value) {
+    private static void tryStartHttpServer() throws IOException {
+        IDataBase dataBase = serverConfiguration.getDataBase();
+        IHttpRequestManager manager = new HTTPRequestManager(dataBase);
+        manager.assignHandlers(new PingHandler()
+                , new GetAllRecordsHandler(dataBase)
+                , new SignUpHandler(dataBase)
+                , new UserNameHandler(dataBase)
+                , new LoginHandler(dataBase)
+                , new UserUpdateHandler(dataBase)
+                , new PlacardCreationHandler(dataBase)
+                , new GetPlacardsHandler(dataBase));
+        server = HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
+        server.createContext("/", manager);
+        server.setExecutor(Executors.newFixedThreadPool(10));
+        //server will have 10 threads to handle concurrent request.
+        server.start();
+    }
+
+    private static boolean processCliArgs(String[] args) {
+        for (int x = 0; x<=args.length-1; x++) {
+            String key = args[x];
+            String value;
+            if (key.startsWith("-") && x+2<args.length) {
+                value = args[x+1];
+                boolean continueProcess = handleCliArgument(x, key, value);
+                if (!continueProcess) return true;
+                x++;
+            } else {
+                boolean continueProcess = handleCliArgument(x, key, null);
+                if (!continueProcess) return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean handleCliArgument(int index, String key, String value) {
         switch (key) {
             case "-port":
                 serverConfiguration.setPortNumber(Integer.parseInt(value));

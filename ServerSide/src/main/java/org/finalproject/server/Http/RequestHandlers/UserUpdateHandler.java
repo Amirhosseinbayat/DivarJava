@@ -25,7 +25,7 @@ public class UserUpdateHandler implements RequestHandler {
 
     @Override
     public Response handle(Request request) throws Exception {
-        User user = request.getRequestBody();
+        User user = request.getBodyObject();
         if (request.getUser() == null || request.getUser().getObjectId() != user.getObjectId()) {
             return new Response(HttpURLConnection.HTTP_UNAUTHORIZED, "access denied.");
         }

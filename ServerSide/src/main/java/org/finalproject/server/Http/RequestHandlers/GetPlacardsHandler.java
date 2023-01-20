@@ -20,7 +20,7 @@ public class GetPlacardsHandler implements RequestHandler {
 
     @Override
     public Response handle(Request request) throws Exception {
-        PlacardQuery query = request.getRequestBody(); //standard is to use GET for queries,
+        PlacardQuery query = request.getBodyObject(); //standard is to use GET for queries,
         // but we use POST to be able to get Query Object from request body. TODO maybe change this.
         List<SalePlacard> list = dataBase.findAll(new QueryConstraints<>() {
             @Override

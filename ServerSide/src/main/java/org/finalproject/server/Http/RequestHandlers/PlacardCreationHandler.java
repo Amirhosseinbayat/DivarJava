@@ -18,7 +18,7 @@ public class PlacardCreationHandler implements RequestHandler {
 
     @Override
     public Response handle(Request request) throws Exception {
-        SalePlacard salePlacard = request.getRequestBody();
+        SalePlacard salePlacard = request.getBodyObject();
         User user = request.getUser();
         if (user == null) return new Response(HttpURLConnection.HTTP_UNAUTHORIZED
                 , "you need to signUp/logIn to create a placard.");

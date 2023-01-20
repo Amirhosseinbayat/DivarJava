@@ -7,4 +7,6 @@ public interface IHttpRequestManager extends HttpHandler {
 
     void assignHandler(RequestHandler handler);
 
+    void assignHandlers(RequestHandler... handlers);
+
 }

@@ -17,7 +17,7 @@ public class LoginHandler implements RequestHandler {
 
     @Override
     public Response handle(Request request) throws Exception {
-        User user = request.getRequestBody();
+        User user = request.getBodyObject();
         User databaseUser = dataBase.findOne(new QueryConstraints<>() {
             @Override
             public boolean test(User object) {
