@@ -26,7 +26,7 @@ public class PrintDataBaseMain {
         long took = System.currentTimeMillis()-before;
         System.out.println("there are "+dataObjectList.size()+" objects in database. took "+took
                 +"ms");
-        for (DataObject dataObject : dataObjectList){
+        for (DataObject dataObject : dataObjectList) {
             System.out.println(dataObject);
         }
         long bef = System.currentTimeMillis();

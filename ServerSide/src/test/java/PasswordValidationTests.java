@@ -2,7 +2,7 @@ import org.finalproject.server.Logic.PasswordValidator;
 
 public class PasswordValidationTests {
 
-    static PasswordValidator validator = new PasswordValidator();
+    static final PasswordValidator validator = new PasswordValidator();
 
     public static void main(String[] args) {
         crashIfAccepted("pass921"); //not 8 chars.
@@ -20,13 +20,13 @@ public class PasswordValidationTests {
 
 
     public static void crashIfAccepted(String password) {
-        String result = validator.validatePassword(password);
+        String result = PasswordValidator.validatePassword(password);
         assert result != null;
         System.out.println("rejected "+password+" : "+result);
     }
 
     public static void crashIfRejected(String password) {
-        String result = validator.validatePassword(password);
+        String result = PasswordValidator.validatePassword(password);
         assert result == null;
         System.out.println("password '"+password+"' is accepted.");
     }

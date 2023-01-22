@@ -11,9 +11,9 @@ import java.net.HttpURLConnection;
 
 public class PlacardSaveHandler implements RequestHandler {
 
-    IDataBase dataBase; //dependency injection.
+    final IDataBase dataBase; //dependency injection.
 
-    PlacardValidator placardValidator;
+    final PlacardValidator placardValidator;
 
     public PlacardSaveHandler(IDataBase dataBase) {
         this.dataBase = dataBase;
@@ -35,7 +35,7 @@ public class PlacardSaveHandler implements RequestHandler {
                         , "You are not authorized to edit this placard.");
             }
         }
-        String validationResult = placardValidator.validate(salePlacard, original);
+        String validationResult = PlacardValidator.validate(salePlacard, original);
         if (validationResult != null) return new Response(HttpURLConnection.HTTP_BAD_REQUEST
                 , validationResult);
         salePlacard.setCreatedBy(user.getObjectId()); //ensures createdBy is set to this user (prevent hack)

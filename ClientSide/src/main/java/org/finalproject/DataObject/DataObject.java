@@ -35,7 +35,7 @@ public class DataObject implements Serializable, Cloneable {
         }
     }
 
-    long objectId = -1; //must not be 0 at first because 0 itself is a valid objectId.
+    protected long objectId = -1; //must not be 0 at first because 0 itself is a valid objectId.
 
     public static byte[] toByteArray(Serializable serializable) {
         try {
@@ -58,7 +58,7 @@ public class DataObject implements Serializable, Cloneable {
         return objectId;
     }
 
-    long createdAt;
+    private long createdAt;
 
 
     @Override
@@ -73,7 +73,7 @@ public class DataObject implements Serializable, Cloneable {
         return Objects.hash(getObjectId());
     }
 
-    long updatedAt;
+    private long updatedAt;
 
     public void setObjectId(long objectId) {
         if (objectId<0) throw new RuntimeException("invalid object id");

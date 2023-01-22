@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
  */
 public class UserNameHandler implements RequestHandler {
     final UsernameValidator validator;
-    IDataBase dataBase; //dependency injection.
+    final IDataBase dataBase; //dependency injection.
 
     public UserNameHandler(IDataBase dataBase) {
         this.dataBase = dataBase;

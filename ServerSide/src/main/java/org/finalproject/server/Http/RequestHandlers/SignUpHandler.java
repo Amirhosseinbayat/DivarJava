@@ -18,7 +18,7 @@ public class SignUpHandler implements RequestHandler {
 
     final UsernameValidator usernameValidator;
     final PasswordValidator passwordValidator;
-    IDataBase dataBase; //dependency injection.
+    final IDataBase dataBase; //dependency injection.
 
     public SignUpHandler(IDataBase dataBase) {
         this.dataBase = dataBase;
@@ -34,7 +34,7 @@ public class SignUpHandler implements RequestHandler {
 
         String nameResult = usernameValidator.validateUserName(user.getUsername());
         if (nameResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, nameResult);
-        String passwordResult = passwordValidator.validatePassword(user.getPassword());
+        String passwordResult = PasswordValidator.validatePassword(user.getPassword());
         if (passwordResult != null) return new Response(601, passwordResult);
         ServerConfiguration.getInstance().getDataBase().save(user);
         return new Response(200, user);

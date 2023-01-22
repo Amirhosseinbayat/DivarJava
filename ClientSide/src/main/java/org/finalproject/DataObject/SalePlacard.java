@@ -13,12 +13,12 @@ public class SalePlacard extends DataObject {
     private String description = "";
     private long priceInRials;
 
-    long createdBy;
+    private long createdBy;
     private String city = "";
     private String address = "";
     private String phoneNumber = "";
 
-    long promotionExpireData = -1;
+    private long promotionExpireData = -1;
 
     public long getCreatedBy() {
         return createdBy;

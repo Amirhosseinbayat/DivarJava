@@ -16,7 +16,7 @@ public class PasswordValidator {
         return (resultOfANDOperator == 0);
     }
 
-    public static String sequence = "0123456789";
+    public static final String sequence = "0123456789";
 
     public static boolean areDigitsASequence(String number) {
         char[] chars = number.toCharArray();
@@ -31,7 +31,7 @@ public class PasswordValidator {
         return true;
     }
 
-    public String validatePassword(String password) {
+    public static String validatePassword(String password) {
         if (password == null || password.isEmpty()) return "Password can not be empty.";
         if (password.length()<8) return "Password should contain at least 8 characters.";
 

@@ -9,17 +9,17 @@ import org.finalproject.client.Http.Response;
 import org.finalproject.client.UserInterface.*;
 
 public class PlacardCreateScreen extends UIScreen {
-    private final User user;
-    SalePlacard originalPlacard = new SalePlacard("blank");
-    SalePlacard editedPlacard;
-    InputHandler titleHandler = new BackSupportedInputHandler() {
+    protected final User user;
+    protected SalePlacard originalPlacard = new SalePlacard("blank");
+    protected SalePlacard editedPlacard;
+    protected final InputHandler titleHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String title) {
             getNewCopy().setTitle(title);
             return trySavePlacard();
         }
     };
-    InputHandler descriptionHandler = new BackSupportedInputHandler() {
+    protected final InputHandler descriptionHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String description) {
             getNewCopy().setDescription(description);
@@ -27,7 +27,7 @@ public class PlacardCreateScreen extends UIScreen {
 
         }
     };
-    InputHandler priceHandler = new BackSupportedInputHandler() {
+    protected final InputHandler priceHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             try {
@@ -40,7 +40,7 @@ public class PlacardCreateScreen extends UIScreen {
             }
         }
     };
-    InputHandler cityHandler = new BackSupportedInputHandler() {
+    protected final InputHandler cityHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String city) {
             city = city.isBlank() ? requiredPrompt(user.getCity()) : city;
@@ -48,14 +48,14 @@ public class PlacardCreateScreen extends UIScreen {
             return trySavePlacard();
         }
     };
-    InputHandler addressHandler = new BackSupportedInputHandler() {
+    protected final InputHandler addressHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String address) {
             getNewCopy().setAddress(address);
             return trySavePlacard();
         }
     };
-    InputHandler phoneHandler = new BackSupportedInputHandler() {
+    protected final InputHandler phoneHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String phoneNumber) {
             phoneNumber = phoneNumber.equals("") ? requiredPrompt(user.getPhoneNumber()) : phoneNumber;
@@ -63,7 +63,7 @@ public class PlacardCreateScreen extends UIScreen {
             return trySavePlacard();
         }
     };
-    InputHandler imageAddHandler = new BackSupportedInputHandler() {
+    protected final InputHandler imageAddHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             if (input.equalsIgnoreCase("done")) return true;

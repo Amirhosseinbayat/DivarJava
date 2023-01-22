@@ -10,12 +10,12 @@ import java.util.Map;
 
 public class Request {
 
-    final String httpMethod;
-    final String path;
-    final Map<String, Object> headers = new HashMap<>();
+    private final String httpMethod;
+    private final String path;
+    private final Map<String, Object> headers = new HashMap<>();
 
 
-    Object body;
+    private Object body;
 
     public Request(String httpMethod, String path) {
         if (path.startsWith("/")) path = path.replaceFirst("/", "");

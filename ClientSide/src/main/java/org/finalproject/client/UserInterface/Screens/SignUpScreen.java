@@ -12,7 +12,7 @@ public class SignUpScreen extends UIScreen {
     String userName;
 
 
-    InputHandler usernameHandler = new BackSupportedInputHandler() {
+    private final InputHandler usernameHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             userName = input;
@@ -36,7 +36,7 @@ public class SignUpScreen extends UIScreen {
         }
     };
 
-    InputHandler passwordHandler = new BackSupportedInputHandler() {
+    private final InputHandler passwordHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String password) {
             User user = new User(userName, password);
@@ -64,7 +64,7 @@ public class SignUpScreen extends UIScreen {
             }
         }
     };
-    InputHandler emailHandler = new BackSupportedInputHandler() {
+    private final InputHandler emailHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             User user = ClientConfiguration.getInstance().getUser();

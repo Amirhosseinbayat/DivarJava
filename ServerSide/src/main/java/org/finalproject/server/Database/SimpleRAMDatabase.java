@@ -2,7 +2,6 @@ package org.finalproject.server.Database;
 
 import org.finalproject.DataObject.DataObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +15,15 @@ public class SimpleRAMDatabase implements IDataBase {
 
     @Override
     public void save(DataObject object) {
-        System.out.println("saving object " + object.toString());
-        if (object.getObjectId()<0){
+        System.out.println("saving object "+object.toString());
+        if (object.getObjectId()<0) {
             dataObjects.add(object);
             long objectId = dataObjects.size()-1;
-            System.out.println("setting object id as " + objectId);
+            System.out.println("setting object id as "+objectId);
             object.setObjectId(objectId);
-        }else{
-            dataObjects.set((int) object.getObjectId(),object);
-            System.out.println("updated object with id " + object.getObjectId());
+        } else {
+            dataObjects.set((int) object.getObjectId(), object);
+            System.out.println("updated object with id "+object.getObjectId());
         }
 
     }

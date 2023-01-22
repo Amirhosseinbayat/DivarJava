@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlacardEditScreen extends PlacardCreateScreen {
-    final User user;
-    Map<Integer, String> idUrlMap = new HashMap<>();
-    InputHandler imageEditHandler = new BackSupportedInputHandler() {
+    private final User user;
+    private final Map<Integer, String> idUrlMap = new HashMap<>();
+    private final InputHandler imageEditHandler = new BackSupportedInputHandler() {
 
         @Override
         public boolean handleValidInput(String input) {
@@ -33,7 +33,7 @@ public class PlacardEditScreen extends PlacardCreateScreen {
             return false;//continue getting input from user.
         }
     };
-    InputHandler menuHandler = new BackSupportedInputHandler("8") {
+    private final InputHandler menuHandler = new BackSupportedInputHandler("8") {
         @Override
         public boolean handleValidInput(String input) {
             switch (input) {

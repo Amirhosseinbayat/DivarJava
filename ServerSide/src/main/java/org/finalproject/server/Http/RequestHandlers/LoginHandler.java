@@ -9,7 +9,7 @@ import org.finalproject.server.Http.Response;
 import java.net.HttpURLConnection;
 
 public class LoginHandler implements RequestHandler {
-    IDataBase dataBase; //dependency injection.
+    final IDataBase dataBase; //dependency injection.
 
     public LoginHandler(IDataBase dataBase) {
         this.dataBase = dataBase;

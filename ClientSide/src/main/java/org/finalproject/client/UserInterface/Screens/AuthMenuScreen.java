@@ -3,7 +3,7 @@ package org.finalproject.client.UserInterface.Screens;
 import org.finalproject.client.UserInterface.*;
 
 public class AuthMenuScreen extends UIScreen {
-    InputHandler inputHandler = new BackSupportedInputHandler("3") {
+    private final InputHandler inputHandler = new BackSupportedInputHandler("3") {
         @Override
         public boolean handleValidInput(String input) {
             switch (input) {

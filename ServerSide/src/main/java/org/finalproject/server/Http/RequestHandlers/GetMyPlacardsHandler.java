@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 public class GetMyPlacardsHandler implements RequestHandler {
-    IDataBase dataBase; //dependency injection.
+    final IDataBase dataBase; //dependency injection.
 
     public GetMyPlacardsHandler(IDataBase dataBase) {
         this.dataBase = dataBase;
@@ -18,7 +18,7 @@ public class GetMyPlacardsHandler implements RequestHandler {
 
     @Override
     public Response handle(Request request) throws Exception {
-        if(request.getUser()==null)return new Response(HttpURLConnection.HTTP_UNAUTHORIZED,
+        if (request.getUser() == null) return new Response(HttpURLConnection.HTTP_UNAUTHORIZED,
                 "you need to login before trying to get your placards.");
 
         List<SalePlacard> salePlacardList = dataBase.findAll(new QueryConstraints<>() {

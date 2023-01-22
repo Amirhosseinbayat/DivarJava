@@ -14,7 +14,7 @@ public class PlacardValidator {
         return null;
     }
 
-    public String validate(SalePlacard salePlacard, SalePlacard original) {
+    public static String validate(SalePlacard salePlacard, SalePlacard original) {
         String result;
         if (original != null) {
             for (String imageUrl : salePlacard.getImageUrlSet()) {

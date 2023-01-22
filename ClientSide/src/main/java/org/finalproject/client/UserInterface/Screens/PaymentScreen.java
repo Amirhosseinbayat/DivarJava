@@ -13,7 +13,7 @@ import org.finalproject.client.UserInterface.UIUtils;
 import java.util.regex.Pattern;
 
 public class PaymentScreen extends UIScreen {
-    private SalePlacard placard;
+    private final SalePlacard placard;
 
     public PaymentScreen(SalePlacard placard) {
         super();

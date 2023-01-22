@@ -20,10 +20,10 @@ public class Request {
     Map<String, String> headers;
     User user;
     Object bodyObject;
-    HttpExchange httpExchange;
+    final HttpExchange httpExchange;
     byte[] bodyBytes;
 
-    public Request(HttpExchange httpExchange) throws IOException, ClassNotFoundException {
+    public Request(HttpExchange httpExchange) {
         this.httpMethod = httpExchange.getRequestMethod();
         this.path = httpExchange.getRequestURI().getPath();
         this.httpExchange = httpExchange;

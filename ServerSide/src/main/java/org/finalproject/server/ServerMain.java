@@ -34,6 +34,7 @@ public class ServerMain {
         while (!scanner.nextLine().equalsIgnoreCase("exit")) {
             System.out.println("unrecognized command. type 'exit' to close the server process...");
         }
+        scanner.close();
         System.exit(0);
     }
 

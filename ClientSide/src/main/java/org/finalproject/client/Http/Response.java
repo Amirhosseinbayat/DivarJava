@@ -15,10 +15,10 @@ public class Response {
     public static final int ERR_INVALID_CREDENTIALS = HttpURLConnection.HTTP_UNAUTHORIZED;
     public static final int ERR_WEAK_PASSWORD = 601;
     public static final int ERR_USERNAME_TAKEN = HttpURLConnection.HTTP_CONFLICT;
-    int resultCode;
+    private int resultCode;
 
-    final byte[] bytes;
-    Object responseBody;
+    private final byte[] bytes;
+    private Object responseBody;
 
     public Response(byte[] bytes) {
         this.bytes = bytes;

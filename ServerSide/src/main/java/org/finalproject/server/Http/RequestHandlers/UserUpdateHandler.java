@@ -15,7 +15,7 @@ public class UserUpdateHandler implements RequestHandler {
 
     final UsernameValidator usernameValidator;
     final PasswordValidator passwordValidator;
-    IDataBase dataBase; //dependency injection.
+    final IDataBase dataBase; //dependency injection.
 
     public UserUpdateHandler(IDataBase dataBase) {
         this.dataBase = dataBase;
@@ -32,10 +32,10 @@ public class UserUpdateHandler implements RequestHandler {
         User databaseUser = dataBase.getObjectWithId(user.getObjectId());
         if (databaseUser == null) return
                 new Response(HttpURLConnection.HTTP_NOT_FOUND, "record not found to update.");
-        if (user.getNewPassword()!=null) {
-            String passwordResult = passwordValidator.validatePassword(user.getNewPassword());
+        if (user.getNewPassword() != null) {
+            String passwordResult = PasswordValidator.validatePassword(user.getNewPassword());
             if (passwordResult != null) return new Response(601, passwordResult);
-            else{
+            else {
                 user.setPassword(user.getNewPassword());
                 user.setNewPassword(null); //clear newPassword field to avoid reprocessing it.
             }
@@ -44,8 +44,8 @@ public class UserUpdateHandler implements RequestHandler {
             String nameResult = usernameValidator.validateUserName(user.getUsername());
             if (nameResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, nameResult);
         }
-        String profileResult = new ProfileDataValidator().validateUserProfile(user);
-        if (profileResult!=null)return new Response(HttpURLConnection.HTTP_CONFLICT,profileResult);
+        String profileResult = ProfileDataValidator.validateUserProfile(user);
+        if (profileResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, profileResult);
         dataBase.save(user);
         return new Response(200, user);
     }

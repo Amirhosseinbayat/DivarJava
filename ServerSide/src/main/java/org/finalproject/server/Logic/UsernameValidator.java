@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class UsernameValidator {
 
-    IDataBase dataBase; //dependency injection.
+    final IDataBase dataBase; //dependency injection.
 
     public UsernameValidator(IDataBase dataBase) {
         this.dataBase = dataBase;

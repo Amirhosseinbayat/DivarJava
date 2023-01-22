@@ -10,11 +10,11 @@ import org.finalproject.client.UserInterface.*;
 public class LoginScreen extends UIScreen {
 
 
-    String username;
-    String password;
+    private String username;
+    private String password;
 
 
-    InputHandler usernameHandler = new BackSupportedInputHandler() {
+    private final InputHandler usernameHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             if (input.equals("1")) {
@@ -26,7 +26,7 @@ public class LoginScreen extends UIScreen {
         }
     };
 
-    InputHandler passwordHandler = new BackSupportedInputHandler() {
+    private final InputHandler passwordHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             if (input.equals("\n") || input.isBlank()) {

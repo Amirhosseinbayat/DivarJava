@@ -13,11 +13,11 @@ public class PlacardQuery extends DataObject {
     public static final String ORDER_BY_CREATION_ASC = "creation_asc";
     public static final String ORDER_BY_CREATION_DESC = "creation_desc";
 
-    long priceGreaterThan = 0;
-    long priceLessThan = Long.MAX_VALUE;
-    String city;
-    String searchText = "";
-    String orderBy = ORDER_BY_CREATION_DESC;
+    private long priceGreaterThan = 0;
+    private long priceLessThan = Long.MAX_VALUE;
+    private String city;
+    private String searchText = "";
+    private String orderBy = ORDER_BY_CREATION_DESC;
 
 
     public static String getOrderByHumanReadable(String orderBy) {

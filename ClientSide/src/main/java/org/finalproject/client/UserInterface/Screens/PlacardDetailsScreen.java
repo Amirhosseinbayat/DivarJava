@@ -13,8 +13,8 @@ import org.finalproject.client.UserInterface.UIScreen;
 import org.finalproject.client.UserInterface.UIUtils;
 
 public class PlacardDetailsScreen extends UIScreen {
-    SalePlacard placard;
-    User user;
+    private final SalePlacard placard;
+    private User user;
 
     public PlacardDetailsScreen(SalePlacard placard) {
         this.placard = placard;

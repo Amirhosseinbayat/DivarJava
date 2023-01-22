@@ -14,7 +14,7 @@ import java.util.List;
 public class PlacardListScreen extends UIScreen {
 
     protected List<SalePlacard> placardList;
-    PlacardQuery placardQuery;
+    private final PlacardQuery placardQuery;
 
     public PlacardListScreen() {
         placardQuery = new PlacardQuery();
@@ -67,7 +67,7 @@ public class PlacardListScreen extends UIScreen {
     }
 
 
-    InputHandler priceMinHandler = new CancelSupportedHandler("back") {
+    private final InputHandler priceMinHandler = new CancelSupportedHandler("back") {
         @Override
         protected void onCancel() {
             printPlacards();
@@ -113,7 +113,7 @@ public class PlacardListScreen extends UIScreen {
         promptInput(sortHandler);
     }
 
-    InputHandler sortHandler = new CancelSupportedHandler("") {
+    private final InputHandler sortHandler = new CancelSupportedHandler("") {
         @Override
         public boolean handleValidInput(String input) {
             switch (input) {
@@ -137,7 +137,7 @@ public class PlacardListScreen extends UIScreen {
             printQuery();
         }
     };
-    InputHandler priceMaxHandler = new CancelSupportedHandler("") {
+    private final InputHandler priceMaxHandler = new CancelSupportedHandler("") {
         @Override
         protected void onCancel() {
             startScreen();
@@ -172,7 +172,7 @@ public class PlacardListScreen extends UIScreen {
         promptInput(cityHandler);
     }
 
-    InputHandler searchHandler = new CancelSupportedHandler("") {
+    private final InputHandler searchHandler = new CancelSupportedHandler("") {
         @Override
         protected void onCancel() {
             printPlacards();
@@ -185,7 +185,7 @@ public class PlacardListScreen extends UIScreen {
             return true;
         }
     };
-    InputHandler cityHandler = new CancelSupportedHandler("\n") {
+    private final InputHandler cityHandler = new CancelSupportedHandler("\n") {
         @Override
         protected void onCancel() {
             printPlacards();

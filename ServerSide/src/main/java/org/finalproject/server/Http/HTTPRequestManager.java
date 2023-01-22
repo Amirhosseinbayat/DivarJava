@@ -70,7 +70,7 @@ public class HTTPRequestManager implements IHttpRequestManager {
 
     }
 
-    private void sendBackResponse(Response response, HttpExchange httpExchange) throws IOException {
+    private static void sendBackResponse(Response response, HttpExchange httpExchange) throws IOException {
         byte[] responseBytes = response.getResponseBytes();
         httpExchange.getResponseHeaders().set("content-type", response.getContentType());
         httpExchange.sendResponseHeaders(response.getStatusCode(), responseBytes.length);

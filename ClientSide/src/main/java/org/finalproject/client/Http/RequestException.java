@@ -1,8 +1,8 @@
 package org.finalproject.client.Http;
 
 public class RequestException extends Exception {
-    final int code;
-    final String description;
+    private final int code;
+    private final String description;
 
     public RequestException(int code, String description) {
         super(description);

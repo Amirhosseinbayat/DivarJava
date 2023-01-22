@@ -6,8 +6,8 @@ import org.finalproject.client.UserInterface.*;
 
 public class HomeMenuScreen extends UIScreen {
 
-    User user;
-    InputHandler menuHandler = new BackSupportedInputHandler() {
+    private final User user;
+    private final InputHandler menuHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             switch (input) {

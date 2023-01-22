@@ -21,7 +21,7 @@ public class ProfileDataValidator {
 
     private static String checkEmailAddress(User user) {
         String emailAddress = user.getEmailAddress();
-        if (emailAddress!=null && !emailAddress.isEmpty()){
+        if (emailAddress != null && !emailAddress.isEmpty()) {
             //the regex used here is a simple one, which does not match some rarely used but valid email addresses.
             if (!emailAddress.matches(
                     "^[a-zA-Z0-9.]"+ //first part, letters, numbers and dot. ^ represents start of string.
@@ -33,7 +33,7 @@ public class ProfileDataValidator {
         return null;
     }
 
-    public String validateUserProfile(User user) {
+    public static String validateUserProfile(User user) {
 
         String profileResult = checkProfileImage(user);
         if (profileResult != null) return profileResult;
@@ -41,8 +41,7 @@ public class ProfileDataValidator {
         String emailResult = checkEmailAddress(user);
         if (emailResult != null) return emailResult;
 
-        String phoneResult = checkPhoneNumber(user);
-        return phoneResult;
+        return checkPhoneNumber(user);
     }
 
 

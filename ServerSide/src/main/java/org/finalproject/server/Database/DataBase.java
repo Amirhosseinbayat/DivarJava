@@ -8,11 +8,12 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DataBase implements IDataBase {
 
-    final ReentrantLock reentrantLock = new ReentrantLock();
+    final Lock reentrantLock = new ReentrantLock();
     final File file;
     RandomAccessFile randomAccessFile;
 

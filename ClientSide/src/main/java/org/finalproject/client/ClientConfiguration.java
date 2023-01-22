@@ -8,17 +8,17 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class ClientConfiguration {
-    String serverAddress = "http://localhost";
-    int serverPort = 12435;
-    Charset charset = StandardCharsets.UTF_8;
+    private String serverAddress = "http://localhost";
+    private int serverPort = 12435;
+    private Charset charset = StandardCharsets.UTF_8;
 
-    User user;
+    private User user;
 
     public User getUser() {
         return user;
     }
 
-    final IHttpRequestManager requestManager = new HttpRequestManager();
+    private final IHttpRequestManager requestManager = new HttpRequestManager();
 
     public void setUser(User user) {
         if (user.getObjectId()<0) throw new RuntimeException("user object with invalid Id");

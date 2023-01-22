@@ -4,7 +4,7 @@ import java.util.Stack;
 
 public class Navigation {
 
-    public static Stack<UIScreen> backStack = new Stack<>();
+    public static final Stack<UIScreen> backStack = new Stack<>();
 
     public static void navigateTo(UIScreen uiScreen) {
         backStack.push(uiScreen);
