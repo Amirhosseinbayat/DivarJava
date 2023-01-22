@@ -27,9 +27,9 @@ public class PlacardDetailsScreen extends UIScreen {
         UIUtils.placardTemplate(0, placard, false);
         UIUtils.hr();
         if (placard.isCreatedBy(user)) {
+            UIUtils.primary("this placard is created by you! you can't add it to your wish list, but you can edit it.");
             UIUtils.secondary("1. Edit placard details");
-            if (placard.isStillPromoted())
-                UIUtils.secondary("2. Make it special");
+            if (!placard.isStillPromoted()) UIUtils.secondary("2. Make it special");
         } else {
             UIUtils.options(isUserWish() ? "Remove from wish list" : "Add to wish list");
         }
@@ -69,12 +69,13 @@ public class PlacardDetailsScreen extends UIScreen {
         return false;
     }
 
-    private void toggleWishStatus(){
-        //TODO remove or add placard objectId in user wish list
-        trySaveUserObject("The placard " + (isUserWish()? "removed from": "added to")  + " your wish list successfully");
+    private void toggleWishStatus() {
+        if (isUserWish()) user.removeFromCreatedPlacards(placard.getObjectId());
+        else user.addToLikedPlacards(placard.getObjectId());
+        trySaveUserObject("The placard "+(isUserWish() ? "removed from" : "added to")+" your wish list successfully");
         UIUtils.successful("(press Enter to continue: )");
         scanner.nextLine();
-        Navigation.popBackStack();
+        startScreen();
     }
 
     void trySaveUserObject(String message) {

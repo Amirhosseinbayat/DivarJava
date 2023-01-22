@@ -38,6 +38,8 @@ public class QueryPlacardsHandler implements RequestHandler {
 
             @Override
             public int compare(SalePlacard o1, SalePlacard o2) {
+                int promotionResult = promoteComparator.compare(o1, o2);
+                if (promotionResult!=0)return promotionResult;
                 Comparator<SalePlacard> comparator = getComparator(query.getOrderBy());
                 if (comparator != null) return comparator.compare(o1, o2);
                 return 0;
@@ -45,6 +47,17 @@ public class QueryPlacardsHandler implements RequestHandler {
         });
         return new Response(200, list);
     }
+
+    Comparator<SalePlacard> promoteComparator = (o1, o2) -> {
+        if (o1.getPromotionExpireData() > System.currentTimeMillis()
+                && o2.getPromotionExpireData() > System.currentTimeMillis()){
+            return 0; //both promotions are expired or the placards are not promoted at all.
+        }
+        return -Long.compare(o1.getPromotionExpireData(), o2.getPromotionExpireData());
+        //if both are promoted, then the one which is promoted later will come first.
+        //if not, it doesn't matter which one caused the if statement above let us reach here,
+        //it's promotion time will be greater. (when a>K & b<K -> a>b    |   K is system.currentTimeMillis.)
+    };
 
     Comparator<SalePlacard> getComparator(String sortType) {
         switch (sortType) {

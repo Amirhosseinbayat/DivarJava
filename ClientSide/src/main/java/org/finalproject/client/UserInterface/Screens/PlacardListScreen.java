@@ -67,33 +67,28 @@ public class PlacardListScreen extends UIScreen {
     }
 
 
-    @Override
-    public void startScreen() {
-        UIUtils.header("Placards Page");
-        UIUtils.primary("What kind of placards are you looking for?");
-        printQuery();
-        promptInput(new BackSupportedInputHandler() {
-            @Override
-            public boolean handleValidInput(String input) {
-                switch (input) {
-                    case "1" -> processSearchText();
-                    case "2" -> processCityName();
-                    case "3" -> processSort();
-                    case "4" -> processPriceRange();
-                }
-                if (input.startsWith("#")) {
-                    int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
-                    SalePlacard placard = placardList.get(placardIndex);
-                    Navigation.navigateTo(new PlacardDetailsScreen(placard));
-                    return true;
-                }
-                placardList = getPlacards(placardQuery);
-                printPlacards();
-                printQuery();
-                return false; //continue getting input from user.
+    InputHandler priceMinHandler = new CancelSupportedHandler("back") {
+        @Override
+        protected void onCancel() {
+            printPlacards();
+            printQuery();
+        }
+
+        @Override
+        public boolean handleValidInput(String input) {
+            long min;
+            try {
+                if (input.isEmpty() || input.equals("\n")) {
+                    min = 0;
+                } else min = Long.parseLong(input);
+            } catch (NumberFormatException e) {
+                UIUtils.danger("you need to enter an integer number.");
+                return false;
             }
-        });
-    }
+            placardQuery.setPriceGreaterThan(min);
+            return true;
+        }
+    };
 
     private void processPriceRange() {
         UIUtils.primary("Let's define your budget. please enter the maximum you can pay");
@@ -118,7 +113,31 @@ public class PlacardListScreen extends UIScreen {
         promptInput(sortHandler);
     }
 
-    InputHandler priceMaxHandler = new CancelSupportedHandler("\n") {
+    InputHandler sortHandler = new CancelSupportedHandler("") {
+        @Override
+        public boolean handleValidInput(String input) {
+            switch (input) {
+                case "1" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_CREATION_DESC);
+                case "2" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_CREATION_ASC);
+                case "3" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_UPDATE_DESC);
+                case "4" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_UPDATE_ASC);
+                case "5" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_PRICE_DESC);
+                case "6" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_PRICE_ASC);
+                default -> {
+                    UIUtils.danger(input+" is not meaningful here...");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        @Override
+        protected void onCancel() {
+            printPlacards();
+            printQuery();
+        }
+    };
+    InputHandler priceMaxHandler = new CancelSupportedHandler("") {
         @Override
         protected void onCancel() {
             startScreen();
@@ -153,57 +172,11 @@ public class PlacardListScreen extends UIScreen {
         promptInput(cityHandler);
     }
 
-    InputHandler priceMinHandler = new CancelSupportedHandler("\n") {
+    InputHandler searchHandler = new CancelSupportedHandler("") {
         @Override
         protected void onCancel() {
-            startScreen();
-        }
-
-        @Override
-        public boolean handleValidInput(String input) {
-            long min;
-            try {
-                if (input.isEmpty() || input.equals("\n")) {
-                    min = 0;
-                } else min = Long.parseLong(input);
-            } catch (NumberFormatException e) {
-                UIUtils.danger("you need to enter an integer number.");
-                return false;
-            }
-            placardQuery.setPriceGreaterThan(min);
-            return true;
-        }
-    };
-
-
-    InputHandler sortHandler = new CancelSupportedHandler("\n") {
-        @Override
-        public boolean handleValidInput(String input) {
-            switch (input) {
-                case "1" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_CREATION_DESC);
-                case "2" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_CREATION_ASC);
-                case "3" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_UPDATE_DESC);
-                case "4" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_UPDATE_ASC);
-                case "5" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_PRICE_DESC);
-                case "6" -> placardQuery.setOrderBy(PlacardQuery.ORDER_BY_PRICE_ASC);
-                default -> {
-                    UIUtils.danger(input+" is not meaningful here...");
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        @Override
-        protected void onCancel() {
-            startScreen();
-        }
-    };
-
-    InputHandler searchHandler = new CancelSupportedHandler("\n") {
-        @Override
-        protected void onCancel() {
-            startScreen();
+            printPlacards();
+            printQuery();
         }
 
         @Override
@@ -212,12 +185,11 @@ public class PlacardListScreen extends UIScreen {
             return true;
         }
     };
-
-
-    InputHandler cityHandler = new CancelSupportedHandler() {
+    InputHandler cityHandler = new CancelSupportedHandler("\n") {
         @Override
         protected void onCancel() {
-            startScreen();
+            printPlacards();
+            printQuery();
         }
 
         @Override
@@ -226,6 +198,38 @@ public class PlacardListScreen extends UIScreen {
             return true;
         }
     };
+
+    @Override
+    public void startScreen() {
+        UIUtils.header("Placards Page");
+        UIUtils.primary("What kind of placards are you looking for?");
+        printQuery();
+        promptInput(new BackSupportedInputHandler() {
+            @Override
+            public boolean handleValidInput(String input) {
+                switch (input) {
+                    case "1" -> processSearchText();
+                    case "2" -> processCityName();
+                    case "3" -> processSort();
+                    case "4" -> processPriceRange();
+                }
+                if (input.startsWith("#")) {
+                    int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
+                    if (placardIndex>=placardList.size()) {
+                        UIUtils.danger("there is no placard with index "+placardIndex);
+                        return false;
+                    }
+                    SalePlacard placard = placardList.get(placardIndex);
+                    Navigation.navigateTo(new PlacardDetailsScreen(placard));
+                    return true;
+                }
+                placardList = getPlacards(placardQuery);
+                printPlacards();
+                printQuery();
+                return false; //continue getting input from user.
+            }
+        });
+    }
 
 
 }

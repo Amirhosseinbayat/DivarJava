@@ -50,9 +50,12 @@ public class UIUtils {
 
     public static void placardTemplate(int index, SalePlacard placard, Boolean hideDetails){
         System.out.println(ANSICodes.RED_BOLD+"=====================================");
-        if (index != 0)
-            form("#: ", Integer.toString(index));
-        if(hideDetails){
+        if (index != 0) {
+            String promotion = placard.isStillPromoted() ? ANSICodes.GREEN_BOLD
+                    +"    PROMOTED"+ANSICodes.RESET : "";
+            form("#: ", index+promotion);
+        }
+        if (hideDetails) {
             form("First Image: ", placard.getFirstImageUrl());
         } else {
             form("Images: ", placard.getImageUrlSet().toString());

@@ -57,6 +57,8 @@ public class ServerMain {
         IHttpRequestManager manager = new HTTPRequestManager(dataBase);
         manager.assignHandlers(new PingHandler()
                 , new GetMyPlacardsHandler(dataBase)
+                , new PromotePlacardHandler(dataBase)
+                , new GetWishListHandler(dataBase)
                 , new SignUpHandler(dataBase)
                 , new UserNameHandler(dataBase)
                 , new LoginHandler(dataBase)
