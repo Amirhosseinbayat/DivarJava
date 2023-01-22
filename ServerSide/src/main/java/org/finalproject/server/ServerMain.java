@@ -56,13 +56,13 @@ public class ServerMain {
         IDataBase dataBase = serverConfiguration.getDataBase();
         IHttpRequestManager manager = new HTTPRequestManager(dataBase);
         manager.assignHandlers(new PingHandler()
-                , new GetAllRecordsHandler(dataBase)
+                , new GetMyPlacardsHandler(dataBase)
                 , new SignUpHandler(dataBase)
                 , new UserNameHandler(dataBase)
                 , new LoginHandler(dataBase)
                 , new UserUpdateHandler(dataBase)
                 , new PlacardSaveHandler(dataBase)
-                , new GetPlacardsHandler(dataBase));
+                , new QueryPlacardsHandler(dataBase));
         server = HttpServer.create(new InetSocketAddress(serverConfiguration.getPortNumber()), 0);
         server.createContext("/", manager);
         server.setExecutor(Executors.newFixedThreadPool(10));

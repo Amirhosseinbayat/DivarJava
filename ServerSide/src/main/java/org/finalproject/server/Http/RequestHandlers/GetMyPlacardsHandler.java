@@ -6,22 +6,25 @@ import org.finalproject.server.Database.QueryConstraints;
 import org.finalproject.server.Http.Request;
 import org.finalproject.server.Http.Response;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 
-public class GetAllRecordsHandler implements RequestHandler {
+public class GetMyPlacardsHandler implements RequestHandler {
     IDataBase dataBase; //dependency injection.
 
-    public GetAllRecordsHandler(IDataBase dataBase) {
+    public GetMyPlacardsHandler(IDataBase dataBase) {
         this.dataBase = dataBase;
     }
 
     @Override
     public Response handle(Request request) throws Exception {
+        if(request.getUser()==null)return new Response(HttpURLConnection.HTTP_UNAUTHORIZED,
+                "you need to login before trying to get your placards.");
 
         List<SalePlacard> salePlacardList = dataBase.findAll(new QueryConstraints<>() {
             @Override
             public boolean test(SalePlacard object) {
-                return true;
+                return object.isCreatedBy(request.getUser());
             }
 
             @Override
@@ -34,6 +37,6 @@ public class GetAllRecordsHandler implements RequestHandler {
 
     @Override
     public String getHandlerCode() {
-        return "GET:/records/all";
+        return "GET:/placard/mine";
     }
 }

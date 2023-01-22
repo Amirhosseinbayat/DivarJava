@@ -10,11 +10,11 @@ import org.finalproject.server.Http.Response;
 import java.util.Comparator;
 import java.util.List;
 
-public class GetPlacardsHandler implements RequestHandler {
+public class QueryPlacardsHandler implements RequestHandler {
 
     IDataBase dataBase;
 
-    public GetPlacardsHandler(IDataBase dataBase) {
+    public QueryPlacardsHandler(IDataBase dataBase) {
         this.dataBase = dataBase;
     }
 

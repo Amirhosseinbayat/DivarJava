@@ -1,6 +1,10 @@
 package org.finalproject.client.UserInterface.Screens;
 
 import org.finalproject.DataObject.SalePlacard;
+import org.finalproject.client.ClientConfiguration;
+import org.finalproject.client.Http.Request;
+import org.finalproject.client.Http.RequestException;
+import org.finalproject.client.Http.Response;
 import org.finalproject.client.UserInterface.BackSupportedInputHandler;
 import org.finalproject.client.UserInterface.Navigation;
 import org.finalproject.client.UserInterface.UIUtils;
@@ -17,8 +21,6 @@ public class MyPlacardListScreen extends PlacardListScreen {
     @Override
     public void startScreen() {
         UIUtils.header("My Placards Page");
-        //TODO remove this assignment
-        placardList = getTestPlacards();
         printPlacards();
         UIUtils.secondary("Select placard to see more details. type 'back' to go back.");
         promptInput(new BackSupportedInputHandler() {
@@ -36,8 +38,14 @@ public class MyPlacardListScreen extends PlacardListScreen {
         });
     }
 
-    List<SalePlacard> fetchMyPlacards(){
-        //TODO fetch the user placards
+    List<SalePlacard> fetchMyPlacards() {
+        try {
+            Response response = ClientConfiguration.getInstance().getRequestManager()
+                    .sendRequest(new Request("GET", "placard/mine"));
+            return response.getResponseBody();
+        } catch (RequestException e) {
+            e.printDetails();
+        }
         return new ArrayList<>();
     }
 }
