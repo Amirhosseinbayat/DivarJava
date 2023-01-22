@@ -79,6 +79,7 @@ public class User extends DataObject {
     }
 
     public HashSet<Long> getLikedPlacards() {
+        if (likedPlacards == null) likedPlacards = new HashSet<>();
         return likedPlacards;
     }
 

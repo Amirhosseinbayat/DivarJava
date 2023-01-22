@@ -80,8 +80,8 @@ public class PlacardEditScreen extends PlacardCreateScreen {
         UIUtils.form("5. Price: ", Long.toString(originalPlacard.getPriceInRials()));
         UIUtils.form("6. Owner's phone number: ", originalPlacard.getPhoneNumber());
         UIUtils.primary("Enter the number of any item to edit it");
-        UIUtils.danger("7. Delete the placard");
-        UIUtils.primary("8. Back to previous page");
+        //UIUtils.danger("7. Delete the placard"); not required.
+        UIUtils.primary("send 'back' to go back.");
         UIUtils.hr();
     }
 
