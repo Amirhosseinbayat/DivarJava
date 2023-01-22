@@ -78,7 +78,7 @@ public class ProfileScreen extends UIScreen {
             } catch (RequestException e) {
                 UIUtils.danger("failed to update Email: "+e.getMessage());
                 System.out.println("Try again with a different one. \npress enter to go back.");
-                return true;
+                return false;
             }
         }
     };
@@ -209,7 +209,7 @@ public class ProfileScreen extends UIScreen {
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update city: "+e.getMessage());
                     System.out.println("Try again with a different one. \npress enter to go back.");
-                    return true;
+                    return false;
                 }
             }
         });

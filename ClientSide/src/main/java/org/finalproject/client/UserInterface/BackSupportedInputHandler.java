@@ -2,7 +2,7 @@ package org.finalproject.client.UserInterface;
 
 public abstract class BackSupportedInputHandler implements InputHandler {
 
-    private final String backCommand;
+    protected final String backCommand;
 
     public BackSupportedInputHandler(String backCommand) {
         this.backCommand = backCommand;
@@ -13,7 +13,7 @@ public abstract class BackSupportedInputHandler implements InputHandler {
     }
 
     @Override
-    public final boolean handle(String input) {
+    public boolean handle(String input) {
         if (input.equalsIgnoreCase(backCommand)) {
             Navigation.popBackStack();
             return true;

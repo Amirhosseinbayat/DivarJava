@@ -29,6 +29,13 @@ public class LoginScreen extends UIScreen {
     InputHandler passwordHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
+            if (input.equals("\n") || input.isBlank()) {
+                UIUtils.secondary("enter your username again:");
+                promptInput(usernameHandler);
+                System.out.println("now enter your password: ");
+                promptInput(this);
+                return true;
+            }
             password = input;
             Request request = new Request("POST", "login");
             request.setBody(new User(username, password));
