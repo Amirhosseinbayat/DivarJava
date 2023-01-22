@@ -133,6 +133,8 @@ public class SalePlacard extends DataObject {
     @Override
     public SalePlacard clone() {
         SalePlacard clone = (SalePlacard) super.clone();
+        clone.imageUrlSet = new LinkedHashSet<>();
+        //current imageUrlSet is in use by this object. clone needs to have another separated one.
         for (String imgUrl : getImageUrlSet()) {
             clone.addImageUrl(imgUrl);
         }
