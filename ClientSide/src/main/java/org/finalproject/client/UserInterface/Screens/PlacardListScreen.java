@@ -214,14 +214,19 @@ public class PlacardListScreen extends UIScreen {
                     case "4" -> processPriceRange();
                 }
                 if (input.startsWith("#")) {
-                    int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
-                    if (placardIndex>=placardList.size()) {
-                        UIUtils.danger("there is no placard with index "+placardIndex);
+                    try{
+                        int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
+                        if (placardIndex>=placardList.size()) {
+                            UIUtils.danger("there is no placard with index "+placardIndex);
+                            return false;
+                        }
+                        SalePlacard placard = placardList.get(placardIndex);
+                        Navigation.navigateTo(new PlacardDetailsScreen(placard));
+                        return true;
+                    }catch(NumberFormatException ex){
+                        UIUtils.danger("Follow this pattern #placardNumber. for example #4");
                         return false;
                     }
-                    SalePlacard placard = placardList.get(placardIndex);
-                    Navigation.navigateTo(new PlacardDetailsScreen(placard));
-                    return true;
                 }
                 placardList = getPlacards(placardQuery);
                 printPlacards();

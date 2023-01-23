@@ -25,7 +25,7 @@ public class ProfileScreen extends UIScreen {
                 return true;
             } catch (RequestException e) {
                 UIUtils.danger("failed to update username: "+e.getMessage());
-                System.out.println("Try again, Enter a valid username. \npress enter to go back.");
+                UIUtils.secondary("Try again, Enter a valid username. \nsend 'back' to go back.");
                 return false;
             }
         }
@@ -41,7 +41,7 @@ public class ProfileScreen extends UIScreen {
                 return true;
             } catch (RequestException e) {
                 UIUtils.danger(e.getMessage());
-                System.out.println("Try again, Enter a valid password \npress enter to go back.");
+                UIUtils.secondary("Try again, Enter a valid password \nsend 'back' to go back.");
                 return false;
             }
         }
@@ -77,7 +77,7 @@ public class ProfileScreen extends UIScreen {
                 return true;
             } catch (RequestException e) {
                 UIUtils.danger("failed to update Email: "+e.getMessage());
-                System.out.println("Try again with a different one. \npress enter to go back.");
+                UIUtils.secondary("Try again with a different one. \nsend 'back' to go back.");
                 return false;
             }
         }
@@ -93,7 +93,7 @@ public class ProfileScreen extends UIScreen {
 
     void processUsernameChange() {
         promptInput("OK! enter the username which you want to have."+
-                "\npress enter to go back.", usernameHandler);
+                "\nsend 'back' to go back.", usernameHandler);
 
     }
 
@@ -147,7 +147,7 @@ public class ProfileScreen extends UIScreen {
                     return true;
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update firstName: "+e.getMessage());
-                    System.out.println("Try again with a different one. \npress enter to go back.");
+                    UIUtils.secondary("Try again with a different one. \nsend 'back' to go back.");
                     return false;
                 }
             }
@@ -169,7 +169,7 @@ public class ProfileScreen extends UIScreen {
                     return true;
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update lastName: "+e.getMessage());
-                    System.out.println("Try again with a different one. \npress enter to go back.");
+                    UIUtils.secondary("Try again with a different one. \nsend 'back' to go back.");
                     return false;
                 }
             }
@@ -189,7 +189,7 @@ public class ProfileScreen extends UIScreen {
                     return true;
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update phone: "+e.getMessage());
-                    System.out.println("Try again with a different one. \npress enter to go back.");
+                    UIUtils.secondary("Try again with a different one. \nsend 'back' to go back.");
                     return false;
                 }
             }
@@ -208,7 +208,7 @@ public class ProfileScreen extends UIScreen {
                     return true;
                 } catch (RequestException e) {
                     UIUtils.danger("failed to update city: "+e.getMessage());
-                    System.out.println("Try again with a different one. \npress enter to go back.");
+                    UIUtils.secondary("Try again with a different one. \nsend 'back' to go back.");
                     return false;
                 }
             }
@@ -226,7 +226,7 @@ public class ProfileScreen extends UIScreen {
                             return true;
                         } catch (RequestException e) {
                             UIUtils.danger("failed to update profile picture: "+e.getMessage());
-                            System.out.println("Try again with a different one. \npress enter to go back.");
+                            UIUtils.secondary("Try again with a different one. \nsend 'back' to go back.");
                             return false;
                         }
                     }

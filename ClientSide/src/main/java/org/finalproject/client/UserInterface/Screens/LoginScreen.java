@@ -66,7 +66,8 @@ public class LoginScreen extends UIScreen {
     public void startScreen() {
         UIUtils.header("Log In");
         UIUtils.primary("Enter your username to login.");
-        UIUtils.options("Create an account first", "Go back to main menu");
+        UIUtils.options("Create an account first");
+        UIUtils.secondary("send 'back' to go back");
         promptInput(usernameHandler);
         promptInput("Enter your password: (username: "+username+")", passwordHandler);
     }
