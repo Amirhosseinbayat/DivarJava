@@ -25,10 +25,6 @@ public abstract class UIScreen {
     public void promptInput(String guide, InputHandler inputHandler) {
         if (guide != null) System.out.println(guide);
         String input = scanner.nextLine();
-        if (input.equals("back")) {
-            Navigation.popBackStack();
-            return;
-        }
         if (!inputHandler.handle(input)) {
             promptInput(guide, inputHandler);
         }

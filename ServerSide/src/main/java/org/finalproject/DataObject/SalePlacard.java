@@ -10,13 +10,13 @@ public class SalePlacard extends DataObject {
 
     private Set<String> imageUrlSet;
     private String title;
-    private String description = "";
+    private String description;
     private long priceInRials;
 
     private long createdBy;
-    private String city = "";
-    private String address = "";
-    private String phoneNumber = "";
+    private String city;
+    private String address;
+    private String phoneNumber;
 
     private long promotionExpireData = -1;
 

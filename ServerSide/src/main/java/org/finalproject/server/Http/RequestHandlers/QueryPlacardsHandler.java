@@ -60,6 +60,8 @@ public class QueryPlacardsHandler implements RequestHandler {
         List<SalePlacard> list = dataBase.findAll(new QueryConstraints<>() {
             @Override
             public boolean test(SalePlacard object) {
+                if(object.getPhoneNumber()==null)return false;//a placard is not shown until it has a phone number.
+                //if the placard creation process was not completed, we won't show it.
                 if (!query.getSearchText().isEmpty()) {
                     boolean titleMatches = object.getTitle().contains(query.getSearchText());
                     boolean descriptionMatches = object.getDescription().contains(query.getSearchText());

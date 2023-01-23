@@ -15,6 +15,10 @@ public class SignUpScreen extends UIScreen {
     private final InputHandler usernameHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
+            if (input.isBlank()) {
+                System.out.println("username can not be empty.");
+                return false;
+            }
             userName = input;
             UIUtils.secondary("Checking if "+userName+" can be set as your username...");
             try {

@@ -32,10 +32,14 @@ public class PlacardCreateScreen extends UIScreen {
         public boolean handleValidInput(String input) {
             try {
                 long price = Long.parseLong(input);
+                if (price<1) {
+                    UIUtils.danger("price can not be less than 1 rial.");
+                    return false;
+                }
                 getNewCopy().setPriceInRials(price);
                 return trySavePlacard();
-            } catch (NumberFormatException ex) {
-                UIUtils.danger("Price must be a decimal number. try again!");
+            } catch (Exception e) { //numberFormat or too long input.
+                UIUtils.danger("Price must be an integer number. try again!");
                 return false;
             }
         }
@@ -43,7 +47,14 @@ public class PlacardCreateScreen extends UIScreen {
     protected InputHandler cityHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String city) {
-            city = city.isBlank() ? requiredPrompt(user.getCity()) : city;
+            if (city.isBlank()) {
+                if (user.getCity() != null && !user.getCity().isBlank()) {
+                    city = user.getCity();
+                } else {
+                    UIUtils.danger("city can not be blank. try again");
+                    return false;
+                }
+            }
             getNewCopy().setCity(city);
             return trySavePlacard();
         }
@@ -58,7 +69,14 @@ public class PlacardCreateScreen extends UIScreen {
     protected InputHandler phoneHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String phoneNumber) {
-            phoneNumber = phoneNumber.equals("") ? requiredPrompt(user.getPhoneNumber()) : phoneNumber;
+            if (phoneNumber.isBlank()) {
+                if (user.getPhoneNumber() != null && !user.getPhoneNumber().isBlank()) {
+                    phoneNumber = user.getPhoneNumber();
+                } else {
+                    UIUtils.danger("phone number can not be blank. try again");
+                    return false;
+                }
+            }
             getNewCopy().setPhoneNumber(phoneNumber);
             return trySavePlacard();
         }
@@ -67,6 +85,8 @@ public class PlacardCreateScreen extends UIScreen {
         @Override
         public boolean handleValidInput(String input) {
             if (input.equalsIgnoreCase("done")) return true;
+            System.out.println("image url can not be empty.");
+            if (input.isBlank()) return false;
             getNewCopy().addImageUrl(input);
             trySavePlacard();
             UIUtils.secondary("add another image url, or send 'done' to finish adding images.");
@@ -136,14 +156,15 @@ public class PlacardCreateScreen extends UIScreen {
     }
 
     protected void processPrice() {
-        promptInput("Enter it's price in rials: ", priceHandler);
+        promptInput("Enter its price in rials: ", priceHandler);
     }
 
     protected void processCity() {
         UIUtils.primary("City related to placard: ");
-        if (!user.getCity().isBlank()) {
+        if (user.getCity() != null && !user.getCity().isBlank()) {
             UIUtils.secondary(user.getCity()+" (press Enter to continue with your current city or type desired city: )");
-        }
+        } else
+            UIUtils.warning("did you know? if you had specified your city in your profile, we would suggest it here.");
         promptInput(cityHandler);
 
     }
@@ -155,9 +176,11 @@ public class PlacardCreateScreen extends UIScreen {
 
     protected void processPhoneNumber() {
         UIUtils.primary("Owner's phone number: ");
-        if (!user.getPhoneNumber().isBlank()) {
+        if (user.getPhoneNumber() != null && user.getPhoneNumber().isBlank()) {
             UIUtils.secondary(user.getPhoneNumber()+" (press Enter to continue with your phone number or type desired phone number: )");
-        }
+        } else
+            UIUtils.warning("did you know? if you had specified your phone in your profile, we would suggest it here.");
+
         promptInput(phoneHandler);
     }
 

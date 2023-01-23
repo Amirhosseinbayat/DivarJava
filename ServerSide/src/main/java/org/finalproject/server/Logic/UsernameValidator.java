@@ -15,6 +15,8 @@ public class UsernameValidator {
     }
 
     public String validateUserName(String username) throws IOException {
+        if (username.isBlank())return "username can not be blank.";
+        if(username.length() < 4 ) return "username must have at least 4 characters.";
         User user = dataBase.findOne(new QueryConstraints<>() {
             @Override
             public boolean test(User object) {
@@ -29,7 +31,10 @@ public class UsernameValidator {
         if (user != null) return "This username is already taken!";
 
         if (!username.matches("^[a-zA-z0-9]+$")) { //^ beginning of the string, $ end of the string.
-            return "Username can only contain letters and numbers without space.";
+            return "Username can only contain letters and numbers without any space.";
+        }
+        if(!Character.isLetter(username.charAt(0))){
+            return "username can not start with a number.";
         }
         return null;
     }

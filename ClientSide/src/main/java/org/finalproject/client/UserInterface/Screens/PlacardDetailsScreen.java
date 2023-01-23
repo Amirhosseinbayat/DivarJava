@@ -65,12 +65,11 @@ public class PlacardDetailsScreen extends UIScreen {
     }
 
     private boolean isUserWish(){
-        //TODO check placard objectId whether is in the user wish list
-        return false;
+        return user.getLikedPlacards().contains(placard.getObjectId());
     }
 
     private void toggleWishStatus() {
-        if (isUserWish()) user.removeFromCreatedPlacards(placard.getObjectId());
+        if (isUserWish()) user.removeFromLikedPlacards(placard.getObjectId());
         else user.addToLikedPlacards(placard.getObjectId());
         trySaveUserObject("The placard "+(isUserWish() ? "removed from" : "added to")+" your wish list successfully");
         UIUtils.successful("(press Enter to continue: )");

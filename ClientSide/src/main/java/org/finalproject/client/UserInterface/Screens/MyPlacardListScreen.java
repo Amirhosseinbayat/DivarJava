@@ -21,8 +21,14 @@ public class MyPlacardListScreen extends PlacardListScreen {
     @Override
     public void startScreen() {
         UIUtils.header("My Placards Page");
-        printPlacards();
-        UIUtils.secondary("Select placard to see more details. type 'back' to go back.");
+        placardList = fetchMyPlacards();
+        if (placardList.isEmpty()) {
+            UIUtils.warning("you haven't created any placards yet.");
+            UIUtils.primary("send 'back' to go back.");
+        } else {
+            printPlacards();
+            UIUtils.secondary("Select placard to see more details. type 'back' to go back.");
+        }
         promptInput(new BackSupportedInputHandler() {
             @Override
             public boolean handleValidInput(String input) {

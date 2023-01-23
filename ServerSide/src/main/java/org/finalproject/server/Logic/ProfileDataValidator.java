@@ -41,8 +41,15 @@ public class ProfileDataValidator {
         String emailResult = checkEmailAddress(user);
         if (emailResult != null) return emailResult;
 
+        String first = SimpleFieldValidator.validateSimpleField(user.getFirstName(),"firstName",2);
+        String last = SimpleFieldValidator.validateSimpleField(user.getLastName(),"lastName",3);
+
+        if (first!=null)return first;
+        if (last!=null)return last;
         return checkPhoneNumber(user);
     }
+
+
 
 
 }
