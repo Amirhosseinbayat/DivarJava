@@ -237,19 +237,19 @@ public class PlacardListScreen extends UIScreen {
                             printQuery();
                         } else {
                             if (input.startsWith("#")) {
-                            try{
-                                int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
-                                }catch(Exception e){
-                                UIUtils.danger("you have to enter an integer in a valid range.");
-                                return false;
-                                }
-                                if (placardIndex>=placardList.size()) {
-                                    UIUtils.danger("there is no placard with index "+placardIndex);
+                                try {
+                                    int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
+                                    if (placardIndex>=placardList.size()) {
+                                        UIUtils.danger("there is no placard with index "+placardIndex);
+                                        return false;
+                                    }
+                                    SalePlacard placard = placardList.get(placardIndex);
+                                    Navigation.navigateTo(new PlacardDetailsScreen(placard));
+                                    return true;
+                                } catch (Exception e) {
+                                    UIUtils.danger("you have to enter an integer in a valid range.");
                                     return false;
                                 }
-                                SalePlacard placard = placardList.get(placardIndex);
-                                Navigation.navigateTo(new PlacardDetailsScreen(placard));
-                                return true;
                             }
                             UIUtils.danger(input+" is not a meaningful command here.");
                         }

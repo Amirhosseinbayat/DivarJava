@@ -208,6 +208,7 @@ public class ProfileScreen extends UIScreen {
                 case "8" -> processPasswordChange();
                 case "back" -> Navigation.popBackStack();
                 default -> {
+                    UIUtils.danger(input+" is not a meaningful command here.");
                     return false;
                 }
             }
