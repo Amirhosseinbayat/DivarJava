@@ -9,6 +9,8 @@ import org.finalproject.client.UserInterface.Screens.AuthMenuScreen;
 
 import java.nio.charset.Charset;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClientMain {
 
@@ -56,8 +58,26 @@ public class ClientMain {
         }
     }
 
+    private static void startMemoryLogging() {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.gc(); //maybe run garbage collector to provide accurate memory info.
+                Runtime runtime = Runtime.getRuntime();
+                long free = runtime.freeMemory();
+                long max = runtime.maxMemory();
+                long used = max-free;
+                float percentage = ((float) used/(float) max)*100f;
+                System.out.println("used memory: "+used+" / "+max+"  "+percentage+"%");
+            }
+        }, 1000, 5000);
+    }
+
     public static boolean processCLIArgs(int index, String key, String value) {
         switch (key) {
+            case "-memory":
+                startMemoryLogging();
+                return true;
             case "-port":
                 ClientConfiguration.getInstance().setServerPort(Integer.parseInt(value));
                 return true;

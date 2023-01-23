@@ -47,4 +47,10 @@ public abstract class UIScreen {
         return input;
     }
 
+
+    public void trimMemory() {
+        //should be implemented by UIScreens, this method is called when this screen is closed and will no longer
+        //be used. so any object reference that uses up memory should be set to null.
+    }
+
 }

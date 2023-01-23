@@ -21,7 +21,7 @@ public class ProfileDataValidator {
 
     private static String checkEmailAddress(User user) {
         String emailAddress = user.getEmailAddress();
-        if (emailAddress != null && !emailAddress.isEmpty()) {
+        if (emailAddress != null && !emailAddress.isBlank()) {
             //the regex used here is a simple one, which does not match some rarely used but valid email addresses.
             if (!emailAddress.matches(
                     "^[a-zA-Z0-9.]"+ //first part, letters, numbers and dot. ^ represents start of string.
@@ -29,7 +29,7 @@ public class ProfileDataValidator {
                             "+\\.[a-zA-Z]+$")) { // .com etc part. $ represents end of the string.
                 return "Your email address seems incorrect. sample email: byt.amir3@gmail.com";
             }
-        }
+        }else return "Email address can not be blank.";
         return null;
     }
 

@@ -48,4 +48,9 @@ public class MyPlacardListScreen extends PlacardListScreen {
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public void trimMemory() {
+        super.trimMemory(); //implemented at PlacardListScreen.
+    }
 }

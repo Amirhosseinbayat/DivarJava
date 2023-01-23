@@ -13,7 +13,7 @@ import org.finalproject.client.UserInterface.UIScreen;
 import org.finalproject.client.UserInterface.UIUtils;
 
 public class PlacardDetailsScreen extends UIScreen {
-    private final SalePlacard placard;
+    private SalePlacard placard;
     private User user;
 
     public PlacardDetailsScreen(SalePlacard placard) {
@@ -86,9 +86,14 @@ public class PlacardDetailsScreen extends UIScreen {
             user = response.getResponseBody();
             ClientConfiguration.getInstance().setUser(user);
         } catch (RequestException e) {
-            UIUtils.danger("Something went wrong while trying to update. "+ e.getMessage());
+            UIUtils.danger("Something went wrong while trying to update. "+e.getMessage());
             return;
         }
         UIUtils.successful(message);
+    }
+
+    @Override
+    public void trimMemory() {
+        placard = null;
     }
 }

@@ -14,7 +14,7 @@ public class LoginScreen extends UIScreen {
     private String password;
 
 
-    private final InputHandler usernameHandler = new BackSupportedInputHandler() {
+    private InputHandler usernameHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             if (input.equals("1")) {
@@ -26,7 +26,7 @@ public class LoginScreen extends UIScreen {
         }
     };
 
-    private final InputHandler passwordHandler = new BackSupportedInputHandler() {
+    private InputHandler passwordHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             if (input.equals("\n") || input.isBlank()) {
@@ -71,5 +71,11 @@ public class LoginScreen extends UIScreen {
         promptInput("Enter your password: (username: "+username+")", passwordHandler);
     }
 
-
+    @Override
+    public void trimMemory() {
+        usernameHandler = null;
+        passwordHandler = null;
+        username = null;
+        password = null;
+    }
 }

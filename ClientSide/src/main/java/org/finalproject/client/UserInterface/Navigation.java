@@ -12,7 +12,10 @@ public class Navigation {
     }
 
     public static void popNavigate(UIScreen uiScreen) {
-        if (!backStack.isEmpty()) backStack.pop();
+        if (!backStack.isEmpty()) {
+            UIScreen screen = backStack.pop();
+            screen.trimMemory(); //free up memory
+        }
         navigateTo(uiScreen);
     }
 
@@ -24,6 +27,7 @@ public class Navigation {
     public static void popBackStack() {
         UIScreen currentScreen = backStack.pop();
         if (currentScreen == null) return;
+        currentScreen.trimMemory(); //free up memory used by this screen.
         if (backStack.isEmpty()) {
             System.exit(0);
             return;

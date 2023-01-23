@@ -38,19 +38,6 @@ public class PlacardListScreen extends UIScreen {
         }
     }
 
-    List<SalePlacard> getTestPlacards() {
-        List<SalePlacard> placardList = new ArrayList<>();
-        for (int x = 0; x != 10; x++) {
-            SalePlacard placard = new SalePlacard("dummy placard number "+x);
-            placard.setPriceInRials(410000*(x+1));
-            placard.setCity("Tehran");
-            placard.setDescription("some kind of description is here. purchase this item!!!");
-            placard.setPhoneNumber("+989900229691");
-            placard.addImageUrl("sdlkfjskdfj.jpg");
-            placardList.add(placard);
-        }
-        return placardList;
-    }
 
     List<SalePlacard> getPlacards(PlacardQuery query) {
         try {
@@ -231,5 +218,10 @@ public class PlacardListScreen extends UIScreen {
         });
     }
 
-
+    @Override
+    public void trimMemory() {
+        if (placardList != null) placardList.clear();
+        //no need to do a clear when we set the list to null but just in case:)
+        placardList = null;
+    }
 }

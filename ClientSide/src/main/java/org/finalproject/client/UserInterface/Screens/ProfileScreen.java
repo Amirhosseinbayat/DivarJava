@@ -12,7 +12,16 @@ public class ProfileScreen extends UIScreen {
 
     private User originalUser;
     private User editedUser;
-    private final InputHandler usernameHandler = new BackSupportedInputHandler() {
+
+    @Override
+    public void trimMemory() {
+        menuHandler = null;
+        emailHandler = null;
+        passwordHandler = null;
+        usernameHandler = null;
+    }
+
+    private InputHandler usernameHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             if (input.isEmpty() || input.equals("\n")) {
@@ -30,7 +39,7 @@ public class ProfileScreen extends UIScreen {
             }
         }
     };
-    private final InputHandler passwordHandler = new BackSupportedInputHandler() {
+    private InputHandler passwordHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             getNewCopy().setNewPassword(input); //current password itself is used for Authentication.
@@ -47,7 +56,7 @@ public class ProfileScreen extends UIScreen {
         }
     };
 
-    private final InputHandler menuHandler = new BackSupportedInputHandler() {
+    private InputHandler menuHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             switch (input) {
@@ -67,7 +76,7 @@ public class ProfileScreen extends UIScreen {
             return true;
         }
     };
-    private final InputHandler emailHandler = new BackSupportedInputHandler() {
+    private InputHandler emailHandler = new BackSupportedInputHandler() {
 
         @Override
         public boolean handleValidInput(String input) {
@@ -232,11 +241,6 @@ public class ProfileScreen extends UIScreen {
                     }
                 });
     }
-
-
-
-
-
 
 
 
