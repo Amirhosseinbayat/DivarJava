@@ -25,10 +25,6 @@ public abstract class UIScreen {
     public void promptInput(String guide, InputHandler inputHandler) {
         if (guide != null) System.out.println(guide);
         String input = scanner.nextLine();
-        if (input.equals("back")) {
-            Navigation.popBackStack();
-            return;
-        }
         if (!inputHandler.handle(input)) {
             promptInput(guide, inputHandler);
         }
@@ -45,6 +41,12 @@ public abstract class UIScreen {
             requiredPrompt(scanner.nextLine());
         }
         return input;
+    }
+
+
+    public void trimMemory() {
+        //should be implemented by UIScreens, this method is called when this screen is closed and will no longer
+        //be used. so any object reference that uses up memory should be set to null.
     }
 
 }

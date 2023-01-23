@@ -2,6 +2,8 @@ package org.finalproject.client.UserInterface;
 
 import org.finalproject.DataObject.SalePlacard;
 
+import java.util.Calendar;
+
 public class UIUtils {
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -53,7 +55,15 @@ public class UIUtils {
         if (index != 0) {
             String promotion = placard.isStillPromoted() ? ANSICodes.GREEN_BOLD
                     +"    PROMOTED"+ANSICodes.RESET : "";
-            form("#: ", index+promotion);
+            Calendar calendar = Calendar.getInstance();
+
+            calendar.setTimeInMillis(placard.getCreatedAt());
+            String dateCreated = calendarToString(calendar);
+
+            calendar.setTimeInMillis(placard.getUpdatedAt());
+            String dateUpdated = calendarToString(calendar);
+
+            form("#: ", index+promotion+"      created: "+dateCreated+" updated: "+dateUpdated);
         }
         if (hideDetails) {
             form("First Image: ", placard.getFirstImageUrl());
@@ -74,5 +84,10 @@ public class UIUtils {
         if (!hideDetails) {
             form("Contact: ", placard.getPhoneNumber());
         }
+    }
+
+    private static String calendarToString(Calendar calendar) {
+        return calendar.get(Calendar.YEAR)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.DAY_OF_MONTH)
+                +" "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
     }
 }

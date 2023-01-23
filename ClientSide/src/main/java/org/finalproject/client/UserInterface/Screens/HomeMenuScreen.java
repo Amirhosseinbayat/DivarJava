@@ -7,7 +7,7 @@ import org.finalproject.client.UserInterface.*;
 public class HomeMenuScreen extends UIScreen {
 
     private final User user;
-    private final InputHandler menuHandler = new BackSupportedInputHandler() {
+    private InputHandler menuHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             switch (input) {
@@ -50,5 +50,10 @@ public class HomeMenuScreen extends UIScreen {
                 "Log out",
                 "Close program");
         promptInput(menuHandler);
+    }
+
+    @Override
+    public void trimMemory() {
+        menuHandler = null;
     }
 }

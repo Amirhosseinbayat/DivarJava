@@ -14,25 +14,29 @@ public class LoginScreen extends UIScreen {
     private String password;
 
 
-    private final InputHandler usernameHandler = new BackSupportedInputHandler() {
+    private InputHandler usernameHandler = new BackSupportedInputHandler("2") {
         @Override
         public boolean handleValidInput(String input) {
             if (input.equals("1")) {
                 Navigation.popNavigate(new SignUpScreen());
                 return true;
             }
+            if (input.isBlank()) {
+                System.out.println("username can not be empty.");
+                return false;
+            }
             username = input;
             return true;
         }
     };
 
-    private final InputHandler passwordHandler = new BackSupportedInputHandler() {
+    private InputHandler passwordHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
             if (input.equals("\n") || input.isBlank()) {
                 UIUtils.secondary("enter your username again:");
                 promptInput(usernameHandler);
-                System.out.println("now enter your password: ");
+                System.out.println("now enter your password. (username: '"+username+"', press enter to change username)");
                 promptInput(this);
                 return true;
             }
@@ -69,8 +73,15 @@ public class LoginScreen extends UIScreen {
         UIUtils.options("Create an account first");
         UIUtils.secondary("send 'back' to go back");
         promptInput(usernameHandler);
-        promptInput("Enter your password: (username: "+username+")", passwordHandler);
+        promptInput("Enter your password: (username: '"+username+"', press enter to change username)"
+                , passwordHandler);
     }
 
-
+    @Override
+    public void trimMemory() {
+        usernameHandler = null;
+        passwordHandler = null;
+        username = null;
+        password = null;
+    }
 }

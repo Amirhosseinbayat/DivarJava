@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlacardEditScreen extends PlacardCreateScreen {
-    private final User user;
+    private User user;
     private final Map<Integer, String> idUrlMap = new HashMap<>();
-    private final InputHandler imageEditHandler = new BackSupportedInputHandler() {
+    private InputHandler imageEditHandler = new BackSupportedInputHandler() {
 
         @Override
         public boolean handleValidInput(String input) {
@@ -33,7 +33,7 @@ public class PlacardEditScreen extends PlacardCreateScreen {
             return false;//continue getting input from user.
         }
     };
-    private final InputHandler menuHandler = new BackSupportedInputHandler("8") {
+    private InputHandler menuHandler = new BackSupportedInputHandler("back") {
         @Override
         public boolean handleValidInput(String input) {
             switch (input) {
@@ -45,6 +45,7 @@ public class PlacardEditScreen extends PlacardCreateScreen {
                 case "6" -> processPhoneNumber();
                 case "7" -> processDeletion();
                 default -> {
+                    UIUtils.danger(input+" is not a meaningful command here.");
                     return false;
                 }
             }
@@ -52,6 +53,14 @@ public class PlacardEditScreen extends PlacardCreateScreen {
             return false;//continue getting input from user.
         }
     };
+
+    @Override
+    public void trimMemory() {
+        super.trimMemory();
+        user = null;
+        menuHandler = null;
+        imageEditHandler = null;
+    }
 
     public PlacardEditScreen(User user, SalePlacard originalPlacard) {
         super(user);
@@ -67,7 +76,6 @@ public class PlacardEditScreen extends PlacardCreateScreen {
     @Override
     public void startScreen() {
         printMenu();
-
         promptInput(menuHandler);
     }
 
@@ -100,7 +108,7 @@ public class PlacardEditScreen extends PlacardCreateScreen {
 
     protected void processCity() {
         UIUtils.primary("enter the new city name for this placard: ");
-        if (!user.getCity().isBlank()) {
+        if (user.getCity() != null && !user.getCity().isBlank()) {
             UIUtils.secondary(user.getCity()+" (press Enter to continue with your current city or type desired city: )");
         }
         promptInput(cityHandler);
@@ -114,7 +122,7 @@ public class PlacardEditScreen extends PlacardCreateScreen {
 
     protected void processPhoneNumber() {
         UIUtils.primary("Owner's new phone number: ");
-        if (!user.getPhoneNumber().isBlank()) {
+        if (user.getPhoneNumber() != null && !user.getPhoneNumber().isBlank()) {
             UIUtils.secondary(user.getPhoneNumber()+" (press Enter to continue with your phone number or type desired phone number: )");
         }
         promptInput(phoneHandler);

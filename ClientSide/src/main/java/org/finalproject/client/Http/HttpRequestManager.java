@@ -31,7 +31,7 @@ public class HttpRequestManager implements IHttpRequestManager {
 
 
     private Response GET(String urlString, Map<String, Object> headers) throws RequestException {
-        System.out.println("sending a GET request to "+urlString);
+        System.out.print("sending a GET request to "+urlString);
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(urlString).openConnection();
             if (headers != null) {

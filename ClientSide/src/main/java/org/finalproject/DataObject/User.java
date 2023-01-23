@@ -9,16 +9,16 @@ public class User extends DataObject {
 
     static final long serialVersionUID = 1L;
     private String username;
-    private String firstName = "";
-    private String lastName = "";
-    private String emailAddress = "";
-    private String phoneNumber = "";
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
+    private String phoneNumber;
     private String password;
     private String newPassword;
 
-    private String profilePictureUrl = "";
-    private String city = "";
-    private String address = "";
+    private String profilePictureUrl;
+    private String city;
+    private String address;
     private HashSet<Long> likedPlacards;
     private HashSet<Long> createdPlacards;
 

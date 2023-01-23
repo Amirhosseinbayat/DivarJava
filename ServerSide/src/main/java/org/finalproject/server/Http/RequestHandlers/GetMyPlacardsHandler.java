@@ -24,7 +24,9 @@ public class GetMyPlacardsHandler implements RequestHandler {
         List<SalePlacard> salePlacardList = dataBase.findAll(new QueryConstraints<>() {
             @Override
             public boolean test(SalePlacard object) {
-                return object.isCreatedBy(request.getUser());
+                return object.getPhoneNumber()!=null && //a placard is not shown until it has a phone number.
+                        //if the placard creation process was not completed, we won't show it.
+                        object.isCreatedBy(request.getUser());
             }
 
             @Override
