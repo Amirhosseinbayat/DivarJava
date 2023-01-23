@@ -227,6 +227,7 @@ public class PlacardListScreen extends UIScreen {
                     case "2" -> processCityName();
                     case "3" -> processSort();
                     case "4" -> processPriceRange();
+
                     default -> {
                         if (input.isBlank()) {
                             UIUtils.clearScreen();
@@ -236,7 +237,12 @@ public class PlacardListScreen extends UIScreen {
                             printQuery();
                         } else {
                             if (input.startsWith("#")) {
+                            try{
                                 int placardIndex = Integer.parseInt(input.replace("#", ""))-1;
+                                }catch(Exception e){
+                                UIUtils.danger("you have to enter an integer in a valid range.");
+                                return false;
+                                }
                                 if (placardIndex>=placardList.size()) {
                                     UIUtils.danger("there is no placard with index "+placardIndex);
                                     return false;
