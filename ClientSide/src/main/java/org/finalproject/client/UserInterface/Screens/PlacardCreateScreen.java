@@ -50,6 +50,7 @@ public class PlacardCreateScreen extends UIScreen {
             if (city.isBlank()) {
                 if (user.getCity() != null && !user.getCity().isBlank()) {
                     city = user.getCity();
+                    UIUtils.warning("city is set to "+user.getCity());
                 } else {
                     UIUtils.danger("city can not be blank. try again");
                     return false;
@@ -84,7 +85,12 @@ public class PlacardCreateScreen extends UIScreen {
     protected InputHandler imageAddHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
-            if (input.equalsIgnoreCase("done")) return true;
+            if (input.equalsIgnoreCase("done")) {
+                if (originalPlacard.getImageUrlSet().isEmpty()) {
+                    System.out.println("Not adding any images might not be a good idea! but ok...");
+                }
+                return true;
+            }
             System.out.println("image url can not be empty.");
             if (input.isBlank()) return false;
             getNewCopy().addImageUrl(input);

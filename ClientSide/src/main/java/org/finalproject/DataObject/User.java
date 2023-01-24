@@ -163,10 +163,13 @@ public class User extends DataObject {
         this.setFirstName(user.getFirstName());
         this.setLastName(user.getLastName());
         this.setPassword(user.getPassword());
+        this.setNewPassword(user.getNewPassword());
         this.setPhoneNumber(user.getPhoneNumber());
         this.setEmailAddress(user.getEmailAddress());
         this.setProfilePictureUrl(user.getProfilePictureUrl());
         this.setLikedPlacards(user.getLikedPlacards());
         this.setCreatedPlacards(user.getCreatedPlacards());
+        this.setAddress(user.getAddress());
+        this.setCity(user.getCity());
     }
 }

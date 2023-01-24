@@ -151,5 +151,7 @@ public class SalePlacard extends DataObject {
         setCreatedBy(that.getCreatedBy());
         setPriceInRials(that.getPriceInRials());
         setPhoneNumber(that.getPhoneNumber());
+        setCity(that.getCity());
+        setAddress(that.getAddress());
     }
 }

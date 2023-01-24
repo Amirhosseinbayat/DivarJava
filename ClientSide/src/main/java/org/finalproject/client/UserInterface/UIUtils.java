@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 public class UIUtils {
     public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
+        System.out.print(ANSICodes.CLEAR);
         System.out.flush();
     }
 

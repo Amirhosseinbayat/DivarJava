@@ -1,5 +1,6 @@
 package org.finalproject.client.UserInterface.Screens;
 
+import org.finalproject.DataObject.PlacardQuery;
 import org.finalproject.DataObject.SalePlacard;
 import org.finalproject.client.ClientConfiguration;
 import org.finalproject.client.Http.Request;
@@ -15,18 +16,17 @@ import java.util.List;
 public class MyPlacardListScreen extends PlacardListScreen {
 
     public MyPlacardListScreen() {
-        placardList = fetchMyPlacards();
+
     }
 
     @Override
     public void startScreen() {
         UIUtils.header("My Placards Page");
-        placardList = fetchMyPlacards();
+        printPlacards();
         if (placardList.isEmpty()) {
             UIUtils.warning("you haven't created any placards yet.");
             UIUtils.primary("send 'back' to go back.");
         } else {
-            printPlacards();
             UIUtils.secondary("Select placard to see more details. type 'back' to go back.");
         }
         promptInput(new BackSupportedInputHandler() {
@@ -44,11 +44,13 @@ public class MyPlacardListScreen extends PlacardListScreen {
         });
     }
 
-    List<SalePlacard> fetchMyPlacards() {
+    @Override
+    List<SalePlacard> getPlacards(PlacardQuery query) {
         try {
             Response response = ClientConfiguration.getInstance().getRequestManager()
                     .sendRequest(new Request("GET", "placard/mine"));
-            return response.getResponseBody();
+            placardList = response.getResponseBody();
+            return placardList;
         } catch (RequestException e) {
             e.printDetails();
         }

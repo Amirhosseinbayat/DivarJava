@@ -22,8 +22,15 @@ public class Navigation {
     }
 
     public static void clearRootNavigate(UIScreen uiScreen) {
-        backStack.clear();
+        clear();
         navigateTo(uiScreen);
+    }
+
+    private static void clear() {
+        for (UIScreen screen : backStack) {
+            screen.trimMemory();
+        }
+        backStack.clear();
     }
 
     public static void popBackStack() {

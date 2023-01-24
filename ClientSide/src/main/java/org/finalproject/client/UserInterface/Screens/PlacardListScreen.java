@@ -24,9 +24,7 @@ public class PlacardListScreen extends UIScreen {
     private final InputHandler priceMinHandler = new CancelSupportedHandler("back") {
         @Override
         protected void onCancel() {
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            refresh();
         }
 
         @Override
@@ -50,9 +48,7 @@ public class PlacardListScreen extends UIScreen {
                 return false;
             }
             placardQuery.setPriceGreaterThan(min);
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            refresh();
             return true;
         }
     };
@@ -71,26 +67,19 @@ public class PlacardListScreen extends UIScreen {
                     return false;
                 }
             }
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            refresh();
             return true;
         }
 
         @Override
         protected void onCancel() {
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            refresh();
         }
     };
     private final InputHandler priceMaxHandler = new CancelSupportedHandler() {
         @Override
         protected void onCancel() {
-            placardQuery.setSearchText("");
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            refresh();
         }
 
         @Override
@@ -115,37 +104,38 @@ public class PlacardListScreen extends UIScreen {
     private final InputHandler searchHandler = new CancelSupportedHandler("") {
         @Override
         protected void onCancel() {
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            placardQuery.setSearchText("");
+            refresh();
         }
 
         @Override
         public boolean handleValidInput(String input) {
             placardQuery.setSearchText(input);
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            refresh();
             return true;
         }
     };
-    private final InputHandler cityHandler = new CancelSupportedHandler("\n") {
+    private final InputHandler cityHandler = new CancelSupportedHandler("") {
         @Override
         protected void onCancel() {
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            placardQuery.setCity("");
+            refresh();
         }
 
         @Override
         public boolean handleValidInput(String input) {
             placardQuery.setCity(input);
-            UIUtils.clearScreen();
-            printPlacards();
-            printQuery();
+            refresh();
             return true;
         }
     };
+
+    private void refresh() {
+        UIUtils.clearScreen();
+        UIUtils.header("Placards Page");
+        printPlacards();
+        printQuery();
+    }
 
     List<SalePlacard> getPlacards(PlacardQuery query) {
         try {
@@ -186,7 +176,7 @@ public class PlacardListScreen extends UIScreen {
     }
 
     void printPlacards() {
-        if (placardList == null) return;
+        placardList = getPlacards(placardQuery);
         int i = 1;
         for (SalePlacard placard : placardList) {
             UIUtils.placardTemplate(i++, placard, true);
@@ -233,11 +223,7 @@ public class PlacardListScreen extends UIScreen {
 
                     default -> {
                         if (input.isBlank()) {
-                            UIUtils.clearScreen();
-                            UIUtils.header("Placards Page");
-                            placardList = getPlacards(placardQuery);
-                            printPlacards();
-                            printQuery();
+                            refresh();
                         } else {
                             if (input.startsWith("#")) {
                                 try {

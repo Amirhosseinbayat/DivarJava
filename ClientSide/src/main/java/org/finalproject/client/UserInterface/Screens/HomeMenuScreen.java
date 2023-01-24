@@ -18,7 +18,7 @@ public class HomeMenuScreen extends UIScreen {
                 case "5" -> Navigation.navigateTo(new MyPlacardListScreen());
                 case "6" -> {
                     ClientConfiguration.getInstance().logOutUser();
-                    Navigation.navigateTo(new AuthMenuScreen());
+                    Navigation.clearRootNavigate(new AuthMenuScreen());
                 }
                 case "7" -> {
                     UIUtils.primary("Good bye!");

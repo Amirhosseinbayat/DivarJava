@@ -19,8 +19,8 @@ public class QueryPlacardsHandler implements RequestHandler {
     }
 
     final Comparator<SalePlacard> promoteComparator = (o1, o2) -> {
-        if (o1.getPromotionExpireData()>System.currentTimeMillis()
-                && o2.getPromotionExpireData()>System.currentTimeMillis()) {
+        if (o1.getPromotionExpireData()<System.currentTimeMillis()
+                && o2.getPromotionExpireData()<System.currentTimeMillis()) {
             return 0; //both promotions are expired or the placards are not promoted at all.
         }
         return -Long.compare(o1.getPromotionExpireData(), o2.getPromotionExpireData());
