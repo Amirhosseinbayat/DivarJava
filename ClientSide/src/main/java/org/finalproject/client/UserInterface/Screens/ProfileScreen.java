@@ -251,7 +251,7 @@ public class ProfileScreen extends UIScreen {
         Response response =
                 manager.sendRequest(new Request("POST", "user/update").setBody(editedUser));
         originalUser = response.getResponseBody();
-        ClientConfiguration.getInstance().setUser(originalUser);
+        ClientConfiguration.getInstance().getUser().copyData(originalUser);
         UIUtils.successful(message);
         startScreen();
     }

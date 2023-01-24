@@ -140,4 +140,16 @@ public class SalePlacard extends DataObject {
         }
         return clone;
     }
+
+    @Override
+    public void copyData(DataObject dataObject) {
+        super.copyData(dataObject);
+        SalePlacard that = (SalePlacard) dataObject;
+        setPromotionExpireData(that.getPromotionExpireData());
+        setTitle(that.getTitle());
+        setDescription(that.getDescription());
+        setCreatedBy(that.getCreatedBy());
+        setPriceInRials(that.getPriceInRials());
+        setPhoneNumber(that.getPhoneNumber());
+    }
 }

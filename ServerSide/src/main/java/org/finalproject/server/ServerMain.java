@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
 public class ServerMain {
@@ -37,6 +39,22 @@ public class ServerMain {
         scanner.close();
         System.exit(0);
     }
+
+    private static void startMemoryLogging() {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.gc(); //maybe run garbage collector to provide accurate memory info.
+                Runtime runtime = Runtime.getRuntime();
+                long free = runtime.freeMemory();
+                long max = runtime.maxMemory();
+                long used = max-free;
+                float percentage = ((float) used/(float) max)*100f;
+                System.out.println("used memory: "+used+" / "+max+"  "+percentage+"%");
+            }
+        }, 1000, 5000);
+    }
+
 
     private static void addGracefulShutDownHook() {
         //called on ctrl+c or exit command.
@@ -92,6 +110,9 @@ public class ServerMain {
 
     public static boolean handleCliArgument(int index, String key, String value) {
         switch (key) {
+            case "-memory":
+                startMemoryLogging();
+                return true;
             case "-port":
                 serverConfiguration.setPortNumber(Integer.parseInt(value));
                 return true;

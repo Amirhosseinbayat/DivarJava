@@ -146,4 +146,27 @@ public class User extends DataObject {
     public User clone() {
         return (User) super.clone();
     }
+
+    public void setLikedPlacards(HashSet<Long> likedPlacards) {
+        this.likedPlacards = likedPlacards;
+    }
+
+    public void setCreatedPlacards(HashSet<Long> createdPlacards) {
+        this.createdPlacards = createdPlacards;
+    }
+
+    @Override
+    public void copyData(DataObject dataObject) {
+        super.copyData(dataObject);
+        User user = ((User) dataObject);
+        this.setUsername(user.getUsername());
+        this.setFirstName(user.getFirstName());
+        this.setLastName(user.getLastName());
+        this.setPassword(user.getPassword());
+        this.setPhoneNumber(user.getPhoneNumber());
+        this.setEmailAddress(user.getEmailAddress());
+        this.setProfilePictureUrl(user.getProfilePictureUrl());
+        this.setLikedPlacards(user.getLikedPlacards());
+        this.setCreatedPlacards(user.getCreatedPlacards());
+    }
 }

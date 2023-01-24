@@ -71,6 +71,9 @@ public class PlacardListScreen extends UIScreen {
                     return false;
                 }
             }
+            UIUtils.clearScreen();
+            printPlacards();
+            printQuery();
             return true;
         }
 
@@ -192,7 +195,7 @@ public class PlacardListScreen extends UIScreen {
 
     void processCityName() {
         UIUtils.primary("Enter the name of the city you want to see its placards");
-        UIUtils.secondary("Or press Enter to go back.");
+        UIUtils.secondary("Or press Enter to reset city and go back.");
         promptInput(cityHandler);
     }
 

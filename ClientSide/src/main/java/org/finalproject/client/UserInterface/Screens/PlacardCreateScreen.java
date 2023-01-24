@@ -137,7 +137,8 @@ public class PlacardCreateScreen extends UIScreen {
             Response response = ClientConfiguration.getInstance().getRequestManager().sendRequest(
                     new Request("POST", "placard/")
                             .setBody(editedPlacard));
-            originalPlacard = response.getResponseBody();
+            SalePlacard saved = response.getResponseBody();
+            originalPlacard.copyData(saved);
             UIUtils.successful("successfully saved.");
             return true;
         } catch (RequestException e) {
@@ -176,7 +177,7 @@ public class PlacardCreateScreen extends UIScreen {
 
     protected void processPhoneNumber() {
         UIUtils.primary("Owner's phone number: ");
-        if (user.getPhoneNumber() != null && user.getPhoneNumber().isBlank()) {
+        if (user.getPhoneNumber() != null && !user.getPhoneNumber().isBlank()) {
             UIUtils.secondary(user.getPhoneNumber()+" (press Enter to continue with your phone number or type desired phone number: )");
         } else
             UIUtils.warning("did you know? if you had specified your phone in your profile, we would suggest it here.");
