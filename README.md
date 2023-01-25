@@ -1,11 +1,12 @@
 # Divar Java
-##  Pure java serverside - Cli client.
+This is the final project of the Advanced Programming course of the fall semester of 2022 at SBU presented by **Dr.Vahidi**, and created by **Amirhossein Bayat** and **Hojat Ghasemi**.
 
-This is the final project of Advanced Programming course, created by **Amirhossein Bayat** and **Hojat Ghasemi**.
 
+###  Pure Java serverside + Cli client.
 - Uses pure java with no dependencies and libraries included.
+- Client and server can function with just 5MBs of heap memory.
 - A not boring Cli client with colors and beautiful UI
-
+<br><br>
 ## Install and run server process.
 
 Navigate to **ServerSide** folder, compile the project using:
@@ -25,6 +26,17 @@ javac -d bin -sourcepath src/main/java src/main/java/org/finalproject/client/Cli
 Navigate to the newly created **bin** folder and Run the client using
 ```sh
  java org.finalproject.client.ClientMain
+```
+
+To limit memory usage, use -Xmx option follwed by the amount of ram:
+```sh
+ java -Xmx10m org.finalproject.client.ClientMain
+ //lauch with 10Mb of ram
+```
+
+To debug memory usage use -memory option, this will print memory usage every 5 sec.
+```sh
+ java org.finalproject.client.ClientMain -memory
 ```
 
 Enjoy!
