@@ -75,6 +75,7 @@ public class ServerMain {
         IDataBase dataBase = serverConfiguration.getDataBase();
         IHttpRequestManager manager = new HTTPRequestManager(dataBase);
         manager.assignHandlers(new PingHandler()
+                , new GetAllCitiesHandler(dataBase)
                 , new GetMyPlacardsHandler(dataBase)
                 , new PromotePlacardHandler(dataBase)
                 , new GetWishListHandler(dataBase)

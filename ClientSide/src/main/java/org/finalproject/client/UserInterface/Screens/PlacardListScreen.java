@@ -1,5 +1,6 @@
 package org.finalproject.client.UserInterface.Screens;
 
+import org.finalproject.DataObject.CityDetails;
 import org.finalproject.DataObject.PlacardQuery;
 import org.finalproject.DataObject.SalePlacard;
 import org.finalproject.client.ClientConfiguration;
@@ -165,14 +166,23 @@ public class PlacardListScreen extends UIScreen {
         promptInput(sortHandler);
     }
 
-    void printQuery() {
-        UIUtils.hr();
-        UIUtils.secondary("Enter the number of any query criteria to edit it.");
-        UIUtils.form("1. Placards containing the text: ", placardQuery.getSearchText());
-        UIUtils.form("2. City: ", placardQuery.getCity() != null ? placardQuery.getCity() : "");
-        UIUtils.form("3. Sort: ", placardQuery.getOrderByHumanReadable());
-        UIUtils.form("4. Price Range: ", placardQuery.getPriceRange());
-        UIUtils.secondary("Press Enter to fetch results | send #N to select placard N | send 'back' to go back ");
+    private static void printCityNames() {
+        try {
+            List<CityDetails> cityDetailsList = ClientConfiguration.getInstance()
+                    .getRequestManager().sendRequest(new
+                            Request("GET", "placard/cities")).getResponseBody();
+            if (!cityDetailsList.isEmpty()) {
+                UIUtils.usual("-----------");
+                UIUtils.primary("List of cities with placards:");
+            }
+            for (int i = 0; i != cityDetailsList.size(); i++) {
+                CityDetails cityDetails = cityDetailsList.get(i);
+                UIUtils.form("# "+cityDetails.getName(), " | "+cityDetails.getCountOfPlacards()+" placard(s)");
+            }
+            UIUtils.usual("-----------");
+        } catch (RequestException e) {
+            UIUtils.danger("unable to fetch cities list... "+e.getMessage());
+        }
     }
 
     void printPlacards() {
@@ -183,9 +193,20 @@ public class PlacardListScreen extends UIScreen {
         }
     }
 
+    void printQuery() {
+        UIUtils.hr();
+        UIUtils.form("1. Placards containing the text: ", placardQuery.getSearchText());
+        UIUtils.form("2. Placards of the City: ", placardQuery.getCity() != null ? placardQuery.getCity() : "");
+        UIUtils.form("3. Sort mechanism: ", placardQuery.getOrderByHumanReadable());
+        UIUtils.form("4. Price Range: ", placardQuery.getPriceRange());
+        UIUtils.primary("Enter the number of any query criteria to edit it.");
+        UIUtils.secondary("Press Enter to refresh results | send #N to select placard N | send 'back' to go back ");
+    }
+
     void processCityName() {
-        UIUtils.primary("Enter the name of the city you want to see its placards");
-        UIUtils.secondary("Or press Enter to reset city and go back.");
+        printCityNames();
+        UIUtils.primary("Enter the name of any city of your choice to see its placards");
+        UIUtils.secondary("Or press Enter to see all placards from all cities");
         promptInput(cityHandler);
     }
 
@@ -210,8 +231,7 @@ public class PlacardListScreen extends UIScreen {
     public void startScreen() {
         UIUtils.clearScreen();
         UIUtils.header("Placards Page");
-        UIUtils.primary("What kind of placards are you looking for?");
-        printQuery();
+        processCityName();
         promptInput(new BackSupportedInputHandler() {
             @Override
             public boolean handleValidInput(String input) {

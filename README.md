@@ -28,10 +28,9 @@ Navigate to the newly created **bin** folder and Run the client using
  java org.finalproject.client.ClientMain
 ```
 
-To limit memory usage, use -Xmx option follwed by the amount of ram:
+To limit memory usage, use -Xmx option followed by the amount of ram, for example 10m for 10MB:
 ```sh
  java -Xmx10m org.finalproject.client.ClientMain
- //lauch with 10Mb of ram
 ```
 
 To debug memory usage use -memory option, this will print memory usage every 5 sec.
