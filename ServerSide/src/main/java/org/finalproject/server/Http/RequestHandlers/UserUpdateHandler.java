@@ -44,7 +44,7 @@ public class UserUpdateHandler implements RequestHandler {
             String nameResult = usernameValidator.validateUserName(user.getUsername());
             if (nameResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, nameResult);
         }
-        String profileResult = ProfileDataValidator.validateUserProfile(user);
+        String profileResult = ProfileDataValidator.validateUserProfile(user, databaseUser);
         if (profileResult != null) return new Response(HttpURLConnection.HTTP_CONFLICT, profileResult);
         dataBase.save(user);
         return new Response(200, user);
