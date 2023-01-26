@@ -63,15 +63,14 @@ public class QueryPlacardsHandler implements RequestHandler {
                 if(object.getPhoneNumber()==null)return false;//a placard is not shown until it has a phone number.
                 //if the placard creation process was not completed, we won't show it.
                 if (!query.getSearchText().isEmpty()) {
-                    boolean titleMatches = object.getTitle().contains(query.getSearchText());
-                    boolean descriptionMatches = object.getDescription().contains(query.getSearchText());
+                    boolean titleMatches = object.getTitle().toLowerCase().contains(query.getSearchText().toLowerCase());
+                    boolean descriptionMatches = object.getDescription().toLowerCase().contains(query.getSearchText().toLowerCase());
                     if (!titleMatches && !descriptionMatches) return false;
                 }
-                boolean priceRangeOK = object.getPriceInRials()>=query.getPriceGreaterThan() &&
-                        object.getPriceInRials()<=query.getPriceLessThan();
+                boolean priceRangeOK = object.getPriceInRials()>=query.getPriceGreaterThan() && object.getPriceInRials()<=query.getPriceLessThan();
                 if (!priceRangeOK) return false;
                 return (query.getCity() == null || query.getCity().isEmpty()) ||
-                        query.getCity().equals(object.getCity());
+                        query.getCity().equalsIgnoreCase(object.getCity());
             }
 
             @Override
