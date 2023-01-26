@@ -1,6 +1,11 @@
 package org.finalproject.server.Logic;
 
 import org.finalproject.DataObject.User;
+import org.finalproject.server.Database.QueryConstraints;
+import org.finalproject.server.ServerConfiguration;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class ProfileDataValidator {
 
@@ -24,12 +29,30 @@ public class ProfileDataValidator {
         if (emailAddress != null && !emailAddress.isBlank()) {
             //the regex used here is a simple one, which does not match some rarely used but valid email addresses.
             if (!emailAddress.matches(
-                    "^[a-zA-Z0-9.]"+ //first part, letters, numbers and dot. ^ represents start of string.
+                    "^[a-zA-Z0-9.]"+ //first part, letters, numbers and dot. ^ represents start of the string.
                             "+@[a-zA-Z]"+ // @Gmail etc. part. can contain letters only.
                             "+\\.[a-zA-Z]+$")) { // .com etc part. $ represents end of the string.
                 return "Your email address seems incorrect. sample email: byt.amir3@gmail.com";
             }
-        }else return "Email address can not be blank.";
+        } else return "Email address can not be blank.";
+
+        User userWithEmail = null;
+        try {
+            userWithEmail = ServerConfiguration.getInstance().getDataBase().findOne(new QueryConstraints<User>() {
+                @Override
+                public boolean test(User object) {
+                    return Objects.equals(object.getEmailAddress(), user.getEmailAddress());
+                }
+
+                @Override
+                public int compare(User o1, User o2) {
+                    return 0;
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (userWithEmail != null) return "This email address is already in use.";
         return null;
     }
 

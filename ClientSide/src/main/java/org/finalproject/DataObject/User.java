@@ -137,7 +137,17 @@ public class User extends DataObject {
     public String toString() {
         return "User{"+
                 "username='"+username+'\''+
+                ", firstName='"+firstName+'\''+
+                ", lastName='"+lastName+'\''+
+                ", emailAddress='"+emailAddress+'\''+
+                ", phoneNumber='"+phoneNumber+'\''+
                 ", password='"+password+'\''+
+                ", newPassword='"+newPassword+'\''+
+                ", profilePictureUrl='"+profilePictureUrl+'\''+
+                ", city='"+city+'\''+
+                ", address='"+address+'\''+
+                ", likedPlacards="+likedPlacards+
+                ", createdPlacards="+createdPlacards+
                 ", objectId="+objectId+
                 '}';
     }
@@ -158,18 +168,24 @@ public class User extends DataObject {
     @Override
     public void copyData(DataObject dataObject) {
         super.copyData(dataObject);
-        User user = ((User) dataObject);
-        this.setUsername(user.getUsername());
-        this.setFirstName(user.getFirstName());
-        this.setLastName(user.getLastName());
-        this.setPassword(user.getPassword());
-        this.setNewPassword(user.getNewPassword());
-        this.setPhoneNumber(user.getPhoneNumber());
-        this.setEmailAddress(user.getEmailAddress());
-        this.setProfilePictureUrl(user.getProfilePictureUrl());
-        this.setLikedPlacards(user.getLikedPlacards());
-        this.setCreatedPlacards(user.getCreatedPlacards());
-        this.setAddress(user.getAddress());
-        this.setCity(user.getCity());
+        User that = ((User) dataObject);
+        this.setUsername(that.getUsername());
+        this.setFirstName(that.getFirstName());
+        this.setLastName(that.getLastName());
+        this.setPassword(that.getPassword());
+        this.setNewPassword(that.getNewPassword());
+        this.setPhoneNumber(that.getPhoneNumber());
+        this.setEmailAddress(that.getEmailAddress());
+        this.setProfilePictureUrl(that.getProfilePictureUrl());
+        this.setAddress(that.getAddress());
+        this.setCity(that.getCity());
+        this.setLikedPlacards(new HashSet<>());
+        this.setCreatedPlacards(new HashSet<>());
+        for (Long objectId : that.getLikedPlacards()){
+            this.addToLikedPlacards(objectId);
+        }
+        for (Long objectId : that.getCreatedPlacards()){
+            this.addToCreatedPlacards(objectId);
+        }
     }
 }

@@ -40,15 +40,17 @@ public class SignUpScreen extends UIScreen {
         }
     };
 
+    User user;
     private final InputHandler passwordHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String password) {
-            User user = new User(userName, password);
+            user = new User(userName, password);
             Request request = new Request("POST", "signup");
             request.setBody(user);
             try {
                 Response response = ClientConfiguration.getInstance().getRequestManager().sendRequest(request);
-                ClientConfiguration.getInstance().setUser(response.getResponseBody());
+                user = response.getResponseBody();
+                ClientConfiguration.getInstance().setUser(user);
                 UIUtils.successful("Very well! ");
                 return true;
             } catch (RequestException e) {
@@ -71,16 +73,16 @@ public class SignUpScreen extends UIScreen {
     private final InputHandler emailHandler = new BackSupportedInputHandler() {
         @Override
         public boolean handleValidInput(String input) {
-            User user = ClientConfiguration.getInstance().getUser();
             String previous = user.getEmailAddress();
             user.setEmailAddress(input);
             try {
                 IHttpRequestManager manager = ClientConfiguration.getInstance().getRequestManager();
                 Response response =
                         manager.sendRequest(new Request("POST", "user/update").setBody(user));
-                ClientConfiguration.getInstance().setUser(response.getResponseBody());
+                user = response.getResponseBody();
                 UIUtils.successful("Sign up done! press Enter to continue");
                 scanner.nextLine();
+                ClientConfiguration.getInstance().setUser(user);
                 Navigation.clearRootNavigate(new HomeMenuScreen(user));
                 return true;
             } catch (RequestException e) {

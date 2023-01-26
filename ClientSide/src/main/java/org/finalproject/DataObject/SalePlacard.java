@@ -153,5 +153,10 @@ public class SalePlacard extends DataObject {
         setPhoneNumber(that.getPhoneNumber());
         setCity(that.getCity());
         setAddress(that.getAddress());
+        this.imageUrlSet = new LinkedHashSet<>();
+        //current imageUrlSet is in use by this object. clone needs to have another separated one.
+        for (String imgUrl : that.getImageUrlSet()) {
+            addImageUrl(imgUrl);
+        }
     }
 }

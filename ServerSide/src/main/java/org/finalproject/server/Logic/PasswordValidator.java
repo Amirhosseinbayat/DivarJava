@@ -9,7 +9,7 @@ public class PasswordValidator {
          * & 10000
          * ----------
          *   00000
-         * Quick reminder: AND operator returns 0 for 1,0, and 1 for 0,0 or 1,1.
+         * Quick reminder: AND operator returns 0 for 1,0, or 0,0 and 1 for or 1,1.
          * We use & to perform an AND operation on two numbers in java.
          * */
         int resultOfANDOperator = number & (number-1);

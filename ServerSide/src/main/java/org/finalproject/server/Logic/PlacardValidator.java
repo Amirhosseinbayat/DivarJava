@@ -34,25 +34,23 @@ public class PlacardValidator {
             }
         }
         result = checkPhoneNumber(salePlacard.getPhoneNumber());
-        if (result!=null)return result;
-
-        return null;
+        return result;
     }
 
     private static String validateSimpleFields(SalePlacard salePlacard) {
-        String titleResult = SimpleFieldValidator.validateSimpleField(salePlacard.getTitle(),"title");
+        String titleResult = SimpleFieldValidator.validateSimpleField(salePlacard.getTitle(), "title");
         if (titleResult != null) return titleResult;
 
         String descriptionResult = SimpleFieldValidator
-                .validateSimpleField(salePlacard.getDescription(),"description");
+                .validateSimpleField(salePlacard.getDescription(), "description");
         if (descriptionResult != null) return descriptionResult;
 
-        String cityResult = SimpleFieldValidator.validateSimpleField(salePlacard.getCity(),"city name");
+        String cityResult = SimpleFieldValidator.validateSimpleField(salePlacard.getCity(),
+                "city name", 3); //allow qom as a city name.
         if (cityResult != null) return cityResult;
 
-        String addressResult = SimpleFieldValidator.validateSimpleField(salePlacard.getAddress(),"address");
-        if (addressResult != null) return addressResult;
-        return null;
+        String addressResult = SimpleFieldValidator.validateSimpleField(salePlacard.getAddress(), "address");
+        return addressResult;
     }
 
     private static String validateUpdates(SalePlacard salePlacard, SalePlacard original) {

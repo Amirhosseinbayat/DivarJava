@@ -64,7 +64,6 @@ public class PlacardEditScreen extends PlacardCreateScreen {
 
     public PlacardEditScreen(User user, SalePlacard originalPlacard) {
         super(user);
-        this.user = user;
         this.originalPlacard = originalPlacard;
         this.editedPlacard = originalPlacard;
     }

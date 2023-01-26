@@ -91,8 +91,10 @@ public class PlacardCreateScreen extends UIScreen {
                 }
                 return true;
             }
-            System.out.println("image url can not be empty.");
-            if (input.isBlank()) return false;
+            if (input.isBlank()){
+                System.out.println("image url can not be empty.");
+                return false;
+            }
             getNewCopy().addImageUrl(input);
             trySavePlacard();
             UIUtils.secondary("add another image url, or send 'done' to finish adding images.");
