@@ -1,4 +1,9 @@
 # Divar Java
+
+A social marketplace where users can buy and sell new and secondhand stuff.
+This platform facilitates **consumer-to-consumer** and **business-to-consumer** sales with focusing on advertising.
+Which have sections to devoted real estate, vehicles, goods, community service, Industrial equipment, items wanted, jobs. by posting any placard you wish as many as you want. 
+
 This is the final project of the Advanced Programming course of the fall semester of 2022 at SBU presented by **Dr.Vahidi**, and created by **Amirhossein Bayat** and **Hojat Ghasemi**.
 
 ![Query image](/pics/query.PNG)
